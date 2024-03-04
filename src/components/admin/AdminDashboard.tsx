@@ -1,12 +1,19 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+'use client';
+import Aside from './Aside';
+import DBHead from './DBHead';
+import DBBody from './DBBody';
+import { useState } from 'react';
 
 export default function AdminDashboard() {
-  return <div className="w-full h-full bg-red-500">Dashboard xx</div>;
+  const [show, setShow] = useState(false);
+
+  return (
+    <div className="h-full w-full p-2 flex flex-col items-center justify-center gap-2">
+      <DBHead setShow={setShow} show={show} />
+      <div className="flex items-center justify-center h-full w-full gap-2">
+        {!show && <Aside />}
+        <DBBody />
+      </div>
+    </div>
+  );
 }
