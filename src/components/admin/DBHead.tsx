@@ -18,7 +18,6 @@ interface AsideProps {
 
 export default function DBHead({ show, setShow }: AsideProps) {
   function x() {
-    console.log('first');
     setShow(true);
   }
   function y() {
@@ -28,20 +27,15 @@ export default function DBHead({ show, setShow }: AsideProps) {
     <div className="w-full flex items-center h-auto rounded-lg border bg-card text-card-foreground shadow-sm p-2">
       <Sheet>
         <SheetTrigger asChild>
-          <Button onClick={x} variant="ghost" className="sm:hidden">
-            <Menu className="w-7" />
+          <Button onClick={x} variant="ghost" className="sm:hidden p-0">
+            <Menu className="w-8" />
           </Button>
         </SheetTrigger>
         <SheetContent side="left" onCloseAutoFocus={y} className="w-auto">
-          <SheetHeader>
-            <SheetTitle>Admin</SheetTitle>
-            <SheetDescription className="flex flex-col items-start h-full">
-              {asideContent(true)}
-            </SheetDescription>
-          </SheetHeader>
+          {asideContent(true)}
         </SheetContent>
       </Sheet>
-      Admin Dashboard
+      <span>Dashboard</span>
     </div>
   );
 }
