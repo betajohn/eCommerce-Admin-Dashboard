@@ -1,9 +1,26 @@
-import { LogOut, Mail, ScrollText, SquareUser, Tag } from 'lucide-react';
+import {
+  LucideIcon,
+  LogOut,
+  Mail,
+  ScrollText,
+  SquareUser,
+  Tag,
+  LayoutDashboard,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ReactNode } from 'react';
 import Logo from '/public/images/JohnsSVG.svg';
 
-const menuBtns = [
+interface menuItem {
+  icon: LucideIcon;
+  description: string;
+}
+
+const menuBtns: menuItem[] = [
+  {
+    icon: LayoutDashboard,
+    description: 'Dashboard',
+  },
   {
     icon: Tag,
     description: 'Products',
@@ -28,9 +45,9 @@ const menuBtns = [
 
 export function asideContent(sheet: boolean): ReactNode {
   return (
-    <div className="flex flex-col h-full items-start">
-      <div className="w-full mb-10">
-        <Logo className="w-12 lg:w-16 mx-auto mt-1" />
+    <div className="flex flex-col h-full items-start py-2.5">
+      <div className="w-full mb-10 object-cover px-6 sm:px-0 lg:p-4">
+        <Logo className="mx-auto mt-1" />
       </div>
       {menuBtns.map((btn) => (
         <Button variant="ghost" key={btn.description} className="gap-1">
@@ -46,7 +63,7 @@ export function asideContent(sheet: boolean): ReactNode {
 
 export default function Aside() {
   return (
-    <aside className="hidden sm:flex h-full text-card-foreground">
+    <aside className="hidden sm:flex h-full text-card-foreground bg-grat-800">
       {asideContent(false)}
     </aside>
   );

@@ -12,6 +12,7 @@ import { Menu } from 'lucide-react';
 import { asideContent } from './Aside';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ModeToggle } from '../ModeToggle';
+import { Card, CardHeader, CardTitle } from '../ui/card';
 
 interface AsideProps {
   show: boolean;
@@ -26,7 +27,7 @@ export default function DBHead({ show, setShow }: AsideProps) {
     setShow(false);
   }
   return (
-    <div className="w-full flex items-center justify-between h-auto rounded-lg border bg-card text-card-foreground shadow-sm p-2">
+    <Card className="w-full flex items-center justify-between h-auto rounded-lg border bg-card text-card-foreground shadow-sm p-2">
       <div className="flex justify-center items-center">
         <Sheet>
           <SheetTrigger asChild>
@@ -34,19 +35,25 @@ export default function DBHead({ show, setShow }: AsideProps) {
               <Menu className="w-8" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" onCloseAutoFocus={y} className="w-auto">
+          <SheetContent
+            side="left"
+            onCloseAutoFocus={y}
+            className="w-auto bg-red-800"
+          >
             {asideContent(true)}
           </SheetContent>
         </Sheet>
-        <span>Dashboard</span>
+        <CardHeader className="py-0">
+          <CardTitle className="text-xl">Dashboard</CardTitle>
+        </CardHeader>
       </div>
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center gap-2 px-2">
         <ModeToggle />
-        <Avatar>
+        <Avatar className="w-7 h-7">
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -33,3 +33,25 @@ html {
 ```html
 <body className="w-full h-full min-w-[320px] max-w-[1200px] m-auto"></body>
 ```
+
+- Use object-fit prop on the container for replaced children elements (images, videos) to fit the parent. Will auto adjust.
+
+```css
+className='object-cover'
+
+object-fit =
+  fill        |
+  contain     |
+  cover       |
+  none        |
+  scale-down
+
+```
+
+- Viewport units present an accessibility issue: they prevent users from being able to adjust text size zooming-in/out. Don't use them for font size alone.
+
+```text
+use clamp instead
+className="text-[clamp(1rem,3vw,2rem)]"
+
+```
