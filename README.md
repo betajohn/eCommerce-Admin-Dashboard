@@ -22,8 +22,10 @@ height =
 - 100% of the screen: Make your app's body size equal to viewport size (same as h-[100vh] w-[100vw])
 
 ```css
-body,
 html {
+  min-height: 100%;
+}
+body {
   height: 100%;
 }
 ```
@@ -31,7 +33,10 @@ html {
 - Setting min-max body width and centering it.
 
 ```html
-<body className="w-full h-full min-w-[320px] max-w-[1200px] m-auto"></body>
+<html className="w-full min-h-full ">
+  <body className="w-full h-full min-w-[320px] max-w-[1200px] m-auto"></body>
+  /html>
+</html>
 ```
 
 - Use object-fit prop on the container for replaced children elements (images, videos) to fit the parent. Will auto adjust.

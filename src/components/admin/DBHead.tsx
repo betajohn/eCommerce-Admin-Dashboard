@@ -27,7 +27,7 @@ export default function DBHead({ show, setShow }: AsideProps) {
     setShow(false);
   }
   return (
-    <Card className="w-full flex items-center justify-between h-auto rounded-lg border bg-card text-card-foreground shadow-sm p-2">
+    <div className="w-full flex items-center justify-between rounded-lg border bg-card text-card-foreground shadow-sm p-2">
       <div className="flex justify-center items-center">
         <Sheet>
           <SheetTrigger asChild>
@@ -35,11 +35,7 @@ export default function DBHead({ show, setShow }: AsideProps) {
               <Menu className="w-8" />
             </Button>
           </SheetTrigger>
-          <SheetContent
-            side="left"
-            onCloseAutoFocus={y}
-            className="w-auto bg-red-800"
-          >
+          <SheetContent side="left" onCloseAutoFocus={y} className="w-auto">
             {asideContent(true)}
           </SheetContent>
         </Sheet>
@@ -54,6 +50,6 @@ export default function DBHead({ show, setShow }: AsideProps) {
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </div>
-    </Card>
+    </div>
   );
 }

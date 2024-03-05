@@ -45,7 +45,7 @@ const menuBtns: menuItem[] = [
 
 export function asideContent(sheet: boolean): ReactNode {
   return (
-    <div className="flex flex-col h-full items-start py-2.5">
+    <div className="flex flex-col h-full items-start justify-start py-2.5">
       <div className="w-full mb-10 object-cover px-6 sm:px-0 lg:p-4">
         <Logo className="mx-auto mt-1" />
       </div>
@@ -63,7 +63,7 @@ export function asideContent(sheet: boolean): ReactNode {
 
 export default function Aside() {
   return (
-    <aside className="hidden sm:flex h-full text-card-foreground bg-grat-800">
+    <aside className="hidden sm:flex h-full text-card-foreground">
       {asideContent(false)}
     </aside>
   );

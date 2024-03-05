@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full w-full">
+    <html lang="en" className="min-h-full w-full">
       <body className="h-full w-full min-w-80 max-w-7xl m-auto bg-gray-100 dark:bg-gray-800">
         <ThemeProvider
           attribute="class"

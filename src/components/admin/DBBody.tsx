@@ -29,7 +29,7 @@ export default function DBBody() {
         <Card className="w-full h-[330px]">
           <CardContent>big1</CardContent>
         </Card>
-        <Card className="w-full h-[100px]">
+        <Card className="w-full h-[400px]">
           <CardContent>big2</CardContent>
         </Card>
       </div>
