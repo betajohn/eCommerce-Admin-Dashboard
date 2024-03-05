@@ -30,7 +30,7 @@ export function asideContent(sheet: boolean): ReactNode {
   return (
     <div className="flex flex-col h-full items-start">
       <div className="w-full mb-10">
-        <Logo className="w-20 mx-auto mt-1" />
+        <Logo className="w-12 lg:w-16 mx-auto mt-1" />
       </div>
       {menuBtns.map((btn) => (
         <Button variant="ghost" key={btn.description} className="gap-1">
