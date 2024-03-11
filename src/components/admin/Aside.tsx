@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { ReactNode } from 'react';
 import Logo from '/public/images/JohnsSVG.svg';
+import { Dispatch, SetStateAction } from 'react';
 
 interface menuItem {
   icon: LucideIcon;
@@ -48,16 +49,28 @@ const menuBtns: menuItem[] = [
   },
 ];
 
-export function asideContent(sheet: boolean): ReactNode {
+export function asideContent(
+  showInSheet: boolean,
+  setPanel: Dispatch<SetStateAction<string>>
+): ReactNode {
   return (
     <div className="flex flex-col h-full items-start justify-start py-2.5">
       <div className="w-full mb-10 object-cover px-6 sm:px-0 lg:p-4">
         <Logo className="mx-auto mt-1" />
       </div>
       {menuBtns.map((btn) => (
-        <Button variant="ghost" key={btn.description} className="gap-1">
+        <Button
+          variant="ghost"
+          key={btn.description}
+          onClick={() => setPanel(btn.description)}
+          className="gap-1 px-1"
+        >
           <btn.icon className="w-6" />
-          <span className={`${sheet === false && 'hidden xl:flex'}`}>
+          <span
+            className={`${
+              showInSheet === false && 'hidden lg:flex text-xs xl:text-base'
+            }`}
+          >
             {btn.description}
           </span>
         </Button>
@@ -66,10 +79,14 @@ export function asideContent(sheet: boolean): ReactNode {
   );
 }
 
-export default function Aside() {
+export default function Aside({
+  setPanel,
+}: {
+  setPanel: Dispatch<SetStateAction<string>>;
+}) {
   return (
     <aside className="hidden sm:flex h-full text-card-foreground">
-      {asideContent(false)}
+      {asideContent(false, setPanel)}
     </aside>
   );
 }

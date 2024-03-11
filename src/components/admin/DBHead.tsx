@@ -15,32 +15,36 @@ import { ModeToggle } from '../ModeToggle';
 import { Card, CardHeader, CardTitle } from '../ui/card';
 
 interface AsideProps {
-  show: boolean;
+  setPanel: Dispatch<SetStateAction<string>>;
   setShow: Dispatch<SetStateAction<boolean>>;
+  show: boolean;
+  panel: string;
 }
 
-export default function DBHead({ show, setShow }: AsideProps) {
-  function x() {
-    setShow(true);
-  }
-  function y() {
-    setShow(false);
-  }
+export default function DBHead({ setPanel, panel, setShow, show }: AsideProps) {
   return (
     <div className="w-full flex items-center justify-between rounded-lg border bg-card text-card-foreground shadow-sm p-2">
       <div className="flex justify-center items-center">
         <Sheet>
           <SheetTrigger asChild>
-            <Button onClick={x} variant="ghost" className="sm:hidden p-0">
+            <Button
+              onClick={() => setShow(true)}
+              variant="ghost"
+              className="sm:hidden p-0"
+            >
               <Menu className="w-8" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" onCloseAutoFocus={y} className="w-auto">
-            {asideContent(true)}
+          <SheetContent
+            side="left"
+            onCloseAutoFocus={() => setShow(false)}
+            className="w-auto"
+          >
+            {asideContent(true, setPanel)}
           </SheetContent>
         </Sheet>
         <CardHeader className="py-0">
-          <CardTitle className="text-xl">Dashboard</CardTitle>
+          <CardTitle className="text-xl">{panel}</CardTitle>
         </CardHeader>
       </div>
       <div className="flex justify-center items-center gap-2 px-2">

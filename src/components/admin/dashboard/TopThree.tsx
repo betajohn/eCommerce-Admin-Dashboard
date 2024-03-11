@@ -41,7 +41,7 @@ export default function TopThree() {
       {cards.map((c) => (
         <article
           key={c.title}
-          className="relative rounded-lg border bg-card text-card-foreground shadow-sm w-full flex flex-col p-4"
+          className="relative rounded-lg bg-card text-card-foreground shadow-sm w-full flex flex-col p-4"
         >
           <span className="text-primary font-semibold text-3xl sm:text-[clamp(1.5rem,_3vw,_2rem)]">
             {c.value}
