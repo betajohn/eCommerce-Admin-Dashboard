@@ -6,6 +6,7 @@ import {
   SquareUser,
   Tag,
   LayoutDashboard,
+  BookCopy,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ReactNode } from 'react';
@@ -38,6 +39,10 @@ const menuBtns: menuItem[] = [
     description: 'Customers',
   },
   {
+    icon: BookCopy,
+    description: 'Submissions',
+  },
+  {
     icon: LogOut,
     description: 'Logout',
   },
@@ -52,7 +57,7 @@ export function asideContent(sheet: boolean): ReactNode {
       {menuBtns.map((btn) => (
         <Button variant="ghost" key={btn.description} className="gap-1">
           <btn.icon className="w-6" />
-          <span className={`${sheet === false && 'hidden lg:flex'}`}>
+          <span className={`${sheet === false && 'hidden xl:flex'}`}>
             {btn.description}
           </span>
         </Button>

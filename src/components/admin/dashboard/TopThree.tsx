@@ -1,39 +1,37 @@
+'use client';
+
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { DollarSign, LucideIcon, Users, CreditCard, Eye } from 'lucide-react';
+  LucideIcon,
+  Users,
+  Eye,
+  CircleDollarSign,
+  ReceiptText,
+  QrCode,
+} from 'lucide-react';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 interface DBCard {
   title: string;
-  timeframe: 'day' | 'month' | 'year';
+  timeframe?: 'day' | 'month' | 'year';
   value: string;
   icon: LucideIcon;
 }
 
-const cards = [
+const cards: DBCard[] = [
   {
-    title: 'Total Sales',
-    timeframe: 'month',
+    title: 'Sales Today',
     value: '$12340.12',
-    icon: DollarSign,
+    icon: CircleDollarSign,
   },
   {
-    title: 'Website Visits',
-    timeframe: 'month',
+    title: 'Orders Today',
     value: '+1230',
-    icon: Eye,
+    icon: ReceiptText,
   },
   {
-    title: 'Codes Sold',
-    timeframe: 'month',
+    title: 'Codes Sold Today',
     value: '+1243',
-    icon: CreditCard,
+    icon: QrCode,
   },
 ];
 
@@ -41,26 +39,16 @@ export default function TopThree() {
   return (
     <>
       {cards.map((c) => (
-        <Card key={c.title}>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              {c.title}
-              <div className="h-full w-[20%]">
-                <c.icon className="w-full h-full" />
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="font-bold text-4xl overflow-hidden text-primary">
-            {c.value}
-          </CardContent>
-          <CardFooter>
-            <ToggleGroup type="single" defaultValue="day">
-              <ToggleGroupItem value="day">Day</ToggleGroupItem>
-              <ToggleGroupItem value="month">Month</ToggleGroupItem>
-              <ToggleGroupItem value="year">Year</ToggleGroupItem>
-            </ToggleGroup>
-          </CardFooter>
-        </Card>
+        <article
+          key={c.title}
+          className="relative rounded-lg border bg-card text-card-foreground shadow-sm w-full flex flex-col p-4"
+        >
+          <span className="text-2xl text-primary font-semibold">{c.value}</span>
+          <h3 className="text-muted-foreground">{c.title}</h3>
+          <div className="absolute h-[50%] aspect-square object-cover bottom-0 right-0 overflow-hidden">
+            <c.icon className="w-[130%] h-[130%] text-gray-300 dark:text-gray-600" />
+          </div>
+        </article>
       ))}
     </>
   );

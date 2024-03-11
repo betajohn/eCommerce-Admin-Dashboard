@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import TopThree from '@/components/admin/dashboard/TopThree';
-import LastOrders from '@/components/admin/dashboard/RecentOrders';
+import RecentOrders from '@/components/admin/dashboard/RecentOrders';
 import { Button } from '@/components/ui/button';
 
 export default function DBBody() {
@@ -20,19 +20,19 @@ export default function DBBody() {
           <TopThree />
         </div>
         {/*Bottom 3 cards */}
-        <LastOrders />
+        <RecentOrders />
       </div>
       {/*4th column */}
       <div className="w-full h-full flex flex-col gap-2">
-        <Card className="w-full h-[200px]">
+        <Card className="w-full aspect-video">
           <CardContent>
             <Button>Click me</Button>
           </CardContent>
         </Card>
-        <Card className="w-full h-[200px]">
+        <Card className="w-full aspect-video">
           <CardContent>d2</CardContent>
         </Card>
-        <Card className="w-full h-[200px]">
+        <Card className="w-full aspect-video">
           <CardContent>d3</CardContent>
         </Card>
       </div>

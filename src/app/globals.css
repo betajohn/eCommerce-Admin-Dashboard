@@ -57,3 +57,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+cont {
+  container-type: size;
+}
+@container (min-width: 10px) {
+  .xyz {
+    font-size: 100dvh;
+  }
+}

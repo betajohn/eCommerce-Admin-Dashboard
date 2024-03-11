@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/components/ThemeProvider';
+import { useEffect } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="min-h-full w-full">
-      <body className="h-full w-full min-w-80 max-w-7xl m-auto bg-gray-100 dark:bg-gray-800">
+    <html lang="en" className="min-h-full">
+      <body className="h-full min-w-80 max-w-7xl m-auto bg-gray-100 dark:bg-gray-800">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

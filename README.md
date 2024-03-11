@@ -54,7 +54,7 @@ height =
  <percentage>
 ```
 
-- 100% of the screen: Make your app's body size equal to viewport size (same as h-[100vh] w-[100vw])
+- 100% of the screen: Make your app's body size equal to viewport size (same as min-h-[100vh])
 
 ```css
 html {
@@ -68,31 +68,25 @@ body {
 - Setting min-max body width and centering it.
 
 ```html
-<html className="w-full min-h-full ">
-  <body className="w-full h-full min-w-[320px] max-w-[1200px] m-auto"></body>
+<html className="min-h-full ">
+  <body className="h-full min-w-[320px] max-w-[1200px] m-auto"></body>
   /html>
 </html>
 ```
 
-- Use object-fit prop on the container for replaced children elements (images, videos) to fit the parent. Will auto adjust.
+### Responsive images: Use object-fit prop on the container for replaced children elements (images, videos) to fit the parent. Will auto adjust.
 
 ```css
+//tailwind
 className='object-cover'
 
+//css
 object-fit =
   fill        |
   contain     |
   cover       |
   none        |
   scale-down
-
-```
-
-- Viewport units present an accessibility issue: they prevent users from being able to adjust text size zooming-in/out. Don't use them for font size alone.
-
-```text
-use clamp instead
-className="text-[clamp(1rem,3vw,2rem)]"
 
 ```
 
@@ -154,10 +148,54 @@ Flow
 ```text
 As the browser renders our HTML, every element will have its layout calculated using a primary layout algorithm.
 
-Applying 'position: absolute' will switch an element to use Positioned layout
+You can change that layout algorithm. e.g: applying 'position: absolute' will switch an element to use Positioned layout.
 
 ```
 
+### SVGs
+
+```text
+fill : currentcolor => fill color of the SVG shape will inherit the color of its parent element's text or color property in CSS.
+
+you cannot directly use fill="currentcolor" in an SVG file when it's used as a background image through CSS. The fill="currentcolor" attribute in SVG works by inheriting the color value from the surrounding text or the color property in CSS. However, when an SVG is used as a background image, it's treated as an image rather than an element within the HTML markup. Therefore, it doesn't have access to the surrounding context or CSS properties like color.
+
 ```
+
+### Html semantic
+
+```text
+<article> -> card | must have heading
+```
+
+## Fluid typografy
+
+```text
+Fluid typography is the idea that font-size (and perhaps other attributes of type, like line-height) change depending on the screen size.
+```
+
+### Always use rem
+
+```text
+rem -> <html>'s text size
+
+For font-relative units that are root-based (such as rem), the font size is relative to the size of the font used by the <html> (root) element.
+```
+
+### Don't use viewport units alone
+
+```text
+
+Viewport units present an accessibility issue: they prevent users from being able to adjust text size zooming-in/out. Don't use them for font size alone.
+
+use clamp instead
+className="text-[clamp(1rem,3vw,2rem)]"
+
+```
+
+### Set desired font size according to given screen sizes
+
+```text
+example:
+website sizes= min-w-[320px] max-w-[1200px]
 
 ```
