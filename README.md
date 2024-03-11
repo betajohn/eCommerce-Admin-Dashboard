@@ -199,3 +199,36 @@ example:
 website sizes= min-w-[320px] max-w-[1200px]
 
 ```
+
+### css functions
+
+- min() & max()
+
+```text
+ min(a, b, c,): lets you set the smallest (most negative) value from a list of comma-separated expressions.
+ max(a, b, c): analog for maximum value.
+```
+
+- calc()
+
+```text
+
+calc(expression): lets you perform calculations when specifying CSS property values.
+-The + and - operators must be surrounded by whitespace
+-calc(100 / 4)% is invalid, while calc(100% / 4) is valid.
+
+-'font-size:2vw' wont change if you zoom-in/out because when zooming viewport size remains constant.
+
+-'font-size:cal(1rem + 2vw)' avoids this accesibility problem. zooming modifies <html>'s font-size. The second part of the calculation will remain constant but the first part will make the webpage's text change when zooming.
+
+```
+
+- clam()
+
+```text
+'font-size: clamp(min, preferred, max)' // min, max and preferred are expressions.
+
+-min: If the preferred value is less than this value, the minimum value will be used.
+-preferred: expression whose value will be used as long as the result is between the minimum and maximum values.
+-max: If the preferred value is more than this value, the maximum value will be used.
+```

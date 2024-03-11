@@ -9,6 +9,8 @@ import {
 import TopThree from '@/components/admin/dashboard/TopThree';
 import RecentOrders from '@/components/admin/dashboard/RecentOrders';
 import { Button } from '@/components/ui/button';
+import StoreViews from '@/components/admin/dashboard/StoreViews';
+import SellerViews from '@/components/admin/dashboard/SellerViews';
 
 export default function DBBody() {
   return (
@@ -24,17 +26,10 @@ export default function DBBody() {
       </div>
       {/*4th column */}
       <div className="w-full h-full flex flex-col gap-2">
-        <Card className="w-full aspect-video">
-          <CardContent>
-            <Button>Click me</Button>
-          </CardContent>
-        </Card>
-        <Card className="w-full aspect-video">
-          <CardContent>d2</CardContent>
-        </Card>
-        <Card className="w-full aspect-video">
-          <CardContent>d3</CardContent>
-        </Card>
+        <span>Store Visitors</span>
+        <StoreViews />
+        <span>Seller Visitors</span>
+        <SellerViews />
       </div>
     </div>
   );
