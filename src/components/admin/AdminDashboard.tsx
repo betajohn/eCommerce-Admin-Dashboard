@@ -4,6 +4,7 @@ import DBHead from './DBHead';
 import DBBody from './DBBody';
 import { Suspense, useState } from 'react';
 import ProductsBody from '@/components/admin/products/ProductsBody';
+import ListEsqueleton from '@/components/admin/products/ListEsqueleton';
 
 export default function AdminDashboard() {
   const [show, setShow] = useState(false);
@@ -21,7 +22,7 @@ export default function AdminDashboard() {
         />
         {panel === 'Dashboard' && <DBBody />}
         {panel === 'Products' && (
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<ListEsqueleton />}>
             <ProductsBody />
           </Suspense>
         )}
