@@ -14,7 +14,7 @@ import SellerViews from '@/components/admin/dashboard/SellerViews';
 
 export default function DBBody() {
   return (
-    <div className="w-full h-full grid grid-cols-1 sm:grid-cols-2 lg:[grid-template-columns:3fr_1fr;] items-center justify-center gap-2">
+    <main className="w-full h-full grid grid-cols-1 sm:grid-cols-2 lg:[grid-template-columns:3fr_1fr;] items-center justify-center gap-2">
       {/*1st-3rd columns */}
       <div className="w-full h-full flex flex-col gap-2">
         {/*Top 3 cards */}
@@ -31,6 +31,6 @@ export default function DBBody() {
         <span>Seller Visitors</span>
         <SellerViews />
       </div>
-    </div>
+    </main>
   );
 }

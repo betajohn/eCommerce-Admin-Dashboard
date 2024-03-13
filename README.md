@@ -232,3 +232,139 @@ calc(expression): lets you perform calculations when specifying CSS property val
 -preferred: expression whose value will be used as long as the result is between the minimum and maximum values.
 -max: If the preferred value is more than this value, the maximum value will be used.
 ```
+
+## Using server actions to fetch data
+
+- What is CSR? (Client Side Rendering)
+
+```text
+CSR was the standard for Single Page Applications.
+Client requests the webpage to the server and gets a single <div> with a link to a javascript file that contains the whole app, including UI and react library. The webpage is then completely rendered by the browser using that javascript file. | note: Rendering is the process of generating HTML markup to display web pages in the browser.
+
+Drawbacks of CSR
+- not optimal for SEO: it provides little content for search engines to index.
+- having the browser (the client) handle all the work, such as fetching data, computing the UI, and making the HTML interactive, can slow things down
+```
+
+- What is SSR? (Server Side Rendering)
+
+```text
+To overcome the drawbacks of CSR, modern React frameworks like Next.js, pivoted towards server-side solutions. This approach fundamentally changes how content is delivered to the user.
+
+Instead of sending a nearly empty HTML file that depends on client-side JavaScript to construct the page, the server takes charge of rendering the full HTML.
+
+This fully-formed HTML document is then sent directly to the browser. Since the HTML is generated on the server, the browser is able to quickly parse and display it, improving the initial page load time.
+
+SSR fixes CSR drawbacks
+ -Significantly improves SEO because search engines can easily index the server-rendered content.
+ -Browsers can immediately load the page HTML content, instead of a blank screen or loading spinner.
+
+```
+
+- What is Hydratation?
+
+```text
+The full interactivity of the page is on hold until the JavaScript bundle — comprising React itself along with your application specific code — has been completely downloaded and executed by the browser.
+
+Hydration is where the static page, initially served by the server, is brought to life. React takes control in the browser, reconstructing the component tree in memory based on the static HTML that was served. It carefully plans the placement of interactive elements within this tree.
+
+Then, React proceeds to bind the necessary JavaScript logic to these elements.
+```
+
+- What is SSG?
+
+```text
+
+Server-side solutions can be categorized into two strategies: Static Site Generation (SSG) and Server-side Rendering (SSR).
+
+SSG occurs at build time, when the application is deployed on the server. This results in pages that are already rendered and ready to serve. It is ideal for content that doesn't change often, like blog posts.
+
+```
+
+- Downsides of SSR
+
+```text
+ - If a component needs to fetch data from a database or another source (like an API), this fetching must be completed before the server can begin rendering the page. Components cannot start rendering and then pause or "wait" while data is still being loaded.
+
+ This can delay the server's response time to the browser, as the server must finish collecting all necessary data before any part of the page can be sent to the client.
+
+ - A second issue with SSR is that for successful hydration the component tree in the browser must exactly match the server-generated component tree. This means that all the JavaScript for the components must be loaded on the client before you can start hydrating any of them.
+
+ - The third issue with SSR is related to hydration itself. React hydrates the component tree in a single pass, meaning once it starts hydrating, it won’t stop until it’s finished with the entire tree. As a consequence, all components must be hydrated before you can interact with any of them.
+
+ These three problems — having to load the data for the entire page, load the JavaScript for the entire page, and hydrate the entire page — create an all-or-nothing waterfall problem that spans from the server to the client, where each issue must be resolved before moving to the next one.
+```
+
+- Suspense component for Server-side Rendering
+
+```tex
+<Suspense> for SSR was introduced in React 18 to address the performance drawbacks of traditional SSR. This new architecture allows you to use the <Suspense> component to unlock two major SSR features:
+
+-HTML streaming on the server
+
+with React 18, we have a new possibility. By wrapping a part of the page, such as the main content area, within the React Suspense component, we instruct React it doesn’t need to wait for the main section data to be fetched to start streaming the HTML for the rest of the page. React will send a placeholder like a loading spinner instead of the complete content.
+
+Once the server is ready with the data for the main section, React sends additional HTML through the ongoing stream, accompanied by an inline <script> tag containing the minimal JavaScript needed to correctly position that HTML. As a result of this, even before the full React library is loaded on the client side, the HTML for the main section becomes visible to the user.
+
+This solves our first problem. You don’t have to fetch everything before you can show anything. If a particular section delays the initial HTML, it can be seamlessly integrated into the stream later
+
+-Selective hydration on the client (Lazy Loading)
+
+Until the JavaScript for the main section is loaded, client-side app hydration cannot start. And if the JavaScript bundle for the main section is large, this could significantly delay the process.
+
+To mitigate this, code splitting can be used. Code splitting means you can mark specific code segments as not immediately necessary for loading, signaling your bundler to segregate them into separate <script> tags.
+
+Using React.lazy for code splitting enables you to separate the main section's code from the primary JavaScript bundle. As a result, the JavaScript containing React and the code for the entire application, excluding the main section, can now be downloaded independently by the client, without having to wait for the main section's code.
+
+By wrapping the main section within <Suspense>, you've indicated to React that it should not prevent the rest of the page from not just streaming but also from hydrating. This feature, called selective hydration allows for the hydration of sections as they become available, before the rest of the HTML and the JavaScript code are fully downloaded.
+```
+
+- React Server Components (RSC)
+
+```text
+A new architecture designed by the React team. Aims to leverage the strengths of both server and client environments, optimizing for efficiency, load times, and interactivity.
+
+The architecture introduces a dual-component model, differentiating between Client Components and Server Components.  This distinction is not based on the functionality of the components but rather on where they execute and the specific environments they are designed to interact with.
+
+-Client Components ('use client')
+
+Client components have access to the client environment, such as the browser, allowing them to use state, effects, and event listeners, to handle interactivity and also access browser-exclusive APIs like geolocation or localStorage, allowing you to build the frontend for specific use cases, just as we've done all these years before the introduction of the RSC architecture.
+
+In fact, the term client component doesn’t signify anything new; it simply helps differentiate these components from the newly introduced Server Components
+
+-Server Components ('use server')
+
+ A new type of React component specifically designed to operate exclusively on the server. And unlike client components, their code stays on the server and is never downloaded to the client.
+
+```
+
+- Benefits of React Server Components
+
+```text
+-Zero-bundle sizes :Server Components do not send code to the client.
+
+- Direct access to server-side resources: By having direct backend access to server-side resources like databases or file systems, Server Components enable efficient data fetching and rendering without needing additional client-side processing.
+
+- Enhanced security: Exclusive server-side execution enhances security by keeping sensitive data and logic, including tokens and API keys, away from the client-side.
+
+-Improved data fetching: Typically, when fetching data on the client-side using useEffect, a child component cannot begin loading its data until the parent component has finished loading its own. This sequential fetching of data often leads to poor performance.
+
+The main issue is not the round trips themselves, but that these round trips are made from the client to the server. Server Components enable applications to shift these sequential round trips to the server side. By moving this logic to the server, request latency is reduced, and overall performance is improved, eliminating client-server waterfalls.
+
+-Caching:Rendering on the server enables caching of the results, which can be reused in subsequent requests and across different users. This approach can significantly improve performance and reduce costs by minimizing the amount of rendering and data fetching required for each request.
+
+-Faster initial page load and First Contentful Paint: By generating HTML on the server, pages render immediately without the delay of downloading, parsing, and executing JavaScript.
+
+-Improved SEO: The server-rendered HTML is fully accessible to search engine bots, enhancing the indexability of your pages.
+
+-Efficient streaming:  Server Components allows the rendering process to be divided into manageable chunks, which are then streamed to the client as soon as they are ready.This approach allows users to start seeing parts of the page earlier, eliminating the need to wait for the entire page to finish rendering on the server.
+
+```
+
+- Server Actions
+
+```text
+Server Actions are asynchronous functions that are executed on the server.
+
+A Server Action can be defined with the React "use server" directive. You can place the directive at the top of an async function to mark the function as a Server Action, or at the top of a separate file to mark all exports of that file as Server Actions.
+```

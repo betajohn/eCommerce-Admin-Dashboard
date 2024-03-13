@@ -2,12 +2,12 @@
 import Aside from './Aside';
 import DBHead from './DBHead';
 import DBBody from './DBBody';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import ProductsBody from '@/components/admin/products/ProductsBody';
 
 export default function AdminDashboard() {
   const [show, setShow] = useState(false);
-  const [panel, setPanel] = useState('Products');
+  const [panel, setPanel] = useState('Dashboard');
 
   return (
     <div className="min-h-screen p-2 flex justify-center gap-2">
@@ -20,7 +20,11 @@ export default function AdminDashboard() {
           panel={panel}
         />
         {panel === 'Dashboard' && <DBBody />}
-        {panel === 'Products' && <ProductsBody />}
+        {panel === 'Products' && (
+          <Suspense fallback={<p>Loading...</p>}>
+            <ProductsBody />
+          </Suspense>
+        )}
       </div>
     </div>
   );
