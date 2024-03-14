@@ -332,7 +332,7 @@ Client components have access to the client environment, such as the browser, al
 
 In fact, the term client component doesn’t signify anything new; it simply helps differentiate these components from the newly introduced Server Components
 
--Server Components ('use server')
+-Server Components ('use server') | By default every component is a server component.
 
  A new type of React component specifically designed to operate exclusively on the server. And unlike client components, their code stays on the server and is never downloaded to the client.
 
@@ -361,6 +361,12 @@ The main issue is not the round trips themselves, but that these round trips are
 
 ```
 
+- 'use client'
+
+```text
+It signals to the bundler that this component, along with any components it imports, is intended for client-side execution. As a result, the component gains full access to browser APIs and the ability to handle interactivity.
+```
+
 - Server Actions
 
 ```text
@@ -368,3 +374,5 @@ Server Actions are asynchronous functions that are executed on the server.
 
 A Server Action can be defined with the React "use server" directive. You can place the directive at the top of an async function to mark the function as a Server Action, or at the top of a separate file to mark all exports of that file as Server Actions.
 ```
+
+- Tree-Shaking?
