@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
-import { Button } from '../ui/button';
+'use client';
+
 import {
   Sheet,
   SheetContent,
@@ -9,42 +9,38 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
-import { asideContent } from './Aside';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ModeToggle } from '../ModeToggle';
 import { Card, CardHeader, CardTitle } from '../ui/card';
+import { usePathname } from 'next/navigation';
+import NavLinks from '@/components/admin/NavLinks';
 
-interface AsideProps {
-  setPanel: Dispatch<SetStateAction<string>>;
-  setShow: Dispatch<SetStateAction<boolean>>;
-  show: boolean;
-  panel: string;
-}
+const paths: { [key: string]: string } = {
+  '/admin': 'Dashboard',
+  '/admin/products': 'Products',
+  '/admin/messages': 'Messages',
+  '/admin/orders': 'Orders',
+  '/admin/customers': 'Customers',
+  '/admin/submissions': 'Submissions',
+  '/admin/new-listing': 'Create a New listing',
+};
 
-export default function DBHead({ setPanel, panel, setShow, show }: AsideProps) {
+export default function DBHeader() {
+  const pathname = usePathname();
+  console.log(pathname);
   return (
     <div className="w-full flex items-center justify-between rounded-lg border bg-card text-card-foreground shadow-sm p-2">
       <div className="flex justify-center items-center">
         <Sheet>
           <SheetTrigger asChild>
-            <Button
-              onClick={() => setShow(true)}
-              variant="ghost"
-              className="sm:hidden p-0"
-            >
-              <Menu className="w-8" />
-            </Button>
+            <Menu className="w-8 sm:hidden p-0" />
           </SheetTrigger>
-          <SheetContent
-            side="left"
-            onCloseAutoFocus={() => setShow(false)}
-            className="w-auto"
-          >
-            {asideContent(true, setPanel)}
+          <SheetContent side="left" className="w-auto">
+            <NavLinks hamburgerView={true} />
           </SheetContent>
         </Sheet>
         <CardHeader className="py-0">
-          <CardTitle className="text-xl">{panel}</CardTitle>
+          <CardTitle className="text-xl">{paths[pathname]}</CardTitle>
         </CardHeader>
       </div>
       <div className="flex justify-center items-center gap-2 px-2">

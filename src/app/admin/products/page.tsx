@@ -11,7 +11,7 @@ async function getData(): Promise<Product[]> {
   return products;
 }
 
-export default async function ProductsBody() {
+export default async function DBProducts() {
   const data = await getData();
 
   return (
