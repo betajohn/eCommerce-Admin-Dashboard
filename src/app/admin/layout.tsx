@@ -10,7 +10,7 @@ export default function DaswhboardLayout({
       <div className="py-4 h-screen sticky top-0 hidden sm:block">
         <NavLinks />
       </div>
-      <div className="flex w-full flex-col min-h-screen">
+      <div className="flex w-full flex-col min-h-screen gap-2">
         <DBHeader />
         {children}
       </div>

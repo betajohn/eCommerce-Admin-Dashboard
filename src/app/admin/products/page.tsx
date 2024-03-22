@@ -5,6 +5,10 @@ import { DataTable } from '@/components/admin/products/DataTable';
 import Image from 'next/image';
 
 async function getData(): Promise<Product[]> {
+  // simulate loading time to see loading.tsx
+  console.log('Fetching revenue data...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log('Data fetch completed after 3 seconds.');
   // Fetch data from your API here.
   const res = await fetch('https://fakestoreapi.com/products');
   const products: Product[] = await res.json();
