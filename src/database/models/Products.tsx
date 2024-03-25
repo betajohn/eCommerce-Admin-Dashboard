@@ -1,17 +1,24 @@
 import mongoose from 'mongoose';
 
-export interface Product extends mongoose.Document {
-  //_id  //mongoDB automatically creates it
+export interface ProductType {
+  _id: string;
   name: string;
   price: number;
   description: string;
   category: string;
   image_url: string;
   rating: { rate: number; count: number };
+  active: boolean;
 }
+
+type Product = ProductType & mongoose.Document;
 
 /* PetSchema will correspond to a collection in your MongoDB database. */
 const ProductSchema = new mongoose.Schema<Product>({
+  _id: {
+    type: String,
+    required: [true, '_id is requited'],
+  },
   name: {
     /* The owner of this pet */
     type: String,
@@ -44,9 +51,17 @@ const ProductSchema = new mongoose.Schema<Product>({
     rate: { type: Number },
     count: { type: Number },
   },
+  active: {
+    type: Boolean,
+    required: [true, 'Listed is required'],
+  },
 });
 
 let ProductsModel =
   mongoose.models?.Product || mongoose.model<Product>('Product', ProductSchema);
 
-export default ProductsModel;
+let PausedProductsModel =
+  mongoose.models?.Products_paused ||
+  mongoose.model<Product>('Products_paused', ProductSchema);
+
+export { ProductsModel, PausedProductsModel };

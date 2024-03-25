@@ -27,37 +27,37 @@ const menuLinks: menuItem[] = [
   {
     icon: LayoutDashboard,
     description: 'Dashboard',
-    href: '/admin',
+    href: '/dashboard',
   },
   {
     icon: Tag,
     description: 'Products',
-    href: '/admin/products',
+    href: '/dashboard/products',
   },
   {
     icon: Mail,
     description: 'Messages',
-    href: '/admin/messages',
+    href: '/dashboard/messages',
   },
   {
     icon: ClipboardList,
     description: 'Orders',
-    href: '/admin/orders',
+    href: '/dashboard/orders',
   },
   {
     icon: SquareUser,
     description: 'Customers',
-    href: '/admin/customers',
+    href: '/dashboard/customers',
   },
   {
     icon: BookCopy,
     description: 'Submissions',
-    href: '/admin/submissions',
+    href: '/dashboard/submissions',
   },
   {
     icon: FilePlus,
     description: 'New Listing',
-    href: '/admin/new-listing',
+    href: '/dashboard/new-listing',
   },
 ];
 
