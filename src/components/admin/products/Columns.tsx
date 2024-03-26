@@ -17,12 +17,12 @@ import Image from 'next/image';
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export interface Product {
-  id: number;
-  title: string;
+  _id: string;
+  name: string;
   price: number;
   description: string;
   category: string;
-  image: string;
+  image_url: string;
   rating: { rate: number; count: number };
 }
 
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Product>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(product.id + '')}
+              onClick={() => navigator.clipboard.writeText(product._id + '')}
             >
               Copy Product ID
             </DropdownMenuItem>
@@ -56,17 +56,17 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'active',
+    header: 'Active',
   },
   {
-    accessorKey: 'image',
+    accessorKey: 'image_url',
     header: 'Image',
     cell: ({ row }) => {
       return (
         <Image
-          src={row.getValue('image')}
-          alt={row.getValue('id') + ' image'}
+          src={row.getValue('image_url')}
+          alt={row.getValue('_id') + ' image'}
           width={100}
           height={100}
         />
@@ -74,7 +74,7 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'title',
+    accessorKey: 'name',
     header: ({ column }) => {
       return (
         <Button
@@ -119,7 +119,7 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'id',
+    accessorKey: '_id',
     header: 'ID',
   },
 ];

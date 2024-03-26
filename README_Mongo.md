@@ -1,6 +1,6 @@
 # MongoDB
 
-## Dcomuents
+## Documents
 
 ### \_id field
 
@@ -22,4 +22,10 @@ Make it model_name.js
 Doesn't make sense for it to be a typescript file!!! you are typing a type lmaooo
 squemas are just a type for monmgoDB documents!!
 why would you type a schema? double work and not needed!!
+```
+
+### use model.find().lean() instead of model.find()
+
+```text
+By default, Mongoose queries return an instance of the Mongoose Document class. Documents are much heavier than vanilla JavaScript objects, because they have a lot of internal state for change tracking. Enabling the lean option tells Mongoose to skip instantiating a full Mongoose document and just give you the POJO.
 ```

@@ -13,11 +13,11 @@ export interface ProductType {
 
 type Product = ProductType & mongoose.Document;
 
-/* PetSchema will correspond to a collection in your MongoDB database. */
+/* ProductSchema will correspond to a collection in your MongoDB database. */
 const ProductSchema = new mongoose.Schema<Product>({
   _id: {
     type: String,
-    required: [true, '_id is requited'],
+    required: [true, '_id is required'],
   },
   name: {
     /* The owner of this pet */

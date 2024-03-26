@@ -22,14 +22,17 @@ import {
   TableRow,
 } from '@/components/ui/table';
 
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Plus, Filter } from 'lucide-react';
 
 import * as React from 'react';
 
@@ -68,19 +71,28 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-2 gap-2">
         <Input
           placeholder="Filter by product name..."
-          value={(table.getColumn('title')?.getFilterValue() as string) ?? ''}
+          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
-            table.getColumn('title')?.setFilterValue(event.target.value)
+            table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
         />
+        <Link
+          href="/dashboard/new-listing"
+          className={cn(
+            buttonVariants(),
+            'flex justify-center items-center gap-2'
+          )}
+        >
+          <p className="hidden md:block">New Product</p>
+          <Plus />
+        </Link>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns
+            <Button variant="ghost" className="ml-auto">
+              <Filter />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

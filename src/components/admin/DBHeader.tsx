@@ -16,13 +16,13 @@ import { usePathname } from 'next/navigation';
 import NavLinks from '@/components/admin/NavLinks';
 
 const paths: { [key: string]: string } = {
-  '/admin': 'Dashboard',
-  '/admin/products': 'Products',
-  '/admin/messages': 'Messages',
-  '/admin/orders': 'Orders',
-  '/admin/customers': 'Customers',
-  '/admin/submissions': 'Submissions',
-  '/admin/new-listing': 'Create a New listing',
+  '/dashboard': 'Dashboard',
+  '/dashboard/products': 'Products',
+  '/dashboard/messages': 'Messages',
+  '/dashboard/orders': 'Orders',
+  '/dashboard/customers': 'Customers',
+  '/dashboard/submissions': 'Submissions',
+  '/dashboard/new-listing': 'Create a New listing',
 };
 
 export default function DBHeader() {
