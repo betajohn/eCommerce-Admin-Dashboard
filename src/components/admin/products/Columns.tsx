@@ -56,10 +56,6 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
-    accessorKey: 'active',
-    header: 'Active',
-  },
-  {
     accessorKey: 'image_url',
     header: 'Image',
     cell: ({ row }) => {
@@ -121,5 +117,9 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: '_id',
     header: 'ID',
+  },
+  {
+    accessorKey: 'active',
+    header: 'Active',
   },
 ];

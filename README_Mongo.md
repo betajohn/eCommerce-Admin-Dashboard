@@ -1,5 +1,32 @@
 # MongoDB
 
+## Poject's Naming Convention
+
+> Being consistent is far more important than what particular scheme you use.
+
+```text
+Database name: App's name e.g. JohnsCodes
+Collection name (table): lowercase AND plural. e.g. users
+                         no separators e.g. user_names => usernames
+Document field name (column): lowercase AND uderscore_separator e.g. image_url
+```
+
+### Keep names short? (for optimization purposes)
+
+> BE CONCISE
+
+```texT
+field_names?
+
+In general, it is not necessary to use short field names, as field names represent a small fraction of the space used by a document. However, for small documents, shorter field names may save space.
+
+collection names?
+
+Do it but readability is top priority!
+
+Using shorter collection names can also help optimize storage utilization, especially for collections with small documents.
+```
+
 ## Documents
 
 ### \_id field
@@ -28,4 +55,8 @@ why would you type a schema? double work and not needed!!
 
 ```text
 By default, Mongoose queries return an instance of the Mongoose Document class. Documents are much heavier than vanilla JavaScript objects, because they have a lot of internal state for change tracking. Enabling the lean option tells Mongoose to skip instantiating a full Mongoose document and just give you the POJO.
+```
+
+```
+
 ```

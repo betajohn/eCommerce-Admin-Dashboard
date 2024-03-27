@@ -2,17 +2,6 @@ import { columns, Product } from '@/components/admin/products/Columns';
 import { DataTable } from '@/components/admin/products/DataTable';
 import { getAllProducts } from '@/database/dbQueries';
 
-async function getData(): Promise<Product[]> {
-  // simulate loading time to see loading.tsx
-  console.log('Fetching revenue data...');
-  await new Promise((resolve) => setTimeout(resolve, 3000));
-  console.log('Data fetch completed after 3 seconds.');
-  // Fetch data from your API here.
-  const res = await fetch('https://fakestoreapi.com/products');
-  const products: Product[] = await res.json();
-  return products;
-}
-
 export default async function DBProducts() {
   const data = await getAllProducts('', 1);
 
