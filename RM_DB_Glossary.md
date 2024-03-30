@@ -68,3 +68,47 @@ In relational databases, especially large ones, you need to arrange entries so t
 
 In simple words, database normalization entails organizing a database into several tables in order to reduce redundancy. You can design the database to follow any of the types of normalization such as 1NF, 2NF, and 3NF.
 ```
+
+## Collation
+
+```text
+collation: the act of collating. | Fact or result of being collated.
+  -other> light meal (colacion in spanish)
+collate: to arrange (pages) in their proper order | to compare (texts, etc.) critically
+
+```
+
+> Collation is set of rules maintained that instruct database on how to sort and compare data
+
+```text
+Collation is the set of rules that define how data characters are stored, compared and sorted in the database. there are multiple ways to set these rules. You can set collation rules on Server level, database level or even on column level.
+```
+
+```text
+How database is structured, how stored procedures, table structures, queries are written, how you maintain your data plays a vital role in the performance of the project.
+```
+
+#### Collation in mongoDB
+
+```text
+Collation allows users to specify language-specific rules for string comparison, such as rules for lettercase and accent marks.
+
+You can specify collation for a collection or a view, an index, or specific operations that support collation.
+```
+
+#### Colation document
+
+A collation document has the following fields:
+
+```text
+{
+   locale: <string>,
+   caseLevel: <boolean>,
+   caseFirst: <string>,
+   strength: <int>,
+   numericOrdering: <boolean>,
+   alternate: <string>,
+   maxVariable: <string>,
+   backwards: <boolean>
+}
+```

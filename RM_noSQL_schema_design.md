@@ -235,3 +235,121 @@ Indexes allow MongoDB to efficiently query data. If a query does not have an ind
 ```
 
 > In general, we recommend limiting your collection to a maximum of 50 indexes.
+
+```text
+Creating indexes that support your queries is good. Creating unnecessary indexes is generally bad.
+
+Unnecessary indexes reduce performance and take up space. An index is considered to be unnecessary if (1) it is not frequently used by a query or (2) it is redundant because another compound index covers it.
+```
+
+### 4.- Bloated Documents
+
+> The opposite of the Bloated Documents Anti-Pattern is the Subset Pattern.
+
+> MongoDB has a 16 MB document size limit. But should you use all 16 MBs? Probably not. Let's find out why.
+
+```text
+To keep your queries running as quickly as possible, WiredTiger (the default storage engine for MongoDB) keeps all of the indexes plus the documents that are accessed the most frequently in memory. We refer to these frequently accessed documents and index pages as the working set. When the working set fits in the RAM allotment, MongoDB can query from memory instead of from disk. Queries from memory are faster, so the goal is to keep your most popular documents small enough to fit in the RAM allotment.
+
+The working set's RAM allotment is the larger of:
+50% of (RAM - 1 GB)
+256 MB.
+```
+
+```text
+> working set -key concept
+
+Her collection weight surpases the working set max weight. In order to fix it you either get more ram or reduce te collection weight.
+
+Break up the collection into two collections: InspirationalWomen_Summary and InspirationalWomen_Details. Create a manual reference between the matching documents in the collections. Below are her new documents for Sally Ride.
+
+She begins determining how to restructure her data to optimize for performance. The query on Leslie's homepage only needs to retrieve each woman's first name and last name. Having this information in the working set is crucial. The other information about each woman (including a lengthy bio) doesn't necessarily need to be in the working set.
+
+// InspirationalWomen_Summary collection
+
+{
+   "_id": {
+      "$oid": "5ee3b2a779448b306938af0f"
+   },
+   "inspirationalwomen_id": {
+      "$oid": "5ec81cc5b3443e0e72314946"
+   },
+   "first_name": "Sally",
+   "last_name": "Ride"
+}
+
+// InspirationalWomen_Details collection
+
+{
+   "_id": {
+      "$oid": "5ec81cc5b3443e0e72314946"
+   },
+   "first_name": "Sally",
+   "last_name": "Ride",
+   "birthday": 1951-05-26T00:00:00.000Z,
+   "occupation": "Astronaut",
+   "quote": "I would like to be remembered as someone who was not afraid to do
+             what she wanted to do, and as someone who took risks along the
+             way in order to achieve her goals.",
+   "hobbies": [
+      "Tennis",
+      "Writing children's books"
+   ],
+   "bio": "Sally Ride is an inspirational figure who... ",
+   ...
+}
+
+In the example above, Leslie is duplicating all of the data from the InspirationalWomen_Summary collection in the InspirationalWomen_Details collection. You might be cringing at the idea of data duplication. Historically, data duplication has been frowned upon due to space constraints as well as the challenges of keeping the data updated in both collections. Storage is relatively cheap, so we don't necessarily need to worry about that here. Additionally, the data that is duplicated is unlikely to change very often.
+```
+
+```text
+Sumary
+
+Be sure that the indexes and the most frequently used documents fit in the RAM allocation for your database in order to get blazing fast queries. If your working set is exceeding the RAM allocation, check if your documents are bloated with extra information that you don't actually need in the working set. Separate frequently used data from infrequently used data in different collections to optimize your performance.
+```
+
+### 5.- Separating Data That is Accessed Together
+
+```text
+Normalizing data and splitting it into different pieces to optimize for space and reduce data duplication can feel like second nature to those with a relational database background. However, separating data that is frequently accessed together is actually an anti-pattern in MongoDB
+```
+
+```text
+Much like you would use a join to combine information from different tables in a relational database, MongoDB has a $lookup operation that allows you to join information from more than one collection.
+
+$lookup is great for infrequent, rarely used operations or analytical queries that can run overnight without a time limit. However, $lookup is not so great when you're frequently using it in your applications.
+
+$lookup operations are slow and resource-intensive compared to operations that don't need to combine data from more than one collection.
+```
+
+> Data that is accessed together should be stored together.
+
+```text
+Instead of separating data that is frequently used together between multiple collections, leverage embedding and arrays to keep the data together in a single collection.
+
+For example, when modeling a one-to-one relationship, you can embed a document from one collection as a subdocument in a document from another. When modeling a one-to-many relationship, you can embed information from multiple documents in one collection as an array of documents in another.
+```
+
+```text
+-Extended Reference Pattern-
+You could also use the Extended Reference Pattern to duplicate a portion of the data in each document from one collection in another.
+
+-Subset Pattern-
+You could use the Subset Pattern to duplicate a subset of the documents from one collection in another.
+```
+
+> Also, whenever you duplicate data, you are responsible for ensuring the duplicated data stays in sync.
+
+### 6.- Case-Insensitive Queries Without Case-Insensitive Indexes
+
+> Not having a case-insensitive index can create surprising query results and/or slow queries.
+
+```text
+You have three primary options when you want to run a case-insensitive query:
+
+-Use $regex with the i option. Note that this option is not as performant because $regex cannot fully utilize case-insensitive indexes.
+
+-Create a case-insensitive index with a collation strength of 1 or 2, and specify that your query uses the same collation.
+
+-Set the default collation strength of your collection to 1 or 2 when you create it, and do not specify a different collation in your queries and indexes.
+```
