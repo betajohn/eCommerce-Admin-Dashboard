@@ -1,5 +1,6 @@
 import DBHeader from '@/components/admin/DBHeader';
 import NavLinks from '@/components/admin/NavLinks';
+import ViewLogger from '@/components/utils/ViewLogger';
 
 export default function DaswhboardLayout({
   children,
@@ -15,6 +16,7 @@ export default function DaswhboardLayout({
         <DBHeader />
         {children}
       </div>
+      <ViewLogger />
     </div>
   );
 }
