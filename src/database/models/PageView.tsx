@@ -13,7 +13,7 @@ export interface PageViewType {
         longitude?: string | undefined;
       }
     | undefined;
-  referrer: string;
+  referrer?: string;
 }
 
 const PageViewSchema = new mongoose.Schema({
