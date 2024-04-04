@@ -3,7 +3,7 @@ import userData from './users.json';
 import geoData from './geo_coordinates.json';
 import { PageViewModel, PageViewType } from '@/database/models/PageView';
 import OrdersModel from '@/database/models/Orders';
-import { CartModel, CartType } from '@/database/models/Cart';
+import { CartModel } from '@/database/models/Carts';
 import dbConnect from '@/database/dbConnect';
 import { UserType, UserModel } from '@/database/models/Users';
 import {
@@ -16,9 +16,13 @@ import mongoose from 'mongoose';
 await dbConnect();
 
 const paths = ['/', '/sell-your-codes', '/offers', '/products'];
-
 const randomPath = () => {
   return paths[Math.floor(Math.random() * paths.length)];
+};
+
+const methods = ['Paypal', 'Payoneer', 'Stripe', 'Webpay', 'Shopify'];
+const randomMethod = () => {
+  return methods[Math.floor(Math.random() * methods.length)];
 };
 
 const randomIP = () => {
@@ -201,8 +205,9 @@ export const seedOrders = async () => {
         items_number: n,
       },
       payment: {
-        id: new mongoose.Types.ObjectId(),
+        payment_id: new mongoose.Types.ObjectId(),
         timestamp: carts[a].timestamp,
+        method: randomMethod(),
       },
     });
   }

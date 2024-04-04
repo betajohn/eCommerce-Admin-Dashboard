@@ -18,7 +18,10 @@ const OrdersSchema = new mongoose.Schema({
       items_number: { type: Number },
     },
   },
-  payment: { type: { type: { type: String }, payment_id: { type: String } } },
+  payment: {
+    type: { method: { type: String }, payment_id: { type: String } },
+    required: true,
+  },
   timestamp: { type: Date, default: new Date() },
 });
 
