@@ -2,6 +2,8 @@ import productsData from './products.json';
 import userData from './users.json';
 import geoData from './geo_coordinates.json';
 import { PageViewModel, PageViewType } from '@/database/models/PageView';
+import OrdersModel from '@/database/models/Orders';
+import { CartModel, CartType } from '@/database/models/Cart';
 import dbConnect from '@/database/dbConnect';
 import { UserType, UserModel } from '@/database/models/Users';
 import {
@@ -9,6 +11,7 @@ import {
   PausedProductsModel,
   ProductType,
 } from '@/database/models/Products';
+import mongoose from 'mongoose';
 
 await dbConnect();
 
@@ -135,6 +138,78 @@ export const seedPageViews = async () => {
     console.log('Pageviews successfully seeded');
   } catch (error) {
     console.log('Something went wrong');
+    console.log(error);
+  }
+};
+
+export const seedOrders = async () => {
+  //--1of2--create carts--
+  let users = await UserModel.find({});
+  let carts = [];
+  //Generates carts equal to the number of users, assigns them randomly so some users won't have orders-
+  for (let x = 0; x < users.length; x++) {
+    let products = [];
+    // chooses random product
+    let productIndex = Math.floor(Math.random() * productsData.length);
+    //determining number of different products bought at least 1 max 15
+    let diffProducts = Math.floor(Math.random() * 15 + 1);
+    for (let i = 0; i < diffProducts; i++) {
+      products.push({
+        product_id: productsData[productIndex]._id,
+        product_name: productsData[productIndex].name,
+        // generates random quantity of the product [1, 5] range
+        quantity: Math.floor(Math.random() * 5 + 1),
+        price: productsData[productIndex].price,
+      });
+    }
+    let randomUserIndex = Math.floor(Math.random() * users.length);
+    carts.push({
+      _id: new mongoose.Types.ObjectId(),
+      user_id: users[randomUserIndex]._id,
+      first_name: users[randomUserIndex].first_name,
+      last_name: users[randomUserIndex].last_name,
+      timestamp: randomDate(daysFromNow(-60), daysFromNow(2)),
+      products: products,
+    });
+  }
+  try {
+    await CartModel.create(carts);
+    console.log('Carts have been seeded');
+  } catch (error) {
+    console.log(error);
+  }
+
+  //--2of2--create orders--
+  const orders = [];
+  //associate each cart to an order
+  for (let a = 0; a < carts.length; a++) {
+    let total = 0;
+    let n = 0;
+    carts[a].products.forEach((p) => {
+      total = total + p.price * p.quantity;
+      n = n + p.quantity;
+    });
+    orders.push({
+      user: {
+        first_name: carts[a].first_name,
+        last_name: carts[a].last_name,
+        user_id: carts[a].user_id,
+      },
+      cart: {
+        cart_id: carts[a]._id,
+        total: total,
+        items_number: n,
+      },
+      payment: {
+        id: new mongoose.Types.ObjectId(),
+        timestamp: carts[a].timestamp,
+      },
+    });
+  }
+  try {
+    await OrdersModel.create(orders);
+    console.log('Orders have been seeded');
+  } catch (error) {
     console.log(error);
   }
 };
