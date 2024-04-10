@@ -6,11 +6,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import TopThree from '@/components/admin/dashboard/TopThree';
+import RecentSales from '@/components/admin/dashboard/RecentSales';
 import RecentOrders from '@/components/admin/dashboard/RecentOrders';
 import { Button } from '@/components/ui/button';
 import StoreViews from '@/components/admin/dashboard/StoreViews';
 import SellerViews from '@/components/admin/dashboard/SellerViews';
+import { Suspense } from 'react';
+import RecentSalesSkeleton from '@/components/admin/dashboard/RecentSalesSkeleton';
 
 export default function Dashboard() {
   return (
@@ -19,7 +21,9 @@ export default function Dashboard() {
       <div className="w-full h-full flex flex-col gap-2">
         {/*Top 3 cards */}
         <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-2">
-          <TopThree />
+          <Suspense fallback={<RecentSalesSkeleton />}>
+            <RecentSales />
+          </Suspense>
         </div>
         {/*Bottom 3 cards */}
         <RecentOrders />

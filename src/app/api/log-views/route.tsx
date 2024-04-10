@@ -14,8 +14,6 @@ export async function POST(request: NextRequest) {
     timestamp: body.timestamp,
   };
   views.push(view);
-  console.log(views);
-
   try {
     if (views.length > 20) {
       await saveViews(views);

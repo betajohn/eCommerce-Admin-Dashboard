@@ -1,47 +1,45 @@
-'use client';
-
 import {
   LucideIcon,
-  Users,
-  Eye,
   CircleDollarSign,
   ReceiptText,
   QrCode,
 } from 'lucide-react';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { getRecentOrdersData } from '@/database/dbQueries/dashboard';
+import { formatCurrency } from '@/lib/utils';
 
-interface DBCard {
+interface _OverviewCard {
   title: string;
-  timeframe?: 'day' | 'month' | 'year';
-  value: string;
+  value?: string | number;
   icon: LucideIcon;
 }
 
-const cards: DBCard[] = [
+const cards: _OverviewCard[] = [
   {
     title: 'Sales Today',
-    value: '$12340.12',
     icon: CircleDollarSign,
   },
   {
     title: 'Orders Today',
-    value: '+1230',
     icon: ReceiptText,
   },
   {
     title: 'Codes Sold Today',
-    value: '+1243',
     icon: QrCode,
   },
 ];
 
-export default function TopThree() {
+export default async function RecentSales() {
+  const res = await getRecentOrdersData();
+  cards[0].value = formatCurrency(res.totalSales);
+  cards[1].value = res.numberOfOrders;
+  cards[2].value = res.totalProductsSold;
+
   return (
     <>
       {cards.map((c) => (
         <article
           key={c.title}
-          className="relative rounded-lg bg-card text-card-foreground shadow-sm w-full flex flex-col p-4"
+          className="relative rounded-lg bg-card text-card-foreground shadow-sm w-full flex flex-col p-4 aspect-[16/6]"
         >
           <span className="text-primary font-semibold text-3xl sm:text-[clamp(1.5rem,_3vw,_2rem)]">
             {c.value}
