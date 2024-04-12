@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import ROOverviewSkeleton from '@/components/admin/dashboard/skeletons/ROOverviewSkeleton';
 import RVOverviewSkeleton from '@/components/admin/dashboard/skeletons/RVOverviewSkeleton';
 import RecentVisitorsOverview from '@/components/admin/dashboard/RecentVisitorsOverview';
+import ROSkeleton from '@/components/admin/dashboard/skeletons/ROSkeleton';
 
 export default function Dashboard() {
   return (
@@ -17,7 +18,9 @@ export default function Dashboard() {
           </Suspense>
         </div>
         {/*Bottom 3 cards */}
-        <RecentOrders />
+        <Suspense fallback={<ROSkeleton />}>
+          <RecentOrders />
+        </Suspense>
       </div>
       {/*4th column */}
       <div className="w-full h-full flex flex-col gap-2">

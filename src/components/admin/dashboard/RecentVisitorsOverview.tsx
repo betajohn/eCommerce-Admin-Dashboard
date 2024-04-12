@@ -3,8 +3,6 @@ import { Users, Eye, UserPlus, Upload } from 'lucide-react';
 
 export default async function RecentVisitorsOverview() {
   const data = await getRecentUserData();
-  console.log('--data--');
-  console.log(data);
 
   const StoreVisitorsCards = [
     {

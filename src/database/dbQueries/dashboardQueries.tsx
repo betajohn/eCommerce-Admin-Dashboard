@@ -1,14 +1,15 @@
 import dbConnect from '@/database/dbConnect';
-import OrdersModel from '@/database/models/Orders';
+import OrdersModel, { OrderType } from '@/database/models/Orders';
 import { PageViewModel } from '@/database/models/PageView';
 import SubmissionModel from '@/database/models/Submissions';
 import { UserModel } from '@/database/models/Users';
 import { timer } from '@/lib/utils';
 import { unstable_noStore as noStore } from 'next/cache';
+import { formatCurrency } from '@/lib/utils';
 
 await dbConnect();
 const last24HoursDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
-const ap = new Date(2024, 0, 10);
+const ap = new Date(2024, 6, 10);
 
 export async function getRecentOrdersData() {
   noStore();
@@ -126,6 +127,35 @@ export async function getRecentUserData() {
       uniqueCodeSellerVisitors: CodeSellersData.uniqueVisitorsCount,
       codeSellerPageViews: CodeSellersData.totalPageViews,
     };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getTodaysLastTenOrders() {
+  noStore();
+  await timer(3000);
+  try {
+    const data: OrderType[] | [undefined] = await OrdersModel.find({
+      timestamp: { $gte: ap },
+    })
+      .sort({ timestamp: -1 })
+      .limit(10);
+
+    if (data.length === 0) return undefined;
+
+    const finalData = data.map((x) => {
+      return {
+        order_id: x._id?.toString(),
+        items_number: x.cart.items_number,
+        payment_method: x.payment.method,
+        customer: x.user.first_name + ' ' + x.user.last_name,
+        amount: formatCurrency(x.cart.total),
+        timestamp: x.timestamp.toUTCString(),
+      };
+    });
+
+    return finalData;
   } catch (error) {
     console.log(error);
   }

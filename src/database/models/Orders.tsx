@@ -3,12 +3,31 @@
 
 import mongoose from 'mongoose';
 
+export interface OrderType {
+  _id?: string;
+  user: {
+    first_name: string;
+    last_name: string;
+    user_id: string;
+  };
+  cart: {
+    cart_id: string;
+    total: number;
+    items_number: number;
+  };
+  payment: {
+    method: string;
+    payment_id: string;
+  };
+  timestamp: Date;
+}
+
 const OrdersSchema = new mongoose.Schema({
   user: {
     type: {
       first_name: { type: String },
       last_name: { type: String },
-      _id: { type: String },
+      user_id: { type: String },
     },
   },
   cart: {

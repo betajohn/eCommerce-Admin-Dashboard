@@ -41,6 +41,28 @@ You can also overwrite Mongoose's default _id with your own _id. Just be careful
 MUST DEFINE _id ON YOUR SCHEMA IN ORDER TO OVERWRITE IT!!
 ```
 
+#### Getting \_id programmatically
+
+> Warning: Only plain objects can be passed to Client Components from Server Components. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.
+
+In react we can't just pass mongoDB documents between server and client comps. Need to transform the \_id to string first.
+
+```ts
+const product = await MyModel.findOne({ price: 100 });
+
+const product_id = product._id.toString(); // returns 660e6a3db6b44de9cd6bbbbb instead of ObjectId('660e6a3db6b44de9cd6bbbbb')
+```
+
+### working with Dates
+
+MongoDB stores every date as UTC.
+
+JS's new Date(mongoDBDate) creates a new date in local time format. Do this intead:
+
+```ts
+const dateToPass = mongoDBDate.toUTCString(); // will be the exact same format as the date stored in mongoDB
+```
+
 ### model_name file extension
 
 ```text
@@ -56,6 +78,14 @@ why would you type a schema? double work and not needed!!
 ```text
 By default, Mongoose queries return an instance of the Mongoose Document class. Documents are much heavier than vanilla JavaScript objects, because they have a lot of internal state for change tracking. Enabling the lean option tells Mongoose to skip instantiating a full Mongoose document and just give you the POJO.
 ```
+
+## Indexes
+
+Indexes support efficient execution of queries in MongoDB. Without indexes, MongoDB must scan every document in a collection to return query results.If an appropriate index exists for a query, MongoDB uses the index to limit the number of documents it must scan.
+
+> Adding an index has negative performance impact for write operations.
+
+Although indexes improve query performance, adding an index has negative performance impact for write operations. For collections with a high write-to-read ratio, indexes are expensive because each insert must also update any indexes.
 
 ## Aggregations
 
