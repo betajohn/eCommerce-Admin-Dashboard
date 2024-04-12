@@ -85,7 +85,7 @@ const ordersData = await OrdersModel.aggregate([
   },
   {
     $group: {
-      _id: null,
+      _id: null, // In the $group stage output, the _id field is set to the group key for that document.
       totalSales: { $sum: '$cart.total' },
       totalProductsSold: { $sum: '$cart.items_number' },
       numberOfOrders: { $sum: 1 },
@@ -106,3 +106,7 @@ ordersData = [
   },
 ];
 ```
+
+#### \_id field in group
+
+- The \_id field is mandatory; however, you can specify an \_id value of null to calculate accumulated values for all the input documents as a whole.

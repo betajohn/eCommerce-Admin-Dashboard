@@ -3,8 +3,27 @@
 
 import mongoose from 'mongoose';
 
-const POSchema = new mongoose.Schema({});
+const SubmissionSchema = new mongoose.Schema({
+  user: {
+    type: {
+      first_name: { type: String },
+      last_name: { type: String },
+      _id: { type: String },
+    },
+  },
+  timestamp: { type: Date, default: new Date() },
+  codes: { type: [{ type: String }] },
+  paymentDetails: {
+    type: {
+      paymentTime: { type: Date },
+      paymentID: { type: String },
+      amountPaid: { type: Number },
+      paymentMethod: { type: String },
+    },
+  },
+});
 
-const POModel = mongoose.models?.POs || mongoose.model('POs', POSchema);
+const SubmissionModel =
+  mongoose.models?.Submission || mongoose.model('Submission', SubmissionSchema);
 
-export default POModel;
+export default SubmissionModel;

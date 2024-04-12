@@ -1,7 +1,7 @@
 import { Skeleton } from '@/components/ui/skeleton';
 
 let a = [1, 2, 3];
-export default function RecentSalesSkeleton() {
+export default function ROOverviewSkeleton() {
   return (
     <>
       {a.map((x) => {

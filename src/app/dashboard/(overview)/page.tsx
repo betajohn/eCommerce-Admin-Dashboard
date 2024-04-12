@@ -1,18 +1,9 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import RecentSales from '@/components/admin/dashboard/RecentSales';
+import RecentOrdersOVerview from '@/components/admin/dashboard/RecentOrdersOverview';
 import RecentOrders from '@/components/admin/dashboard/RecentOrders';
-import { Button } from '@/components/ui/button';
-import StoreViews from '@/components/admin/dashboard/StoreViews';
-import SellerViews from '@/components/admin/dashboard/SellerViews';
 import { Suspense } from 'react';
-import RecentSalesSkeleton from '@/components/admin/dashboard/RecentSalesSkeleton';
+import ROOverviewSkeleton from '@/components/admin/dashboard/skeletons/ROOverviewSkeleton';
+import RVOverviewSkeleton from '@/components/admin/dashboard/skeletons/RVOverviewSkeleton';
+import RecentVisitorsOverview from '@/components/admin/dashboard/RecentVisitorsOverview';
 
 export default function Dashboard() {
   return (
@@ -21,8 +12,8 @@ export default function Dashboard() {
       <div className="w-full h-full flex flex-col gap-2">
         {/*Top 3 cards */}
         <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-2">
-          <Suspense fallback={<RecentSalesSkeleton />}>
-            <RecentSales />
+          <Suspense fallback={<ROOverviewSkeleton />}>
+            <RecentOrdersOVerview />
           </Suspense>
         </div>
         {/*Bottom 3 cards */}
@@ -30,10 +21,9 @@ export default function Dashboard() {
       </div>
       {/*4th column */}
       <div className="w-full h-full flex flex-col gap-2">
-        <span>Store Visitors</span>
-        <StoreViews />
-        <span>Seller Visitors</span>
-        <SellerViews />
+        <Suspense fallback={<RVOverviewSkeleton />}>
+          <RecentVisitorsOverview />
+        </Suspense>
       </div>
     </main>
   );

@@ -4,8 +4,8 @@ import {
   ReceiptText,
   QrCode,
 } from 'lucide-react';
-import { getRecentOrdersData } from '@/database/dbQueries/dashboard';
 import { formatCurrency } from '@/lib/utils';
+import { getRecentOrdersData } from '@/database/dbQueries/dashboardQueries';
 
 interface _OverviewCard {
   title: string;
@@ -28,7 +28,7 @@ const cards: _OverviewCard[] = [
   },
 ];
 
-export default async function RecentSales() {
+export default async function RecentOrdersOVerview() {
   const res = await getRecentOrdersData();
   cards[0].value = formatCurrency(res.totalSales);
   cards[1].value = res.numberOfOrders;
