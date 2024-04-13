@@ -4,6 +4,7 @@ import geoData from './geo_coordinates.json';
 import { PageViewModel, PageViewType } from '@/database/models/PageView';
 import OrdersModel from '@/database/models/Orders';
 import { CartModel } from '@/database/models/Carts';
+import SubmissionModel from '@/database/models/Submissions';
 import dbConnect from '@/database/dbConnect';
 import { UserType, UserModel } from '@/database/models/Users';
 import {
@@ -14,6 +15,13 @@ import {
 import mongoose from 'mongoose';
 
 await dbConnect();
+const siteLaunchDate = new Date(2024, 0, 1);
+const oldestBirthday = new Date(1924, 0, 1);
+const newestBirthday = () => {
+  //user needs to be at least 13yo to have an account
+  const now = new Date();
+  return new Date(now.getFullYear() - 13, now.getMonth(), now.getDate());
+};
 
 const paths = ['/', '/sell-your-codes', '/offers', '/products'];
 const randomPath = () => {
@@ -218,3 +226,9 @@ export const seedOrders = async () => {
     console.log(error);
   }
 };
+
+export const seedSubmissions = async () => {
+  SubmissionModel;
+};
+
+export const seedToday = async () => {};
