@@ -10,6 +10,8 @@ import {
   getRandomArbitrary,
   getRandomElement,
   getRandom5DigitNumber,
+  getRandomArbitraryDate,
+  getRandomMomentToday,
 } from '../utils.mjs';
 
 //Date.now() === new Date.getTime() //ms since epoch
@@ -25,15 +27,8 @@ const youngestBirthday = new Date(
 );
 
 function generateRandomDates() {
-  const regist_date = new Date(
-    getRandomArbitrary(siteLaunchDate.getTime(), now.getTime())
-  );
-  let last_login = siteLaunchDate;
-  while (regist_date > last_login) {
-    last_login = new Date(
-      getRandomArbitrary(siteLaunchDate.getTime(), now.getTime())
-    );
-  }
+  const regist_date = getRandomArbitraryDate(siteLaunchDate, now);
+  const last_login = getRandomArbitraryDate(regist_date, now);
   return { regist_date, last_login };
 }
 
@@ -81,7 +76,7 @@ function generateRandomAddress() {
   };
 }
 
-export function generateRandomUser(isNew) {
+export function generateRandomUser(isNew = true) {
   //regist_date and last_login have {default:Date.now} in UserSchema
   // No need to define them, mongoose will do that if left undefined.
   let regist = undefined;
@@ -90,6 +85,10 @@ export function generateRandomUser(isNew) {
     const dates = generateRandomDates();
     regist = dates.regist_date;
     lastLogin = dates.last_login;
+  } else {
+    const moment = getRandomMomentToday();
+    regist = moment;
+    lastLogin = moment;
   }
 
   const firstName = getRandomFirstName();
@@ -106,10 +105,9 @@ export function generateRandomUser(isNew) {
     address: { street, city, state, postal_code, country },
     phone: {
       dial_code: dial_code,
-      number: Math.floor(getRandomArbitrary(10000000, 99999999)),
+      number: getRandomArbitrary(10000000, 99999999),
     },
-    birthdate: new Date(
-      getRandomArbitrary(oldestBirthday.getTime(), youngestBirthday.getTime())
-    ),
+    birthdate: getRandomArbitraryDate(oldestBirthday, youngestBirthday),
   };
 }
+//TODO:ORDERS

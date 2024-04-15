@@ -22,10 +22,41 @@ export function truncateToTwoDecimals(number) {
   return Math.floor(number * 100) / 100;
 }
 
-// Dates
-
 export function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+// maxDate is the closest to present > # of ms since epoch is always growing
+// minDate is the oldest > # of ms since epoch decrease the oldest the date is. Before 1970 they turn negative.
+export function getRandomArbitraryDate(minDate, maxDate) {
+  //transforms dates to ms-since-epoch, gets random number then converts it back to Date format.
+  return new Date(
+    Math.floor(
+      Math.random() * (maxDate.getTime() - minDate.getTime()) +
+        minDate.getTime()
+    )
+  );
+}
+
+export function getRandomMomentToday() {
+  const now = new Date();
+  const minDate = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    0,
+    0,
+    0
+  );
+  const maxDate = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    23,
+    59,
+    59
+  );
+  return getRandomArbitraryDate(minDate, maxDate);
 }
 
 export function getRandom5DigitNumber() {
