@@ -68,3 +68,15 @@ export function getRandom5DigitNumber() {
   }
   return digits;
 }
+
+export function roundToTwoDecimals(n) {
+  return Math.round(n * 100) / 100;
+}
+
+export function getTotal(arrOFProducts) {
+  let total = 0;
+  for (let i = 0; i < arrOFProducts.length; i++) {
+    total = total + arrOFProducts[i].quantity * arrOFProducts[i].price;
+  }
+  return roundToTwoDecimals(total);
+}

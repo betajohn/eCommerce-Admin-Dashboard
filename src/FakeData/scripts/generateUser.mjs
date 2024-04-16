@@ -7,11 +7,17 @@ import USAData from '../raw/address/statesAndCities.json' assert { type: 'json' 
 import { generateRandomStreetAddress } from '../raw/address/street.mjs';
 import { generateEmailDomain } from '../raw/emailDomains.mjs';
 import {
+  payment_methods,
+  themes,
+  getRandomLanguage,
+} from '../raw/preferences.mjs';
+import {
   getRandomArbitrary,
   getRandomElement,
   getRandom5DigitNumber,
   getRandomArbitraryDate,
   getRandomMomentToday,
+  roundToTwoDecimals,
 } from '../utils.mjs';
 
 //Date.now() === new Date.getTime() //ms since epoch
@@ -108,6 +114,28 @@ export function generateRandomUser(isNew = true) {
       number: getRandomArbitrary(10000000, 99999999),
     },
     birthdate: getRandomArbitraryDate(oldestBirthday, youngestBirthday),
+    order_history: [],
+    //setter function to add orders to order_history
+    set assignOrder(order) {
+      let q = 0;
+      let total = 0;
+      order.cart.products.forEach((p) => {
+        q = q + p.quantity;
+        total = total + p.quantity * p.price;
+      });
+      this.order_history.push({
+        order_id: order._id,
+        cart_total: roundToTwoDecimals(total),
+        products_number: q,
+      });
+    },
+    preferences: {
+      payment_method: getRandomElement(payment_methods),
+      theme: getRandomElement(themes),
+      language: getRandomLanguage(),
+      ship_to_address: Math.random() > 0.74 ? true : false,
+    },
+    //TODO:Submissions
+    //TODO:Session IDs
   };
 }
-//TODO:ORDERS

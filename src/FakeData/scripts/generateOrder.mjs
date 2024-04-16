@@ -4,6 +4,7 @@ import {
   getRandomArbitraryDate,
   getRandomElement,
   getRandomMomentToday,
+  getTotal,
 } from '../utils.mjs';
 
 export function generateCart(user, isNew = true) {
@@ -18,7 +19,7 @@ export function generateCart(user, isNew = true) {
   for (let i = 0; i < numberOfDiffProd; i++) {
     let productData = getRandomElement(products);
     // makes sure products don't repeat
-    while (products.find((x) => x._id === productData._id)) {
+    while (cartItems.find((x) => x._id === productData._id)) {
       productData = getRandomElement(products);
     }
     cartItems.push({
@@ -34,10 +35,11 @@ export function generateCart(user, isNew = true) {
     user_id: user._id,
     products: cartItems,
     last_edition: timestamp,
+    cart_total: getTotal(cartItems),
   };
 }
 
-export function generateOrder(user) {
+export function generateRandomOrder(user) {
   if (user === undefined) {
     throw new Error('Must provide a User');
   }
@@ -52,26 +54,15 @@ export function generateOrder(user) {
     cart: {
       cart_id: cartData._id,
       products: cartData.products,
+      cart_total: cartData.cart_total,
     },
     creation_date: cartData.last_edition,
+    payment: undefined,
+    set assignPayment(p) {
+      this.payment = {
+        method: p.payment_info.method,
+        payment_id: p._id,
+      };
+    },
   };
 }
-
-/*
-id?: string;
-  user: {
-    first_name: string;
-    last_name: string;
-    user_id: string;
-  };
-  cart: {
-    cart_id: string;
-    total: number;
-    items_number: number;
-  };
-  payment: {
-    method: string;
-    payment_id: string;
-  };
-  timestamp: Date;
-  */
