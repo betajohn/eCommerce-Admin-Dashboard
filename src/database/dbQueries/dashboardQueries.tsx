@@ -11,7 +11,20 @@ await dbConnect();
 const last24HoursDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
 const now = new Date();
-const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+export const todayUTC00AM = new Date(
+  Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0)
+);
+export const todayUTC12PM = new Date(
+  Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate(),
+    23,
+    59,
+    59
+  )
+);
 
 export async function getRecentOrdersData() {
   noStore();
@@ -21,7 +34,7 @@ export async function getRecentOrdersData() {
     const ordersData = await OrdersModel.aggregate([
       {
         $match: {
-          timestamp: { $gte: today },
+          timestamp: { $gte: todayUTC00AM },
         },
       },
       {
@@ -67,7 +80,7 @@ export async function getRecentUserData() {
     const visitorsData = PageViewModel.aggregate([
       {
         $match: {
-          timestamp: { $gte: today },
+          timestamp: { $gte: todayUTC00AM },
         },
       },
       {
@@ -93,11 +106,11 @@ export async function getRecentUserData() {
     ]);
 
     const newSubmissionsQ = SubmissionModel.find({
-      timestamp: { $gte: today },
+      timestamp: { $gte: todayUTC00AM },
     }).countDocuments();
 
     const newUsersQ = UserModel.find({
-      timestamp: { $gte: today },
+      timestamp: { $gte: todayUTC00AM },
     }).countDocuments();
 
     const data: RecentUserData = await Promise.all([
@@ -138,7 +151,7 @@ export async function getTodaysLastTenOrders() {
   await timer(3000);
   try {
     const data: OrderType[] | [undefined] = await OrdersModel.find({
-      timestamp: { $gte: today },
+      timestamp: { $gte: todayUTC00AM },
     })
       .sort({ timestamp: -1 })
       .limit(10);

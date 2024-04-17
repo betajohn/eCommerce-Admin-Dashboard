@@ -38,23 +38,20 @@ export function getRandomArbitraryDate(minDate, maxDate) {
   );
 }
 
-export function getRandomMomentToday() {
+export function getRandomMomentTodayUTC() {
   const now = new Date();
   const minDate = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    0,
-    0,
-    0
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0)
   );
   const maxDate = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    23,
-    59,
-    59
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate(),
+      23,
+      59,
+      59
+    )
   );
   return getRandomArbitraryDate(minDate, maxDate);
 }

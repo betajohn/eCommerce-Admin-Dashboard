@@ -16,7 +16,7 @@ import {
   getRandomElement,
   getRandom5DigitNumber,
   getRandomArbitraryDate,
-  getRandomMomentToday,
+  getRandomMomentTodayUTC,
   roundToTwoDecimals,
 } from '../utils.mjs';
 
@@ -27,9 +27,7 @@ const oldestBirthday = new Date(1924, 0, 1);
 const now = new Date();
 //user needs to be at least 13yo to have an account
 const youngestBirthday = new Date(
-  now.getFullYear() - 13,
-  now.getMonth(),
-  now.getDate()
+  Date.UTC(now.getUTCFullYear() - 13, now.getUTCMonth(), now.getUTCDate())
 );
 
 function generateRandomDates() {
@@ -92,7 +90,7 @@ export function generateRandomUser(isNew = true) {
     regist = dates.regist_date;
     lastLogin = dates.last_login;
   } else {
-    const moment = getRandomMomentToday();
+    const moment = getRandomMomentTodayUTC();
     regist = moment;
     lastLogin = moment;
   }
