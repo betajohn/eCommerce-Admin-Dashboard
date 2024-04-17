@@ -21,7 +21,7 @@ export default async function RecentOrders() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">id</TableHead>
-              <TableHead>Date</TableHead>
+              <TableHead>Date UTC</TableHead>
               <TableHead>Items</TableHead>
               <TableHead>Payment Method</TableHead>
               <TableHead>Buyer</TableHead>
@@ -42,8 +42,8 @@ export default async function RecentOrders() {
               orders.map((ord) => (
                 <TableRow key={ord.order_id}>
                   <TableCell className="font-medium">{ord.order_id}</TableCell>
-                  <TableCell>{ord.timestamp}</TableCell>
-                  <TableCell>{ord.items_number}</TableCell>
+                  <TableCell>{ord.timestamp.toUTCString()}</TableCell>
+                  <TableCell>{ord.n_of_items}</TableCell>
                   <TableCell>{ord.payment_method}</TableCell>
                   <TableCell>{ord.customer}</TableCell>
                   <TableCell className="text-right">{ord.amount}</TableCell>

@@ -8,14 +8,28 @@ export interface UserType {
   regist_date: Date;
   last_login: Date;
   address?: {
-    street: string;
+    street: { number: number; name: string };
     city: string;
     state?: string;
     postal_code: string;
     country: string;
   };
-  phone: string;
+  phone?: { dial_code: string; number: number };
   birthdate: Date;
+  order_history?: [
+    {
+      order_id: string;
+      cart_total: number;
+      products_number: number;
+      date: Date;
+    }
+  ];
+  preferences?: {
+    payment_method?: string;
+    ship_to_address?: boolean;
+    language?: string;
+    theme?: 'Dark' | 'Light' | 'System';
+  };
 }
 
 const UserSchema = new mongoose.Schema({
@@ -40,12 +54,18 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  orders: {
-    type: [{ order_id: { type: String } }],
+  order_history: {
+    type: [
+      {
+        order_id: { type: String },
+        cart_total: { type: Number },
+        products_number: { type: Number },
+      },
+    ],
   },
   address: {
     type: {
-      street: { type: String },
+      street: { type: { name: { type: String }, number: { type: Number } } },
       city: { type: String },
       state: { type: String },
       postal_code: { type: String },
@@ -53,7 +73,15 @@ const UserSchema = new mongoose.Schema({
     },
   },
   phone: {
-    type: String,
+    type: { number: { type: Number }, dial_code: { type: String } },
+  },
+  preferences: {
+    type: {
+      payment_method: String,
+      ship_to_address: Boolean,
+      language: String,
+      theme: String,
+    },
   },
 });
 

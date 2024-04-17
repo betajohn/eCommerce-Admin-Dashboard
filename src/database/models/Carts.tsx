@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 
 export interface CartType {
+  id_: string;
   user_id: string;
-  order_id?: string;
-  timestamp: Date;
+  last_edition: Date;
+  cart_total: number;
   products: [
     {
       product_id: string;
@@ -15,9 +16,10 @@ export interface CartType {
 }
 
 const CartSchema = new mongoose.Schema({
+  _id: { type: String },
   user_id: { type: String },
-  order_id: { type: String },
   timestamp: { type: Date, default: new Date() },
+  cart_total: { type: Number },
   products: {
     type: [
       {

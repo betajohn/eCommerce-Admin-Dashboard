@@ -9,25 +9,26 @@ import { formatCurrency } from '@/lib/utils';
 
 await dbConnect();
 const last24HoursDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
-const ap = new Date(2024, 6, 10);
+
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
 export async function getRecentOrdersData() {
   noStore();
   await timer(5000);
-  //4abril
 
   try {
     const ordersData = await OrdersModel.aggregate([
       {
         $match: {
-          timestamp: { $gte: ap },
+          timestamp: { $gte: today },
         },
       },
       {
         $group: {
           _id: null,
-          totalSales: { $sum: '$cart.total' },
-          totalProductsSold: { $sum: '$cart.items_number' },
+          totalSales: { $sum: '$cart.cart_total' },
+          totalProductsSold: { $sum: '$cart.n_of_items' },
           numberOfOrders: { $sum: 1 },
         },
       },
@@ -66,7 +67,7 @@ export async function getRecentUserData() {
     const visitorsData = PageViewModel.aggregate([
       {
         $match: {
-          timestamp: { $gte: ap },
+          timestamp: { $gte: today },
         },
       },
       {
@@ -92,11 +93,11 @@ export async function getRecentUserData() {
     ]);
 
     const newSubmissionsQ = SubmissionModel.find({
-      timestamp: { $gte: ap },
+      timestamp: { $gte: today },
     }).countDocuments();
 
     const newUsersQ = UserModel.find({
-      timestamp: { $gte: ap },
+      timestamp: { $gte: today },
     }).countDocuments();
 
     const data: RecentUserData = await Promise.all([
@@ -137,21 +138,25 @@ export async function getTodaysLastTenOrders() {
   await timer(3000);
   try {
     const data: OrderType[] | [undefined] = await OrdersModel.find({
-      timestamp: { $gte: ap },
+      timestamp: { $gte: today },
     })
       .sort({ timestamp: -1 })
       .limit(10);
-
+    //if no sales today
     if (data.length === 0) return undefined;
-
+    //
     const finalData = data.map((x) => {
+      let totalQ = 0;
+      x.cart.products.forEach((y) => {
+        totalQ = totalQ + y.quantity;
+      });
       return {
         order_id: x._id?.toString(),
-        items_number: x.cart.items_number,
+        n_of_items: x.cart.n_of_items,
         payment_method: x.payment.method,
         customer: x.user.first_name + ' ' + x.user.last_name,
-        amount: formatCurrency(x.cart.total),
-        timestamp: x.timestamp.toUTCString(),
+        amount: formatCurrency(x.cart.cart_total),
+        timestamp: x.timestamp,
       };
     });
 

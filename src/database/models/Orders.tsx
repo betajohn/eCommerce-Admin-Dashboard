@@ -11,9 +11,15 @@ export interface OrderType {
     user_id: string;
   };
   cart: {
+    cart_total: number;
     cart_id: string;
-    total: number;
-    items_number: number;
+    n_of_items: number;
+    products: {
+      product_id: string;
+      product_name: string;
+      quantity: number;
+      price: number;
+    }[];
   };
   payment: {
     method: string;
@@ -32,9 +38,19 @@ const OrdersSchema = new mongoose.Schema({
   },
   cart: {
     type: {
+      cart_total: { type: Number },
+      n_of_items: { type: Number },
       cart_id: { type: String },
-      total: { type: Number },
-      items_number: { type: Number },
+      products: {
+        type: [
+          {
+            product_id: { type: String },
+            product_name: { type: String },
+            quantity: { type: Number },
+            price: { type: Number },
+          },
+        ],
+      },
     },
   },
   payment: {

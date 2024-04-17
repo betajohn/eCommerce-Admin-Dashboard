@@ -1,7 +1,7 @@
-import { generateRandomOrder } from './scripts/generateOrder.mjs';
-import { generateRandomUser } from './scripts/generateUser.mjs';
+import { generateRandomOrder } from './scripts/generateOrder.js';
+import { generateRandomUser } from './scripts/generateUser.ts/index.js';
 import { writeToDisk } from './utils.mjs';
-import { generateRandomPayment } from './scripts/generatePayment.mjs';
+import { generateRandomPayment } from './scripts/generatePayment.ts/index.js';
 
 //import countries from './raw/address/countries_full.json' assert { type: 'json' };
 

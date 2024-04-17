@@ -4,10 +4,10 @@ import {
   getRandomArbitraryDate,
   getRandomElement,
   getRandomMomentToday,
-  getTotal,
+  getTotalAndQ,
 } from '../utils.mjs';
 
-export function generateCart(user, isNew = true) {
+export function generateRandomCart(user, isNew = true) {
   if (user === undefined) {
     throw new Error('Must provide a User');
   }
@@ -30,39 +30,14 @@ export function generateCart(user, isNew = true) {
     });
   }
 
+  const { total, q } = getTotalAndQ(cartItems);
+
   return {
     _id: new mongoose.Types.ObjectId(),
     user_id: user._id,
     products: cartItems,
-    last_edition: timestamp,
-    cart_total: getTotal(cartItems),
-  };
-}
-
-export function generateRandomOrder(user) {
-  if (user === undefined) {
-    throw new Error('Must provide a User');
-  }
-  const cartData = generateCart(user);
-  return {
-    _id: new mongoose.Types.ObjectId(),
-    user: {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      user_id: user._id,
-    },
-    cart: {
-      cart_id: cartData._id,
-      products: cartData.products,
-      cart_total: cartData.cart_total,
-    },
-    creation_date: cartData.last_edition,
-    payment: undefined,
-    set assignPayment(p) {
-      this.payment = {
-        method: p.payment_info.method,
-        payment_id: p._id,
-      };
-    },
+    timestamp: timestamp,
+    cart_total: total,
+    n_of_items: q,
   };
 }

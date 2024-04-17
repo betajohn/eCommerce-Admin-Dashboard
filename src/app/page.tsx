@@ -1,10 +1,13 @@
+import { seedAllToday } from '@/FakeData/seed';
+import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
+  //seedAllToday(10);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      go to <Link href={'/admin'}>/admin</Link>
+      go to <Link href={'/dashboard'}>/dashboard</Link>
       <ul>
         <li>Uno</li>
         <li>Dos</li>

@@ -73,10 +73,12 @@ export function roundToTwoDecimals(n) {
   return Math.round(n * 100) / 100;
 }
 
-export function getTotal(arrOFProducts) {
+export function getTotalAndQ(arrOFProducts) {
   let total = 0;
+  let q = 0;
   for (let i = 0; i < arrOFProducts.length; i++) {
     total = total + arrOFProducts[i].quantity * arrOFProducts[i].price;
+    q = q + arrOFProducts[i].quantity;
   }
-  return roundToTwoDecimals(total);
+  return { total: roundToTwoDecimals(total), q: q };
 }

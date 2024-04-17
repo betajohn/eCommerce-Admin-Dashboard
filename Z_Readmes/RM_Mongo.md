@@ -60,7 +60,10 @@ MongoDB stores every date as UTC.
 JS's new Date(mongoDBDate) creates a new date in local time format. Do this intead:
 
 ```ts
-const dateToPass = mongoDBDate.toUTCString(); // will be the exact same format as the date stored in mongoDB
+const product = await MyModel.findOne({ price: 100 });
+const product_date = product.date;
+
+const dateToPass = product_date.toUTCString(); // will be the exact same format as the date stored in mongoDB
 ```
 
 ### model_name file extension

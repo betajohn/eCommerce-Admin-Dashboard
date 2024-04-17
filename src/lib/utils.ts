@@ -17,3 +17,21 @@ export async function timer(n: number) {
   await new Promise((resolve) => setTimeout(resolve, n));
   console.log(`${n} miliseconds have passed.`);
 }
+
+export function getMonthAbbreviation(month: number) {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  return months[month];
+}
