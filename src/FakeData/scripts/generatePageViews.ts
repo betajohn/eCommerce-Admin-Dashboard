@@ -1,12 +1,9 @@
-import {
-  generateGeoData,
-  generateRandomIP,
-} from '@/FakeData/raw/clientData.mjs';
+import { generateGeoData, generateRandomIP } from '@/FakeData/raw/clientData';
 import {
   getRandomMomentTodayUTC,
   getRandomMoment,
   getRandomElement,
-} from '@/FakeData/utils.mjs';
+} from '@/FakeData/utils';
 
 const paths = ['/', '/sell-your-codes', '/offers', '/products'];
 

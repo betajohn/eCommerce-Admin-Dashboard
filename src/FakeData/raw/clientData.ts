@@ -1,5 +1,5 @@
-import { getRandomElement } from '../utils.js';
-import countries from '../raw/address/countries.json' assert { type: 'json' };
+import { getRandomElement } from '../utils';
+import countries from './address/countries.json';
 
 const regions = ['NA', 'SA', 'CA', 'EU', 'Asia'];
 

@@ -1,25 +1,25 @@
 import mongoose from 'mongoose';
 
 export interface CartType {
-  id_: string;
-  user_id: string;
+  _id: mongoose.Types.ObjectId;
+  user_id: mongoose.Types.ObjectId;
   last_edition: Date;
   cart_total: number;
-  products: [
-    {
-      product_id: string;
-      product_name: string;
-      quantity: number;
-      price: number;
-    }
-  ];
+  number_of_items: number;
+  products: {
+    product_id: string;
+    product_name: string;
+    quantity: number;
+    price: number;
+  }[];
 }
 
 const CartSchema = new mongoose.Schema({
-  _id: { type: String },
-  user_id: { type: String },
-  timestamp: { type: Date, default: new Date() },
+  _id: { type: mongoose.Schema.Types.ObjectId },
+  user_id: { type: mongoose.Schema.Types.ObjectId },
+  last_edition: { type: Date, default: new Date() },
   cart_total: { type: Number },
+  number_of_items: { type: Number },
   products: {
     type: [
       {

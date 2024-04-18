@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 export interface PaymentType {
-  _id: string;
-  order_id: String;
+  _id: mongoose.Types.ObjectId;
+  order_id: mongoose.Types.ObjectId;
   cart_total: number;
   payment_date: Date;
   client_data: {
@@ -10,8 +10,8 @@ export interface PaymentType {
     geo: {
       city: string;
       country: string;
-      latitude: string;
-      longitude: string;
+      latitude: number;
+      longitude: number;
       region: string;
     };
   };
@@ -57,8 +57,8 @@ export interface PaymentType {
 }
 
 const PaymentSchema = new mongoose.Schema({
-  _id: { type: String },
-  order_id: { type: String },
+  _id: { type: mongoose.Schema.Types.ObjectId },
+  order_id: { type: mongoose.Schema.Types.ObjectId },
   cart_total: { type: Number },
   payment_date: { type: Date, default: new Date() },
   client_data: {
@@ -69,8 +69,8 @@ const PaymentSchema = new mongoose.Schema({
           type: {
             city: String,
             country: String,
-            latitude: String,
-            longitude: String,
+            latitude: Number,
+            longitude: Number,
             region: String,
           },
         },

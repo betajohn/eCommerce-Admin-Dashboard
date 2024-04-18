@@ -1,10 +1,9 @@
-import generateSubmission, {
-  xRandom,
-} from '@/FakeData/scripts/generateSubmissions';
+import generateSubmission from '@/FakeData/scripts/generateSubmissions';
 import {
   seedAllToday,
   registerUserNow,
   seedPageViewsToday,
+  seedSubmissionsToday,
 } from '@/FakeData/seed';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
@@ -16,7 +15,7 @@ export default function Home() {
   //seedPageViewsToday();
   //generateSubmission();
   //xRandom();
-
+  seedSubmissionsToday();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       go to <Link href={'/dashboard'}>/dashboard</Link>

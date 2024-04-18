@@ -2,8 +2,10 @@ import {
   getRandomArbitrary,
   getRandomArbitraryDate,
   getRandomMomentTodayUTC,
-} from '@/FakeData/utils.mjs';
+} from '@/FakeData/utils';
+import { SubmissionType } from '@/database/models/Submissions';
 import { UserType } from '@/database/models/Users';
+import mongoose from 'mongoose';
 
 function getDigit() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
@@ -41,29 +43,17 @@ export default function generateRandomSubmission(user: UserType, isNew = true) {
     codes.push(createPkmCode());
   }
 
-  return {
-    codes: codes,
-    user: {
-      first_name: user.first_name,
-      last_name: user.last_name,
-      user_id: user._id,
-    },
+  const Subm: SubmissionType = {
+    _id: new mongoose.Types.ObjectId(),
+    user_id: user._id,
     timestamp: isNew
       ? getRandomMomentTodayUTC()
       : getRandomArbitraryDate(user.regist_date, new Date()),
-    payment_details: {},
+    codes: {
+      valid: codes,
+    },
+    valid_codes_n: codes.length,
   };
-}
 
-export function xRandom() {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
-  const map = new Map();
-  for (let i = 0; i < characters.length; i++) {
-    map.set(characters[i], 0);
-  }
-  for (let i = 0; i < 10000; i++) {
-    const n = Math.floor(Math.random() * characters.length);
-    map.set(characters[n], map.get(characters[n]) + 1);
-  }
-  console.log(map);
+  return Subm;
 }

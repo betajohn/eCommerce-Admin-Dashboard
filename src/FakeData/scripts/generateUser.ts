@@ -9,6 +9,7 @@ import { generateEmailDomain } from '../raw/emailDomains';
 import { siteLaunchDate, oldestBirthday } from '../utils';
 import { payment_methods, themes, getRandomLanguage } from '../raw/preferences';
 import { OrderType } from '@/database/models/Orders';
+import { SubmissionType } from '@/database/models/Submissions';
 import {
   getRandomArbitrary,
   getRandomElement,
@@ -133,6 +134,14 @@ export function generateRandomUser(isNew = true) {
       });
     },
     submissions: [],
+    set assignSubmission(subm: SubmissionType) {
+      this.submissions.push({
+        subm_id: subm._id,
+        timestamp: subm.timestamp,
+        valid_codes_n: subm.valid_codes_n,
+      });
+    },
+
     preferences: {
       payment_method: getRandomElement(payment_methods),
       // @ts-ignore

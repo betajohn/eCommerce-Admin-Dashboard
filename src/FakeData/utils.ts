@@ -3,7 +3,7 @@ import { writeFile } from 'fs';
 export const siteLaunchDate = new Date(Date.UTC(2024, 0, 1)); // server time
 export const oldestBirthday = new Date(1924, 0, 1); // local time
 
-export function writeToDisk(data, filePath = './male_names.json') {
+export function writeToDisk(data: any, filePath = './result.json') {
   // Convert the data to JSON format
   const jsonData = JSON.stringify(data); // null and 2 for pretty formatting
 
@@ -31,7 +31,7 @@ export function getRandomArbitrary(min: number, max: number) {
 
 // maxDate is the closest to present > # of ms since epoch is always growing
 // minDate is the oldest > # of ms since epoch decrease the oldest the date is. Before 1970 they turn negative.
-export function getRandomArbitraryDate(minDate, maxDate) {
+export function getRandomArbitraryDate(minDate: Date, maxDate: Date) {
   //transforms dates to ms-since-epoch, gets random number then converts it back to Date format.
   return new Date(
     Math.floor(
@@ -73,11 +73,13 @@ export function getRandom5DigitNumber() {
   return Number(digits);
 }
 
-export function roundToTwoDecimals(n) {
+export function roundToTwoDecimals(n: number) {
   return Math.round(n * 100) / 100;
 }
 
-export function getTotalAndQ(arrOFProducts) {
+export function getTotalAndQ(
+  arrOFProducts: { quantity: number; price: number }[]
+) {
   let total = 0;
   let q = 0;
   for (let i = 0; i < arrOFProducts.length; i++) {

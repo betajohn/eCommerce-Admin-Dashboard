@@ -104,12 +104,14 @@ export async function seedPageViewsToday() {
 export async function seedSubmissionsToday() {
   const users = [];
   const submissions = [];
-  const nOfSubmissions = getRandomArbitrary(5, 25);
+  const nOfSubmissions = getRandomArbitrary(5, 35);
 
   try {
     for (let i = 0; i < nOfSubmissions; i++) {
       const user = generateRandomUser();
       const submission = generateRandomSubmission(user);
+      user.assignSubmission = submission;
+
       users.push(user);
       submissions.push(submission);
     }

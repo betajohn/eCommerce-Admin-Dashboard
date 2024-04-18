@@ -1,6 +1,7 @@
+import { SubmissionType } from '@/database/models/Submissions';
 import mongoose from 'mongoose';
 
-export type UserType = {
+export interface UserType {
   _id: mongoose.Types.ObjectId;
   email: string;
   first_name: string;
@@ -31,9 +32,10 @@ export type UserType = {
   submissions: {
     subm_id: mongoose.Types.ObjectId;
     timestamp: Date;
-    valid_codes: number;
+    valid_codes_n: number;
   }[];
-};
+  assignSubmission?: SubmissionType;
+}
 
 const UserSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId },
@@ -74,7 +76,7 @@ const UserSchema = new mongoose.Schema({
     type: [
       {
         subm_id: { type: mongoose.Schema.Types.ObjectId },
-        valid_codes: { type: Number },
+        valid_codes_n: { type: Number },
         timestamp: { type: Date },
       },
     ],

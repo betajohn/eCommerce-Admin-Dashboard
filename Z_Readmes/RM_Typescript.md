@@ -74,3 +74,24 @@ use // @ts-ignore
 // @ts-ignore
 const myNumber: number = 'hello'; // No error shown
 ```
+
+## Express a type as subtype of another type
+
+We can use an indexed access type to look up a specific property on another type:
+
+```ts
+interface CartType {
+  _id: mongoose.Types.ObjectId;
+  user_id: mongoose.Types.ObjectId;
+  last_edition: Date;
+  cart_total: number;
+  products: {
+    product_id: string;
+    product_name: string;
+    quantity: number;
+    price: number;
+  }[];
+}
+
+type products = CartType['products'];
+```
