@@ -1,5 +1,8 @@
 import { writeFile } from 'fs';
 
+export const siteLaunchDate = new Date(Date.UTC(2024, 0, 1)); // server time
+export const oldestBirthday = new Date(1924, 0, 1); // local time
+
 export function writeToDisk(data, filePath = './male_names.json') {
   // Convert the data to JSON format
   const jsonData = JSON.stringify(data); // null and 2 for pretty formatting
@@ -54,6 +57,10 @@ export function getRandomMomentTodayUTC() {
     )
   );
   return getRandomArbitraryDate(minDate, maxDate);
+}
+
+export function getRandomMoment() {
+  return getRandomArbitraryDate(siteLaunchDate, new Date());
 }
 
 export function getRandom5DigitNumber() {

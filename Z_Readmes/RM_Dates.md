@@ -10,6 +10,14 @@ When no parameters are provided, the newly-created Date object represents the cu
 
 ### new Date(yyyy, mm, dd)
 
+> The parameter values are all evaluated against the local time zone, rather than UTC
+
+Use Date.UTC() instead if you want a UTC Date!
+
+```js
+new Date(Date.UTC(yyyy, mm, dd));
+```
+
 ```js
 Given at least a year and month, this form of Date() returns a Date object whose component values (year, month, day, hour, minute, second, and millisecond) all come from the following parameters. Any missing fields are given the lowest possible value (1 for day and 0 for every other component). The parameter values are all evaluated against the local time zone, rather than UTC. Date.UTC() accepts similar parameters but interprets the components as UTC and returns a timestamp.
 ```
@@ -49,4 +57,8 @@ new Date(Date.UTC(2024, 00, 01)); //Sun Dec 31 2023 21:00:00 GMT-0300 (Chile Sum
 const todayUTC00AM = new Date(
   Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0)
 );
+```
+
+```
+
 ```

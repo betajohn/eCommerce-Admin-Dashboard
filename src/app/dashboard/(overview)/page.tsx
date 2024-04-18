@@ -17,7 +17,6 @@ export default function Dashboard() {
             <RecentOrdersOVerview />
           </Suspense>
         </div>
-        {/*Bottom 3 cards */}
         <Suspense fallback={<ROSkeleton />}>
           <RecentOrders />
         </Suspense>

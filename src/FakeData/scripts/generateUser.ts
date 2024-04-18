@@ -6,6 +6,7 @@ import countries from '../raw/address/countries.json' assert { type: 'json' };
 import USAData from '../raw/address/statesAndCities.json' assert { type: 'json' };
 import { generateRandomStreetAddress } from '../raw/address/street.mjs';
 import { generateEmailDomain } from '../raw/emailDomains.mjs';
+import { siteLaunchDate, oldestBirthday } from '../utils.mjs';
 import {
   payment_methods,
   themes,
@@ -22,8 +23,6 @@ import {
 
 //Date.now() === new Date.getTime() //ms since epoch
 
-const siteLaunchDate = new Date(2024, 0, 1);
-const oldestBirthday = new Date(1924, 0, 1);
 const now = new Date();
 //user needs to be at least 13yo to have an account
 const youngestBirthday = new Date(

@@ -110,7 +110,7 @@ export async function getRecentUserData() {
     }).countDocuments();
 
     const newUsersQ = UserModel.find({
-      timestamp: { $gte: todayUTC00AM },
+      regist_date: { $gte: todayUTC00AM },
     }).countDocuments();
 
     const data: RecentUserData = await Promise.all([
