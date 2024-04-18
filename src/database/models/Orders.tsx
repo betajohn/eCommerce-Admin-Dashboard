@@ -4,18 +4,18 @@
 import mongoose from 'mongoose';
 
 export interface OrderType {
-  _id?: string;
+  _id: mongoose.Types.ObjectId;
   user: {
     first_name: string;
     last_name: string;
-    user_id: string;
+    user_id: mongoose.Types.ObjectId;
   };
   cart: {
     cart_total: number;
-    cart_id: string;
+    cart_id: mongoose.Types.ObjectId;
     n_of_items: number;
     products: {
-      product_id: string;
+      product_id: mongoose.Types.ObjectId;
       product_name: string;
       quantity: number;
       price: number;
@@ -23,28 +23,29 @@ export interface OrderType {
   };
   payment: {
     method: string;
-    payment_id: string;
+    payment_id: mongoose.Types.ObjectId;
   };
   timestamp: Date;
 }
 
 const OrdersSchema = new mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId },
   user: {
     type: {
       first_name: { type: String },
       last_name: { type: String },
-      user_id: { type: String },
+      user_id: { type: mongoose.Schema.Types.ObjectId },
     },
   },
   cart: {
     type: {
       cart_total: { type: Number },
       n_of_items: { type: Number },
-      cart_id: { type: String },
+      cart_id: { type: mongoose.Schema.Types.ObjectId },
       products: {
         type: [
           {
-            product_id: { type: String },
+            product_id: { type: mongoose.Schema.Types.ObjectId },
             product_name: { type: String },
             quantity: { type: Number },
             price: { type: Number },
@@ -54,7 +55,10 @@ const OrdersSchema = new mongoose.Schema({
     },
   },
   payment: {
-    type: { method: { type: String }, payment_id: { type: String } },
+    type: {
+      method: { type: String },
+      payment_id: { type: mongoose.Schema.Types.ObjectId },
+    },
     required: true,
   },
   timestamp: { type: Date, default: new Date() },

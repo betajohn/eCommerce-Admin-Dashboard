@@ -1,4 +1,4 @@
-import { truncateToTwoDecimals } from '../utils.mjs';
+import { truncateToTwoDecimals } from '../utils';
 
 export const emailShare = new Map([
   [0.44, '@gmail.com'],

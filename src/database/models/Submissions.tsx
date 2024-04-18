@@ -1,6 +1,3 @@
-//Purchase Orders
-//TODO: fields
-
 import mongoose from 'mongoose';
 
 const SubmissionSchema = new mongoose.Schema({
@@ -8,7 +5,7 @@ const SubmissionSchema = new mongoose.Schema({
     type: {
       first_name: { type: String },
       last_name: { type: String },
-      _id: { type: String },
+      user_id: { type: mongoose.Schema.Types.ObjectId },
     },
   },
   timestamp: { type: Date, default: new Date() },

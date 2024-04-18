@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import { generateGeoData, generateRandomIP } from '../raw/clientData.mjs';
-import { payment_methods } from '../raw/preferences.mjs';
-import { getRandomElement } from '../utils.mjs';
+import { payment_methods } from '../raw/preferences.js';
+import { getRandomElement } from '../utils.js';
+import { OrderType } from '@/database/models/Orders.jsx';
 
 const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
@@ -21,7 +22,7 @@ const generateRandomTransactionID = () => {
   );
 };
 
-export function generateRandomPayment(order) {
+export function generateRandomPayment(order: OrderType) {
   if (order === undefined) {
     throw new Error('Must provide an Order.');
   }

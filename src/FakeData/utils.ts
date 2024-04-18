@@ -17,15 +17,15 @@ export function writeToDisk(data, filePath = './male_names.json') {
   });
 }
 
-export function getRandomElement(array) {
+export function getRandomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];
 }
 
-export function truncateToTwoDecimals(number) {
+export function truncateToTwoDecimals(number: number) {
   return Math.floor(number * 100) / 100;
 }
 
-export function getRandomArbitrary(min, max) {
+export function getRandomArbitrary(min: number, max: number) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
@@ -70,7 +70,7 @@ export function getRandom5DigitNumber() {
   for (let i = 0; i < n; i++) {
     digits = digits + '' + Math.floor(Math.random() * 10);
   }
-  return digits;
+  return Number(digits);
 }
 
 export function roundToTwoDecimals(n) {

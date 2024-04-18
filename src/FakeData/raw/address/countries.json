@@ -116,6 +116,7 @@
   },
   {
     "name": "Ascension Island",
+    "dial_code": "+247",
     "code": "AC",
     "emoji": "🇦🇨",
     "unicode": "U+1F1E6 U+1F1E8",
@@ -313,6 +314,7 @@
   },
   {
     "name": "British Indian Ocean Territory",
+    "dial_code": "+246",
     "code": "IO",
     "emoji": "🇮🇴",
     "unicode": "U+1F1EE U+1F1F4",
@@ -466,6 +468,7 @@
   },
   {
     "name": "Christmas Island",
+    "dial_code": "+61",
     "code": "CX",
     "emoji": "🇨🇽",
     "unicode": "U+1F1E8 U+1F1FD",
@@ -476,6 +479,7 @@
   },
   {
     "name": "Cocos (Keeling) Islands",
+    "dial_code": "+61",
     "code": "CC",
     "emoji": "🇨🇨",
     "unicode": "U+1F1E8 U+1F1E8",
@@ -654,7 +658,7 @@
     "code": "DO",
     "emoji": "🇩🇴",
     "unicode": "U+1F1E9 U+1F1F4",
-    "dial_code": "+1 809, +1 829, +1 849",
+    "dial_code": "+1 809",
     "image": "https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/images/DO.svg",
     "biggest_cities": [
       "Santo Domingo",
@@ -831,6 +835,7 @@
   },
   {
     "name": "French Southern Territories",
+    "dial_code": "+262",
     "code": "TF",
     "emoji": "🇹🇫",
     "unicode": "U+1F1F9 U+1F1EB",
@@ -1028,6 +1033,7 @@
   },
   {
     "name": "Heard & McDonald Islands",
+    "dial_code": "+672",
     "code": "HM",
     "emoji": "🇭🇲",
     "unicode": "U+1F1ED U+1F1F2",
@@ -1973,6 +1979,7 @@
   },
   {
     "name": "Saint Barthélemy",
+    "dial_code": "+590",
     "code": "BL",
     "emoji": "🇧🇱",
     "unicode": "U+1F1E7 U+1F1F1",
@@ -2016,6 +2023,7 @@
   },
   {
     "name": "Saint Martin",
+    "dial_code": "+590",
     "code": "MF",
     "emoji": "🇲🇫",
     "unicode": "U+1F1F2 U+1F1EB",
@@ -2213,6 +2221,7 @@
   },
   {
     "name": "South Georgia & South Sandwich Islands",
+    "dial_code": "+500",
     "code": "GS",
     "emoji": "🇬🇸",
     "unicode": "U+1F1EC U+1F1F8",
@@ -2288,6 +2297,7 @@
     "longitude": -56
   },
   {
+    "dial_code": "+47",
     "name": "Svalbard & Jan Mayen",
     "code": "SJ",
     "emoji": "🇸🇯",

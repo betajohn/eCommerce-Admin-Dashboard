@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-export interface UserType {
-  _id: string;
+export type UserType = {
+  _id: mongoose.Types.ObjectId;
   email: string;
   first_name: string;
   last_name: string;
@@ -11,29 +11,32 @@ export interface UserType {
     street: { number: number; name: string };
     city: string;
     state?: string;
-    postal_code: string;
+    postal_code: number;
     country: string;
   };
   phone?: { dial_code: string; number: number };
-  birthdate: Date;
-  order_history?: [
-    {
-      order_id: string;
-      cart_total: number;
-      products_number: number;
-      date: Date;
-    }
-  ];
+  birth_date?: Date;
+  order_history: {
+    order_id: mongoose.Types.ObjectId;
+    cart_total: number;
+    products_number: number;
+    timestamp: Date;
+  }[];
   preferences?: {
     payment_method?: string;
     ship_to_address?: boolean;
     language?: string;
-    theme?: 'Dark' | 'Light' | 'System';
+    theme?: 'dark' | 'light' | 'system';
   };
-}
+  submissions: {
+    subm_id: mongoose.Types.ObjectId;
+    timestamp: Date;
+    valid_codes: number;
+  }[];
+};
 
 const UserSchema = new mongoose.Schema({
-  _id: { type: String },
+  _id: { type: mongoose.Schema.Types.ObjectId },
   email: {
     type: String,
     required: [true, 'Email is required'],
@@ -50,6 +53,9 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  birth_date: {
+    type: Date,
+  },
   last_login: {
     type: Date,
     default: Date.now,
@@ -57,9 +63,19 @@ const UserSchema = new mongoose.Schema({
   order_history: {
     type: [
       {
-        order_id: { type: String },
+        order_id: { type: mongoose.Schema.Types.ObjectId },
         cart_total: { type: Number },
         products_number: { type: Number },
+        timestamp: { type: Date },
+      },
+    ],
+  },
+  submissions: {
+    type: [
+      {
+        subm_id: { type: mongoose.Schema.Types.ObjectId },
+        valid_codes: { type: Number },
+        timestamp: { type: Date },
       },
     ],
   },
@@ -68,7 +84,7 @@ const UserSchema = new mongoose.Schema({
       street: { type: { name: { type: String }, number: { type: Number } } },
       city: { type: String },
       state: { type: String },
-      postal_code: { type: String },
+      postal_code: { type: Number },
       country: { type: String },
     },
   },

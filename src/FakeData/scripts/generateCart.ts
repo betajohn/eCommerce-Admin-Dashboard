@@ -5,7 +5,7 @@ import {
   getRandomElement,
   getRandomMomentTodayUTC,
   getTotalAndQ,
-} from '../utils.mjs';
+} from '../utils.js';
 
 export function generateRandomCart(user, isNew = true) {
   if (user === undefined) {

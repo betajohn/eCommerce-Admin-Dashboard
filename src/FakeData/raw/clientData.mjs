@@ -1,4 +1,4 @@
-import { getRandomElement } from '../utils.mjs';
+import { getRandomElement } from '../utils.js';
 import countries from '../raw/address/countries.json' assert { type: 'json' };
 
 const regions = ['NA', 'SA', 'CA', 'EU', 'Asia'];

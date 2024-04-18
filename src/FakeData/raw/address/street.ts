@@ -1,6 +1,6 @@
-import { getRandom5DigitNumber, getRandomElement } from '../../utils.mjs';
+import { getRandom5DigitNumber, getRandomElement } from '../../utils';
 
-export const street_types = [
+const street_types = [
   'Street',
   'Avenue',
   'Boulevard',
@@ -18,7 +18,7 @@ export const street_types = [
   'Parkway',
 ];
 
-export const street_names = [
+const street_names = [
   'Main',
   'Park',
   'Elm',

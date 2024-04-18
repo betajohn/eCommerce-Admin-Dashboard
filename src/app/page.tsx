@@ -1,3 +1,6 @@
+import generateSubmission, {
+  xRandom,
+} from '@/FakeData/scripts/generateSubmissions';
 import {
   seedAllToday,
   registerUserNow,
@@ -10,7 +13,10 @@ import Link from 'next/link';
 export default function Home() {
   //registerUserNow();
   //seedAllToday(10);
-  seedPageViewsToday();
+  //seedPageViewsToday();
+  //generateSubmission();
+  //xRandom();
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       go to <Link href={'/dashboard'}>/dashboard</Link>

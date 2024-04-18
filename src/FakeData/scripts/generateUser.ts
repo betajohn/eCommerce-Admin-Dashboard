@@ -1,17 +1,14 @@
 import mongoose from 'mongoose';
-import maleNames from '../raw/name/firstNames_male.json' assert { type: 'json' };
-import femaleNames from '../raw/name/firstNames_female.json' assert { type: 'json' };
-import lastNames from '../raw/name/lastNames.json' assert { type: 'json' };
-import countries from '../raw/address/countries.json' assert { type: 'json' };
-import USAData from '../raw/address/statesAndCities.json' assert { type: 'json' };
-import { generateRandomStreetAddress } from '../raw/address/street.mjs';
-import { generateEmailDomain } from '../raw/emailDomains.mjs';
-import { siteLaunchDate, oldestBirthday } from '../utils.mjs';
-import {
-  payment_methods,
-  themes,
-  getRandomLanguage,
-} from '../raw/preferences.mjs';
+import maleNames from '../raw/name/firstNames_male.json';
+import femaleNames from '../raw/name/firstNames_female.json';
+import lastNames from '../raw/name/lastNames.json';
+import countries from '../raw/address/countries.json';
+import USAData from '../raw/address/statesAndCities.json';
+import { generateRandomStreetAddress } from '../raw/address/street';
+import { generateEmailDomain } from '../raw/emailDomains';
+import { siteLaunchDate, oldestBirthday } from '../utils';
+import { payment_methods, themes, getRandomLanguage } from '../raw/preferences';
+import { OrderType } from '@/database/models/Orders';
 import {
   getRandomArbitrary,
   getRandomElement,
@@ -19,7 +16,8 @@ import {
   getRandomArbitraryDate,
   getRandomMomentTodayUTC,
   roundToTwoDecimals,
-} from '../utils.mjs';
+} from '../utils';
+import { UserType } from '@/database/models/Users';
 
 //Date.now() === new Date.getTime() //ms since epoch
 
@@ -44,7 +42,7 @@ function getRandomFirstName() {
   }
 }
 
-function generateRandomEmail(firstName, lastName) {
+function generateRandomEmail(firstName: string, lastName: string) {
   return firstName + lastName + getRandom5DigitNumber() + generateEmailDomain();
 }
 
@@ -63,8 +61,8 @@ function generateRandomAddress() {
   } else {
     data = getRandomElement(USAData);
     country = 'USA';
-    state = data[0];
-    city = getRandomElement(data[1]);
+    state = data.state;
+    city = getRandomElement(data.biggest_cities);
     dial_code = '+1';
   }
   const { name, number } = generateRandomStreetAddress();
@@ -74,7 +72,7 @@ function generateRandomAddress() {
     street: { number: number, name: name },
     city: city,
     state: state,
-    postal_code: Math.floor(getRandomArbitrary(10000000, 9999999999)),
+    postal_code: getRandomArbitrary(10000000, 9999999999),
     country: country,
   };
 }
@@ -98,22 +96,29 @@ export function generateRandomUser(isNew = true) {
   const lastName = getRandomElement(lastNames);
   const { dial_code, street, city, state, postal_code, country } =
     generateRandomAddress();
-  return {
+
+  const finalUser: UserType = {
     _id: new mongoose.Types.ObjectId(),
     first_name: firstName,
     last_name: lastName,
     email: generateRandomEmail(firstName, lastName),
     regist_date: regist,
     last_login: lastLogin,
-    address: { street, city, state, postal_code, country },
+    address: {
+      street: { name: street.name, number: street.number },
+      city,
+      state,
+      postal_code,
+      country,
+    },
     phone: {
       dial_code: dial_code,
       number: getRandomArbitrary(10000000, 99999999),
     },
-    birthdate: getRandomArbitraryDate(oldestBirthday, youngestBirthday),
+    birth_date: getRandomArbitraryDate(oldestBirthday, youngestBirthday),
     order_history: [],
     //setter function to add orders to order_history
-    set assignOrder(order) {
+    set assignOrder(order: OrderType) {
       let q = 0;
       let total = 0;
       order.cart.products.forEach((p) => {
@@ -124,15 +129,20 @@ export function generateRandomUser(isNew = true) {
         order_id: order._id,
         cart_total: roundToTwoDecimals(total),
         products_number: q,
+        timestamp: order.timestamp,
       });
     },
+    submissions: [],
     preferences: {
       payment_method: getRandomElement(payment_methods),
+      // @ts-ignore
       theme: getRandomElement(themes),
       language: getRandomLanguage(),
       ship_to_address: Math.random() > 0.74 ? true : false,
     },
-    //TODO:Submissions
+
     //TODO:Session IDs
   };
+
+  return finalUser;
 }

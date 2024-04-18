@@ -8,8 +8,10 @@ import { generateRandomOrder } from '@/FakeData/scripts/generateOrder';
 import { generateRandomCart } from '@/FakeData/scripts/generateCart';
 import { generateRandomPageViews } from '@/FakeData/scripts/generatePageViews';
 import OrdersModel from '@/database/models/Orders';
-import { getRandomArbitrary, writeToDisk } from '@/FakeData/utils.mjs';
+import { getRandomArbitrary, writeToDisk } from '@/FakeData/utils';
 import { PageViewModel } from '@/database/models/PageView';
+import generateRandomSubmission from '@/FakeData/scripts/generateSubmissions';
+import SubmissionModel from '@/database/models/Submissions';
 
 await dbConnect();
 
@@ -94,6 +96,27 @@ export async function seedPageViewsToday() {
     console.log(
       pageViews.length + ' page views have been successfully seeded.'
     );
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function seedSubmissionsToday() {
+  const users = [];
+  const submissions = [];
+  const nOfSubmissions = getRandomArbitrary(5, 25);
+
+  try {
+    for (let i = 0; i < nOfSubmissions; i++) {
+      const user = generateRandomUser();
+      const submission = generateRandomSubmission(user);
+      users.push(user);
+      submissions.push(submission);
+    }
+    await UserModel.create(users);
+    console.log(users.length + ' users have been seeded');
+    await SubmissionModel.create(submissions);
+    console.log(submissions.length + ' submissions have been seeded');
   } catch (error) {
     console.log(error);
   }

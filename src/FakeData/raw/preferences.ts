@@ -1,4 +1,4 @@
-export const themes = ['Dark', 'Light', 'System'];
+export const themes = ['dark', 'light', 'system'];
 
 export const payment_methods = [
   'Paypal',
