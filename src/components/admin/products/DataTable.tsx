@@ -1,189 +1,70 @@
 'use client';
-
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-  SortingState,
-  getSortedRowModel,
-  ColumnFiltersState,
-  getFilteredRowModel,
-  VisibilityState,
-} from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel } from '@tanstack/react-table';
+import products from '@/FakeData/raw/products/products.json';
+import { useState } from 'react';
+import { UserType } from '@/database/models/Users';
 
 import {
   Table,
+  TableCaption,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
+  TableFooter,
 } from '@/components/ui/table';
 
-import { Button, buttonVariants } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Plus, Filter } from 'lucide-react';
+const columns = [
+  { accessorKey: '_id', header: '_id' },
+  { accessorKey: 'name', header: 'name' },
+  { accessorKey: 'price', header: 'price' },
+  { accessorKey: 'description', header: 'description' },
+  { accessorKey: 'category', header: 'category' },
+  { accessorKey: 'image_url', header: 'image_url' },
+  { accessorKey: 'active', header: 'active' },
+];
 
-import * as React from 'react';
-
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
-
-export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-
+export default function DataTable() {
+  const [data, setData] = useState(products);
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-    },
   });
 
   return (
-    <div>
-      <div className="flex items-center py-2 gap-2">
-        <Input
-          placeholder="Filter by product name..."
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
-          }
-        />
-        <Link
-          href="/dashboard/new-listing"
-          className={cn(
-            buttonVariants(),
-            'flex justify-center items-center gap-2'
-          )}
-        >
-          <p className="hidden md:block">New Product</p>
-          <Plus />
-        </Link>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="ml-auto">
-              <Filter />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
-      </div>
-    </div>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th>Member Since</th>
+        <th>Balance</th>
+      </tr>
+      <tr>
+        <th>Margaret Nguyen</th>
+        <td>427311</td>
+        <td>
+          <time dateTime="2010-06-03">June 3, 2010</time>
+        </td>
+        <td>0.00</td>
+      </tr>
+      <tr>
+        <th>Edvard Galinski</th>
+        <td>533175</td>
+        <td>
+          <time dateTime="2011-01-13">January 13, 2011</time>
+        </td>
+        <td>37.00</td>
+      </tr>
+      <tr>
+        <th>Hoshi Nakamura</th>
+        <td>601942</td>
+        <td>
+          <time dateTime="2012-07-23">July 23, 2012</time>
+        </td>
+        <td>15.00</td>
+      </tr>
+    </table>
   );
 }

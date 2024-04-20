@@ -5,7 +5,6 @@ import SubmissionModel from '@/database/models/Submissions';
 import { UserModel } from '@/database/models/Users';
 import { timer } from '@/lib/utils';
 import { unstable_noStore as noStore } from 'next/cache';
-import { formatCurrency } from '@/lib/utils';
 
 await dbConnect();
 const last24HoursDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -166,9 +165,9 @@ export async function getTodaysLastTenOrders() {
       return {
         order_id: x._id?.toString(),
         n_of_items: x.cart.n_of_items,
-        payment_method: x.payment.method,
+        payment_method: x.payment!.method,
         customer: x.user.first_name + ' ' + x.user.last_name,
-        amount: formatCurrency(x.cart.cart_total),
+        amount: x.cart.cart_total,
         timestamp: x.timestamp,
       };
     });

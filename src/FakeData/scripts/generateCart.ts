@@ -21,11 +21,13 @@ export function generateRandomCart(user: UserType, isNew = true) {
   for (let i = 0; i < numberOfDiffProd; i++) {
     let productData = getRandomElement(products);
     // makes sure products don't repeat
+    //@ts-ignore
     while (cartItems.find((x) => x.product_id === productData._id)) {
       productData = getRandomElement(products);
     }
+
     cartItems.push({
-      product_id: productData._id,
+      product_id: new mongoose.Types.ObjectId(productData._id),
       product_name: productData.name,
       quantity: Math.floor(Math.random() * 9) + 1, //max q = 10
       price: productData.price,
@@ -40,7 +42,7 @@ export function generateRandomCart(user: UserType, isNew = true) {
     products: cartItems,
     last_edition: timestamp,
     cart_total: total,
-    number_of_items: q,
+    n_of_items: q,
   };
 
   return finalCart;

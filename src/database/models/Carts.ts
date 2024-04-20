@@ -5,9 +5,9 @@ export interface CartType {
   user_id: mongoose.Types.ObjectId;
   last_edition: Date;
   cart_total: number;
-  number_of_items: number;
+  n_of_items: number;
   products: {
-    product_id: string;
+    product_id: mongoose.Types.ObjectId;
     product_name: string;
     quantity: number;
     price: number;
@@ -19,11 +19,11 @@ const CartSchema = new mongoose.Schema({
   user_id: { type: mongoose.Schema.Types.ObjectId },
   last_edition: { type: Date, default: new Date() },
   cart_total: { type: Number },
-  number_of_items: { type: Number },
+  n_of_items: { type: Number },
   products: {
     type: [
       {
-        product_id: { type: String },
+        product_id: { type: mongoose.Schema.Types.ObjectId },
         product_name: { type: String },
         quantity: { type: Number },
         price: { type: Number },

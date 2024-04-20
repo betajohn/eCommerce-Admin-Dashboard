@@ -8,14 +8,14 @@ import {
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-
+seedAllToday(19);
 export default function Home() {
   //registerUserNow();
   //seedAllToday(10);
   //seedPageViewsToday();
   //generateSubmission();
   //xRandom();
-  seedSubmissionsToday();
+  //seedSubmissionsToday();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       go to <Link href={'/dashboard'}>/dashboard</Link>

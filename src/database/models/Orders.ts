@@ -1,6 +1,7 @@
 //Sales Orders
 //TODO: fields
 
+import { PaymentType } from '@/database/models/Payments';
 import mongoose from 'mongoose';
 
 export interface OrderType {
@@ -21,10 +22,11 @@ export interface OrderType {
       price: number;
     }[];
   };
-  payment: {
+  payment?: {
     method: string;
     payment_id: mongoose.Types.ObjectId;
   };
+  assignPayment?: PaymentType;
   timestamp: Date;
 }
 
