@@ -8,7 +8,7 @@ import {
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-seedAllToday(19);
+
 export default function Home() {
   //registerUserNow();
   //seedAllToday(10);

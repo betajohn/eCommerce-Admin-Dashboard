@@ -1,8 +1,12 @@
 'use client';
-import { useReactTable, getCoreRowModel } from '@tanstack/react-table';
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+} from '@tanstack/react-table';
 import products from '@/FakeData/raw/products/products.json';
 import { useState } from 'react';
-import { UserType } from '@/database/models/Users';
+import { formatCurrency } from '@/lib/utils';
 
 import {
   Table,
@@ -14,15 +18,28 @@ import {
   TableRow,
   TableFooter,
 } from '@/components/ui/table';
+import Image from 'next/image';
 
 const columns = [
   { accessorKey: '_id', header: '_id' },
-  { accessorKey: 'name', header: 'name' },
-  { accessorKey: 'price', header: 'price' },
-  { accessorKey: 'description', header: 'description' },
-  { accessorKey: 'category', header: 'category' },
-  { accessorKey: 'image_url', header: 'image_url' },
-  { accessorKey: 'active', header: 'active' },
+  {
+    accessorKey: 'image_url',
+    header: 'Image',
+    cell: (props: any) => (
+      <div className="relative w-40 h-40">
+        <Image src={props.getValue()} fill alt="product image" />
+      </div>
+    ),
+  },
+  { accessorKey: 'name', header: 'Name' },
+  {
+    accessorKey: 'price',
+    header: 'Price',
+    cell: (data: any) => formatCurrency(data.getValue()),
+  },
+  { accessorKey: 'description', header: 'Description' },
+  { accessorKey: 'category', header: 'Category' },
+  { accessorKey: 'active', header: 'Active' },
 ];
 
 export default function DataTable() {
@@ -34,37 +51,37 @@ export default function DataTable() {
   });
 
   return (
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>ID</th>
-        <th>Member Since</th>
-        <th>Balance</th>
-      </tr>
-      <tr>
-        <th>Margaret Nguyen</th>
-        <td>427311</td>
-        <td>
-          <time dateTime="2010-06-03">June 3, 2010</time>
-        </td>
-        <td>0.00</td>
-      </tr>
-      <tr>
-        <th>Edvard Galinski</th>
-        <td>533175</td>
-        <td>
-          <time dateTime="2011-01-13">January 13, 2011</time>
-        </td>
-        <td>37.00</td>
-      </tr>
-      <tr>
-        <th>Hoshi Nakamura</th>
-        <td>601942</td>
-        <td>
-          <time dateTime="2012-07-23">July 23, 2012</time>
-        </td>
-        <td>15.00</td>
-      </tr>
-    </table>
+    <Table>
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => {
+          return (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.column.columnDef.header?.toString()}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          );
+        })}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows.map((row) => {
+          return (
+            <TableRow key={row.id}>
+              {row.getVisibleCells().map((cell) => {
+                return (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                );
+              })}
+            </TableRow>
+          );
+        })}
+      </TableBody>
+    </Table>
   );
 }
