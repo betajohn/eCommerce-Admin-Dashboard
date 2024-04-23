@@ -7,10 +7,8 @@ export default async function DBProducts() {
   //const data = await getAllProducts('', 1);
 
   return (
-    <main className="h-full w-full rounded-lg bg-card flex flex-col p-2 gap-2">
-      <div className="container mx-auto px-1">
-        <DataTable />
-      </div>
+    <main className="h-full rounded-lg bg-card flex flex-col gap-2">
+      <DataTable />
     </main>
   );
 }

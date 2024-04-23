@@ -9,11 +9,11 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-screen">
-      <div className="py-4 h-screen sticky top-0 hidden sm:block">
+    <div className="flex h-full">
+      <div className="flex-none py-4 h-screen sticky top-0 hidden sm:block">
         <NavLinks />
       </div>
-      <div className="flex w-full flex-col min-h-screen gap-2">
+      <div className="flex-auto w-[00px] flex flex-col min-h-full gap-2 ">
         <DBHeader />
         <TimeDisplay />
         {children}

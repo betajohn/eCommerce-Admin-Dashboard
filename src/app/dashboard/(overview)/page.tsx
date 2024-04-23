@@ -8,7 +8,7 @@ import ROSkeleton from '@/components/admin/dashboard/skeletons/ROSkeleton';
 
 export default function Dashboard() {
   return (
-    <main className="w-full h-full grid grid-cols-1 sm:grid-cols-2 lg:[grid-template-columns:3fr_1fr;] items-center justify-center gap-2">
+    <main className="w-full min-h-full grid grid-cols-1 sm:grid-cols-2 lg:[grid-template-columns:3fr_1fr;] items-center justify-center gap-2">
       {/*1st-3rd columns */}
       <div className="w-full h-full flex flex-col gap-2">
         {/*Top 3 cards */}

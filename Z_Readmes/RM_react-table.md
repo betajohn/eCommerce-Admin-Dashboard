@@ -234,3 +234,57 @@ need to know 2 things:
   </TableBody>
 </Table>
 ```
+
+## 3. Resizing columns
+
+### 3.1 Change the default table-layout
+
+- set the table layout to fixed
+- give the table a width
+
+If no width is given, the table will still use the default table layout, meaning cell sizes are calculated automatically and your column sizes will be ignored.
+
+```ts
+<table className='table-fixed w-[something]'>
+```
+
+### 3.2 (optional) edit the ColumnResizeMode table option
+
+By default, the column resize mode is set to "onEnd". This means that the column.getSize() API will not return the new column size until the user has finished resizing (dragging) the column. Usually a small UI indicator will be displayed while the user is resizing the column.
+
+> [!TIP]
+> The "onEnd" -default- column resize mode can be a good default option to avoid stuttering or lagging while the user resizes columns.
+
+```ts
+const table = useReactTable({
+  //...
+  columnResizeMode: 'onChange', //change column resize mode to "onChange"
+});
+```
+
+### 3.3 Create the indicator to inform the user that columns are being resized and its event handlers
+
+```ts
+<TableRow key={headerGroup.id}>
+  {headerGroup.headers.map((header) => {
+    return (
+      <TableHead
+        key={header.id}
+        style={{ width: header.column.getSize() }}
+        className={`w-[${header.getSize()}px] group relative`} // add tailwind's group and relative classes
+      >
+        {header.column.columnDef.header?.toString()}
+        //this div will be the indicator
+        <div
+          onMouseDown={header.getResizeHandler()}
+          onTouchStart={header.getResizeHandler()}
+          className={cn(
+            'absolute opacity-0 top-0 right-0 h-full w-[5px] bg-green-300 cursor-col-resize	select-none	touch-none rounded-md group-hover:bg-green-300 group-hover:opacity-[1]',
+            header.column.getIsResizing() && 'bg-green-400 opacity-[1]'
+          )}
+        ></div>
+      </TableHead>
+    );
+  })}
+</TableRow>
+```

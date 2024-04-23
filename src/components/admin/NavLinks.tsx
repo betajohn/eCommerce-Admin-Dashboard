@@ -62,7 +62,6 @@ const menuLinks: menuItem[] = [
 ];
 
 export default function NavLinks({ hamburgerView = false }) {
-  console.log(hamburgerView);
   const pathname = usePathname();
 
   return (
