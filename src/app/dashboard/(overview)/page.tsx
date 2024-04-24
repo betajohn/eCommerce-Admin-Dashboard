@@ -1,5 +1,5 @@
 import RecentOrdersOVerview from '@/components/admin/dashboard/RecentOrdersOverview';
-import RecentOrders from '@/components/admin/dashboard/RecentOrders';
+import RecentOrdersTable from '@/components/admin/dashboard/RecentOrdersTable';
 import { Suspense } from 'react';
 import ROOverviewSkeleton from '@/components/admin/dashboard/skeletons/ROOverviewSkeleton';
 import RVOverviewSkeleton from '@/components/admin/dashboard/skeletons/RVOverviewSkeleton';
@@ -18,7 +18,7 @@ export default function Dashboard() {
           </Suspense>
         </div>
         <Suspense fallback={<ROSkeleton />}>
-          <RecentOrders />
+          <RecentOrdersTable />
         </Suspense>
       </div>
       {/*4th column */}

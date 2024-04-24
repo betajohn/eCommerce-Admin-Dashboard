@@ -297,3 +297,108 @@ const table = useReactTable({
   })}
 </TableRow>
 ```
+
+### 3.4 set ColumnDef so cells respond to resizing
+
+```ts
+const defaultColumns: ColumnDef<ProductType>[] = [
+  {
+    accessorKey: 'image_url',
+    header: 'Image',
+    cell: (props: any) => (
+      <div className="relative w-full aspect-video"> // w-full to adjust to row width
+        <Image
+          src={props.getValue()}
+          fill
+          alt="product image"
+          className="p-2"
+        />
+      </div>
+    ),
+    size: 500, // important. html <table> fixed model will adjust column headers to this size
+    minSize: 200,
+  },
+    {
+    accessorKey: 'active',
+    header: 'Active',
+    cell: (props: any) => (
+      // text-center to automatically adjust to column size
+      <div className="w-full text-center">{props.getValue().toString()}</div> //won't render a boolean
+    ),
+    size: 100,
+    minSize: 100,
+  },
+  ///more columnDefs
+```
+
+## 4. Pagination
+
+Client-side vs server-side?
+
+Server Side:
+
+- Large dataset.
+- Faster FPL.
+
+Client Side:
+
+- Small data set
+- Faster subsequent page loads.
+
+```text
+Using client-side pagination means that the data that you fetch will contain ALL of the rows for the table, and the table instance will handle pagination logic in the front-end.
+
+ If your table will only ever have a few thousand rows or less, client-side pagination can still be a viable option. TanStack Table is designed to scale up to 10s of thousands of rows with decent performance for pagination, filtering, sorting, and grouping.
+```
+
+### 4.a Client-side pagination
+
+[Client side pagination tutorial](https://ui.shadcn.com/docs/components/data-table)
+
+### 4.b Server-side pagination
+
+### 4.b.1 Pagination Row Model
+
+```ts
+import {
+  useReactTable,
+  getCoreRowModel,
+  getPaginationRowModel,
+} from '@tanstack/react-table';
+//...
+const table = useReactTable({
+  columns,
+  data,
+  getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(), //load client-side pagination code
+});
+```
+
+### 4.b.2 Pagination controls
+
+```text
+We can add pagination controls to our table using the <button /> component and the table.previousPage(), table.nextPage() API methods.
+```
+
+```ts
+//table is above
+ <div className="flex items-center justify-center space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
+    </div>
+```

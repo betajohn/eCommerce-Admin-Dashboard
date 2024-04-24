@@ -36,64 +36,69 @@ const paths: { [key: string]: string } = {
 };
 
 function createPathString(arr: string[], index: number) {
-  let x = '/';
+  let path = '/';
   for (let i = 1; i < index + 1; i++) {
-    x = x + arr[i] + '/';
+    path = path + arr[i] + '/';
   }
-  console.log(x);
-  return x;
+
+  return path;
 }
 
-function BreadbrumbContainer() {
+function BreadcrumbContainer() {
   const pathname = usePathname();
-  console.log(pathname);
-  const subPaths = pathname.split('/');
-  console.log(subPaths);
+  const segments = pathname.split('/'); //returns ['', 'dashboard','products']
+
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        {subPaths.map((x) => {
-          if (subPaths.indexOf(x) === 1) {
-            if (subPaths.length === 2) {
+        {segments.map((s) => {
+          if (segments.indexOf(s) === 1) {
+            if (segments.length === 2) {
               return (
-                <BreadcrumbItem key={subPaths.indexOf(x)}>
-                  <BreadcrumbPage>{toTitleCase(x)}</BreadcrumbPage>
+                <BreadcrumbItem key={segments.indexOf(s)}>
+                  <BreadcrumbPage>{toTitleCase(s)}</BreadcrumbPage>
                 </BreadcrumbItem>
               );
             } else {
               return (
-                <>
-                  <BreadcrumbItem key={subPaths.indexOf(x)}>
+                <div
+                  className="inline-flex items-center gap-1.5"
+                  key={segments.indexOf(s)}
+                >
+                  <BreadcrumbItem>
                     <BreadcrumbLink asChild>
-                      <Link href={`/${x}`}>{toTitleCase(x)}</Link>
+                      <Link href={`/${s}`}>{toTitleCase(s)}</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
-                </>
+                </div>
               );
             }
           }
-          if (subPaths.indexOf(x) > 1) {
-            if (subPaths.indexOf(x) + 1 === subPaths.length) {
+          if (segments.indexOf(s) > 1) {
+            if (segments.indexOf(s) + 1 === segments.length) {
               return (
-                <BreadcrumbItem key={subPaths.indexOf(x)}>
-                  <BreadcrumbPage>{toTitleCase(x)}</BreadcrumbPage>
+                <BreadcrumbItem key={segments.indexOf(s)}>
+                  <BreadcrumbPage>{toTitleCase(s)}</BreadcrumbPage>
                 </BreadcrumbItem>
               );
             } else {
               return (
-                <>
-                  <BreadcrumbItem key={subPaths.indexOf(x)}>
+                <div
+                  className="inline-flex items-center gap-1.5"
+                  key={segments.indexOf(s)}
+                >
+                  <BreadcrumbItem>
                     <BreadcrumbLink asChild>
                       <Link
-                        href={createPathString(subPaths, subPaths.indexOf(x))}
+                        href={createPathString(segments, segments.indexOf(s))}
                       >
-                        {toTitleCase(x)}
+                        {toTitleCase(s)}
                       </Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
-                </>
+                </div>
               );
             }
           }
@@ -115,7 +120,7 @@ export default function DBHeader() {
             <NavLinks hamburgerView={true} />
           </SheetContent>
         </Sheet>
-        <BreadbrumbContainer />
+        <BreadcrumbContainer />
       </div>
       <div className="flex justify-center items-center gap-2 px-2">
         <ModeToggle />

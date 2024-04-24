@@ -11,7 +11,7 @@ import {
 import { formatCurrency } from '@/lib/utils';
 import { getTodaysLastTenOrders } from '@/database/dbQueries/dashboardQueries';
 
-export default async function RecentOrders() {
+export default async function RecentOrdersTable() {
   const orders = await getTodaysLastTenOrders();
   let p = 0;
   let q = 0;
@@ -25,7 +25,11 @@ export default async function RecentOrders() {
       <div className="">Recent Orders</div>
       <div className="w-full h-full rounded-lg border bg-card text-card-foreground shadow-sm">
         <Table>
-          <TableCaption>A list of your recent sales.</TableCaption>
+          <TableCaption>
+            {!orders
+              ? 'No sales today yet.'
+              : 'A list of your recent sales today.'}
+          </TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">id</TableHead>
@@ -37,13 +41,7 @@ export default async function RecentOrders() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {!orders ? (
-              <TableRow>
-                <TableCell scope="row" colSpan={6} className="text-center">
-                  -No sales today-
-                </TableCell>
-              </TableRow>
-            ) : (
+            {orders &&
               orders.map((ord) => (
                 <TableRow key={ord.order_id}>
                   <TableCell className="font-medium">{ord.order_id}</TableCell>
@@ -55,8 +53,7 @@ export default async function RecentOrders() {
                     {formatCurrency(ord.amount)}
                   </TableCell>
                 </TableRow>
-              ))
-            )}
+              ))}
           </TableBody>
           {orders && (
             <TableFooter>

@@ -10,4 +10,9 @@ usePathname returns a string of the current URL's pathname.
 'use client';
 
 import { usePathname } from 'next/navigation';
+
+const path = usePathname();
+//path = '/dashboard/products/new)'
+const segments = path.split('/');
+// segments = ['/', 'dashboard', 'products', 'new']
 ```
