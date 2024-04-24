@@ -16,3 +16,23 @@ const path = usePathname();
 const segments = path.split('/');
 // segments = ['/', 'dashboard', 'products', 'new']
 ```
+
+## searchParams
+
+To access search params in Pages (Server Components), use the searchParams prop.
+
+> Unlike Pages, Layouts (Server Components) do not receive the searchParams prop.
+
+```ts
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    _id?: string;
+  };
+}) {
+  const query = searchParams?._id || '';
+
+  return <div className="w-full">{query}</div>;
+}
+```

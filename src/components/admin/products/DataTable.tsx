@@ -10,8 +10,8 @@ import products from '@/FakeData/raw/products/products.json';
 import { useState } from 'react';
 import { formatCurrency } from '@/lib/utils';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-
+import { FilePenLine, Pause, Trash2, SquareStackIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import {
   Table,
   TableCaption,
@@ -25,85 +25,136 @@ import {
 import Image from 'next/image';
 import { ProductType } from '@/database/models/Products';
 import { DataTablePagination } from '@/components/admin/products/DataTablePagination';
-
-const defaultColumns: ColumnDef<ProductType>[] = [
-  {
-    accessorKey: 'image_url',
-    header: 'Image',
-    cell: (props: any) => (
-      <div className="relative w-full aspect-video">
-        <Image
-          src={props.getValue()}
-          fill
-          alt="product image"
-          className="p-2"
-        />
-      </div>
-    ),
-    size: 400,
-    minSize: 200,
-  },
-  {
-    accessorKey: 'name',
-    header: 'Name',
-    cell: (props: any) => (
-      <div className="w-full text-center">{props.getValue()}</div>
-    ),
-    size: 200,
-    minSize: 200,
-  },
-  {
-    accessorKey: 'price',
-    header: 'Price',
-    cell: (data: any) => (
-      <div className="w-full text-center">
-        {formatCurrency(data.getValue())}
-      </div>
-    ),
-    size: 100,
-    minSize: 100,
-  },
-  {
-    accessorKey: 'description',
-    header: 'Description',
-    cell: (props: any) => (
-      <div className="w-full text-center">{props.getValue()}</div>
-    ),
-    size: 500,
-    minSize: 500,
-  },
-  {
-    accessorKey: 'category',
-    header: 'Category',
-    cell: (props: any) => (
-      <div className="w-full whitespace-nowrap text-center">
-        {props.getValue()}
-      </div>
-    ),
-    size: 150,
-    minSize: 150,
-  },
-  {
-    accessorKey: 'active',
-    header: 'Active',
-    cell: (props: any) => (
-      <div className="w-full text-center">{props.getValue().toString()}</div>
-    ),
-    size: 100,
-    minSize: 100,
-  },
-  {
-    accessorKey: '_id',
-    header: '_id',
-    cell: (props: any) => (
-      <div className="w-full text-center">{props.getValue()}</div>
-    ),
-    size: 300,
-    minSize: 300,
-  },
-];
+import { Button } from '@/components/ui/button';
 
 export default function DataTable() {
+  const router = useRouter();
+
+  const actionButtons = [
+    {
+      name: 'Edit',
+      onclick: (_id: string) => {
+        router.push(`/dashboard/products/edit?_id=${_id}`);
+      },
+      icon: FilePenLine,
+    },
+    {
+      name: 'Clone',
+      onclick: (_id: string) => {
+        router.push(`/dashboard/products/new?_id=${_id}`);
+      },
+      icon: SquareStackIcon,
+    },
+    { name: 'Pause', onclick: (product: ProductType) => {}, icon: Pause },
+    { name: 'Delete', onclick: (product: ProductType) => {}, icon: Trash2 },
+  ];
+
+  const defaultColumns: ColumnDef<ProductType>[] = [
+    {
+      header: 'Actions',
+      id: 'actions',
+      cell: ({ row }) => {
+        return (
+          <div className="flex flex-col">
+            {actionButtons.map((btn) => {
+              return (
+                <Button
+                  key={btn.name}
+                  variant="ghost"
+                  className="flex gap-2 items-center justify-center"
+                  onClick={() => {
+                    btn.onclick(row.original._id);
+                  }}
+                >
+                  <span className="hidden sm:inline-block text-xs">
+                    {btn.name}
+                  </span>
+                  <btn.icon className="h-3" />
+                </Button>
+              );
+            })}
+          </div>
+        );
+      },
+      size: 150,
+      minSize: 150,
+    },
+    {
+      accessorKey: 'image_url',
+      header: 'Image',
+      cell: (props: any) => (
+        <div className="relative w-full aspect-video">
+          <Image
+            src={props.getValue()}
+            fill
+            alt="product image"
+            className="p-2"
+          />
+        </div>
+      ),
+      size: 400,
+      minSize: 200,
+    },
+    {
+      accessorKey: 'name',
+      header: 'Name',
+      cell: (props: any) => (
+        <div className="w-full text-center">{props.getValue()}</div>
+      ),
+      size: 200,
+      minSize: 200,
+    },
+    {
+      accessorKey: 'price',
+      header: 'Price',
+      cell: (data: any) => (
+        <div className="w-full text-center">
+          {formatCurrency(data.getValue())}
+        </div>
+      ),
+      size: 100,
+      minSize: 100,
+    },
+    {
+      accessorKey: 'description',
+      header: 'Description',
+      cell: (props: any) => (
+        <div className="w-full text-center">{props.getValue()}</div>
+      ),
+      size: 500,
+      minSize: 500,
+    },
+    {
+      accessorKey: 'category',
+      header: 'Category',
+      cell: (props: any) => (
+        <div className="w-full whitespace-nowrap text-center">
+          {props.getValue()}
+        </div>
+      ),
+      size: 150,
+      minSize: 150,
+    },
+    {
+      accessorKey: 'active',
+      header: 'Active',
+      cell: (props: any) => (
+        <div className="w-full text-center">{props.getValue().toString()}</div>
+      ),
+      size: 100,
+      minSize: 100,
+    },
+    {
+      accessorKey: '_id',
+      header: '_id',
+      cell: (props: any) => (
+        <div className="w-full text-center">{props.getValue()}</div>
+      ),
+      size: 300,
+      minSize: 300,
+    },
+  ];
+
   const [data, setData] = useState(products);
   const [columns] = useState<typeof defaultColumns>(() => [...defaultColumns]);
 
