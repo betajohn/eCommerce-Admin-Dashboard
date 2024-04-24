@@ -54,11 +54,6 @@ const menuLinks: menuItem[] = [
     description: 'Submissions',
     href: '/dashboard/submissions',
   },
-  {
-    icon: FilePlus,
-    description: 'New Listing',
-    href: '/dashboard/new-listing',
-  },
 ];
 
 export default function NavLinks({ hamburgerView = false }) {

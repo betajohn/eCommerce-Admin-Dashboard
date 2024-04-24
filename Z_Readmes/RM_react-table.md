@@ -65,6 +65,7 @@ export default function MyTable() {
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    ColumnDef, //Type
   });
 
   return <div>blablabla</div>;
@@ -110,7 +111,7 @@ The column definitions are where we will tell TanStack Table how each column sho
 //columns is an array of columnDefinitions.
 //You should have a column definition for each column in your table.
 
-const columns = [
+const defaultColumns: ColumnDef<ProductType>[] = [
   {
     accessorKey: 'yourAccessorKey',
     header: 'YourHeaderName',
@@ -121,7 +122,13 @@ const columns = [
 ];
 ```
 
-[See all the options here](https://tanstack.com/table/v8/docs/api/core/column-def#accessorfn)
+Note: columns needs a "stable" reference (especially in React) in order to prevent infinite re-renders. This is why we recommend using React.useState or React.useMemo,
+
+```ts
+const [columns] = useState<typeof defaultColumns>(() => [...defaultColumns]);
+```
+
+[See all the column definition options here](https://tanstack.com/table/v8/docs/api/core/column-def#accessorfn)
 
 ```ts
 AccessorKey
@@ -167,7 +174,7 @@ The cell to display each row for the column. If a function is passed, it will be
 Example
 
 ```ts
-const columns = [
+cconst defaultColumns: ColumnDef<ProductType>[] = [
   { accessorKey: '_id', header: '_id' },
   {
     accessorKey: 'image_url',
@@ -262,7 +269,9 @@ const table = useReactTable({
 });
 ```
 
-### 3.3 Create the indicator to inform the user that columns are being resized and its event handlers
+### 3.3 Create an indicator to inform the user that columns are being resized
+
+**_Don't forget to add its event handlers_**
 
 ```ts
 <TableRow key={headerGroup.id}>

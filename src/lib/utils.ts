@@ -35,3 +35,11 @@ export function getMonthAbbreviation(month: number) {
   ];
   return months[month];
 }
+
+export function toTitleCase(word: string) {
+  let x = word.charAt(0).toUpperCase();
+  for (let i = 1; i < word.length; i++) {
+    x = x + word.charAt(i);
+  }
+  return x;
+}
