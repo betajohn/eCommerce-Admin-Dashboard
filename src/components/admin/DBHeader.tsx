@@ -1,17 +1,9 @@
 'use client';
 
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ModeToggle } from '../ModeToggle';
-import { Card, CardHeader, CardTitle } from '../ui/card';
 import { usePathname } from 'next/navigation';
 import NavLinks from '@/components/admin/NavLinks';
 import {
@@ -25,16 +17,6 @@ import {
 import { toTitleCase } from '@/lib/utils';
 import Link from 'next/link';
 
-const paths: { [key: string]: string } = {
-  '/dashboard': 'Dashboard',
-  '/dashboard/products': 'Products',
-  '/dashboard/messages': 'Messages',
-  '/dashboard/orders': 'Orders',
-  '/dashboard/customers': 'Customers',
-  '/dashboard/submissions': 'Submissions',
-  '/dashboard/new-listing': 'Create a New listing',
-};
-
 function createPathString(arr: string[], index: number) {
   let path = '/';
   for (let i = 1; i < index + 1; i++) {
@@ -42,6 +24,9 @@ function createPathString(arr: string[], index: number) {
   }
 
   return path;
+}
+function shortenSegment(s: string) {
+  if (s === 'dashboard') return 'DB';
 }
 
 function BreadcrumbContainer() {
@@ -65,11 +50,17 @@ function BreadcrumbContainer() {
                   className="inline-flex items-center gap-1.5"
                   key={segments.indexOf(s)}
                 >
-                  <BreadcrumbItem>
+                  <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink asChild>
                       <Link href={`/${s}`}>{toTitleCase(s)}</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
+                  <BreadcrumbItem className="md:hidden">
+                    <BreadcrumbLink asChild>
+                      <Link href={`/${s}`}>{shortenSegment(s)}</Link>
+                    </BreadcrumbLink>
+                  </BreadcrumbItem>
+
                   <BreadcrumbSeparator />
                 </div>
               );

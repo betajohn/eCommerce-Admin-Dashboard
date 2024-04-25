@@ -32,7 +32,7 @@ export default function ProductDisplay({ product }: { product: ProductType }) {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle>
+        <CardTitle className="text-xl sm:text-2xl">
           Editing Product _id: {JSON.stringify(product._id)}
         </CardTitle>
         <CardDescription>{product.name}</CardDescription>

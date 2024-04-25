@@ -29,9 +29,18 @@ const now = new Date();
 
 export default function TimeDisplay() {
   return (
-    <Card className="flex flex-col sm:flex-row gap-2 justify-between items-center py-2 px-3 text-xs md:text-sm">
-      <span>{`Local Time: ${formatDate(now)}`}</span>
-      <span>{`Server Time: ${formatUTCDate(now)}`}</span>
+    <Card className="flex gap-2 justify-between items-center py-2 px-2 text-xs md:text-sm">
+      <div className="inline-flex gap-1">
+        <span className="hidden sm:inline-block">{'Local Time:'}</span>
+        <span className="sm:hidden">{'L:'}</span>
+        {formatDate(now)}
+      </div>
+
+      <div className="inline-flex gap-1">
+        <span className="hidden sm:inline-block">{'Server Time:'}</span>
+        <span className="sm:hidden">{'S:'}</span>
+        {formatUTCDate(now)}
+      </div>
     </Card>
   );
 }

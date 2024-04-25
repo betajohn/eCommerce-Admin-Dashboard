@@ -32,7 +32,7 @@ export default async function Page({
   }
 
   return (
-    <main className="h-full rounded-lg flex flex-col items-center justify-center p-2">
+    <main className="h-full rounded-lg flex flex-col items-center justify-center">
       {isValid && product ? (
         <ProductDisplay product={product} />
       ) : (
