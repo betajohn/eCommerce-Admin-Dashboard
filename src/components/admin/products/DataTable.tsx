@@ -79,7 +79,7 @@ export default function DataTable() {
                   return (
                     <div key={btn.name}>
                       <DropdownMenuItem
-                        className="py-3 px-6"
+                        className="py-3 px-6 gap-2"
                         onClick={() => {
                           btn.onclick(row.original._id.toString());
                         }}

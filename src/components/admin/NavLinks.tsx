@@ -69,10 +69,14 @@ export default function NavLinks({ hamburgerView = false }) {
               <Link
                 key={link.description}
                 href={link.href}
-                className={cn(buttonVariants({ variant: 'ghost' }), 'px-6', {
-                  'bg-card rounded-none sm:border sm:border-white':
-                    pathname === link.href,
-                })}
+                className={cn(
+                  buttonVariants({ variant: 'ghost' }),
+                  'px-6 justify-normal',
+                  {
+                    'bg-card rounded-none sm:border sm:border-white':
+                      pathname === link.href,
+                  }
+                )}
               >
                 <link.icon className="w-6" />
                 <p
@@ -88,7 +92,7 @@ export default function NavLinks({ hamburgerView = false }) {
       <Button
         variant="ghost"
         onClick={() => console.log('logging out')}
-        className="gap-1 px-1"
+        className="px-6 justify-normal"
       >
         <LogOut className="w-6" />
         Logout

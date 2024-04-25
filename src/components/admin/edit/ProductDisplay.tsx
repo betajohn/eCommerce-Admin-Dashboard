@@ -40,7 +40,7 @@ export default function ProductDisplay({ product }: { product: ProductType }) {
       <CardContent className="w-full px-0">
         <form className="flex flex-col items-center w-full gap-8 px-2 ">
           <div className="w-full h-full flex flex-col gap-8 items-center lg:flex-row">
-            <div className="w-full max-w-[550px] px-14 bg-red-400">
+            <div className="w-full max-w-[550px] px-14 bg-primary">
               <Carousel className="w-full aspect-square max-w-xs mx-auto">
                 <CarouselContent>
                   {product.images.map((img) => {
