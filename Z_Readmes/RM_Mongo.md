@@ -41,6 +41,22 @@ You can also overwrite Mongoose's default _id with your own _id. Just be careful
 MUST DEFINE _id ON YOUR SCHEMA IN ORDER TO OVERWRITE IT!!
 ```
 
+### Creating an ObjectID from a string
+
+```ts
+import mongoose from 'mongoose';
+
+const _id: new mongoose.Types.ObjectId(input:string),
+```
+
+The string to create an ObjectId must be a 24 character hex string.
+
+```text
+A 24-character hexadecimal string consists of numbers 0-9 and letters A-F, totaling 24 characters. Hexadecimal is base-16 numbering system, meaning each digit can represent values from 0 to 15. In a 24-character string, each character represents 4 bits, so in total, it represents 96 bits of information.
+
+// 661f007021251ab30391394c
+```
+
 #### Getting \_id programmatically
 
 > Warning: Only plain objects can be passed to Client Components from Server Components. Objects with toJSON methods are not supported. Convert it manually to a simple value before passing it to props.

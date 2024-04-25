@@ -36,3 +36,5 @@ export default async function Page({
   return <div className="w-full">{query}</div>;
 }
 ```
+
+## Dynamic routes

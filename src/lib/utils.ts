@@ -43,3 +43,10 @@ export function toTitleCase(word: string) {
   }
   return x;
 }
+
+export function isValidIdString(s: string | undefined) {
+  // Regular expression pattern to match hexadecimal string
+  var pattern = /^[0-9a-fA-F]{24}$/;
+
+  return pattern.test(s ?? '');
+}

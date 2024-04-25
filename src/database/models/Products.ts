@@ -1,14 +1,14 @@
 import mongoose from 'mongoose';
 
 export interface ProductType {
-  _id: string;
+  _id: mongoose.Types.ObjectId;
   name: string;
   price: number;
   description: string;
   category: string;
   image_url: string;
   rating: { rate: number; count: number };
-  active: boolean;
+  status: 'active | inactive';
 }
 
 type Product = ProductType & mongoose.Document;
@@ -16,7 +16,7 @@ type Product = ProductType & mongoose.Document;
 /* ProductSchema will correspond to a collection in your MongoDB database. */
 const ProductSchema = new mongoose.Schema<Product>({
   _id: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, '_id is required'],
   },
   name: {
@@ -51,8 +51,8 @@ const ProductSchema = new mongoose.Schema<Product>({
     rate: { type: Number },
     count: { type: Number },
   },
-  active: {
-    type: Boolean,
+  status: {
+    type: String,
     required: [true, 'Listed is required'],
   },
 });

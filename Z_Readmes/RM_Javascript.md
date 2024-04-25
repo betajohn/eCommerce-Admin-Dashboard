@@ -46,3 +46,15 @@ let y = Math.round(12.4567 * 100) / 100; // 12.46
 ```js
 x === y; // true
 ```
+
+## Creating a search bar
+
+```ts
+<form">
+  <Input type="search"/> // form will be submitted on enter
+  <Button
+    type="submit" //form will be submitted on click
+    Search
+  </Button>
+</form>
+```

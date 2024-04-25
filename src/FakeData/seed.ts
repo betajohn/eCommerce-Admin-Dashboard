@@ -12,6 +12,8 @@ import { getRandomArbitrary, writeToDisk } from '@/FakeData/utils';
 import { PageViewModel } from '@/database/models/PageView';
 import generateRandomSubmission from '@/FakeData/scripts/generateSubmissions';
 import SubmissionModel from '@/database/models/Submissions';
+import products from '../FakeData/raw/products/products.json';
+import { ProductsModel } from '@/database/models/Products';
 
 await dbConnect();
 
@@ -119,6 +121,15 @@ export async function seedSubmissionsToday() {
     console.log(users.length + ' users have been seeded');
     await SubmissionModel.create(submissions);
     console.log(submissions.length + ' submissions have been seeded');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function seedProducts() {
+  try {
+    await ProductsModel.create(products);
+    console.log(products.length + ' products have been successfully seeded');
   } catch (error) {
     console.log(error);
   }

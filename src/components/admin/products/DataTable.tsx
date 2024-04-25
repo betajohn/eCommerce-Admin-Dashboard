@@ -136,10 +136,10 @@ export default function DataTable() {
       minSize: 150,
     },
     {
-      accessorKey: 'active',
-      header: 'Active',
+      accessorKey: 'status',
+      header: 'Status',
       cell: (props: any) => (
-        <div className="w-full text-center">{props.getValue().toString()}</div>
+        <div className="w-full text-center">{props.getValue()}</div>
       ),
       size: 100,
       minSize: 100,
