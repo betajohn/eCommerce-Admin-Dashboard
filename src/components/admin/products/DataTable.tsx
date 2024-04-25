@@ -80,12 +80,12 @@ export default function DataTable() {
       minSize: 150,
     },
     {
-      accessorKey: 'image_url',
+      accessorKey: 'images',
       header: 'Image',
       cell: (props: any) => (
         <div className="relative w-full aspect-video">
           <Image
-            src={props.getValue()}
+            src={props.getValue()[0]}
             fill
             alt="product image"
             className="p-2"

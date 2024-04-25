@@ -33,7 +33,9 @@ function getRandomElement<T>(array: T[]): T {
 let x = getRandomElement([1, 2, 3]); // typeof x => number
 ```
 
-## Ignore next error
+## Ignore errors
+
+### Ignore all errors
 
 ```ts
 /**
@@ -41,6 +43,15 @@ let x = getRandomElement([1, 2, 3]); // typeof x => number
  *
  * @ts-expect-error */
 const multiLine: number = 'value';
+```
+
+### Ignoring just the next error
+
+use // @ts-ignore
+
+```ts
+// @ts-ignore
+const myNumber: number = 'hello'; // No error shown
 ```
 
 ## Pushing into an empty Array
@@ -66,16 +77,9 @@ Did you mean number[]?
 Yeah, you probably did.
 ```
 
-## Ignoring just the next error
+## Create a type from a different type
 
-use // @ts-ignore
-
-```ts
-// @ts-ignore
-const myNumber: number = 'hello'; // No error shown
-```
-
-## Express a type as subtype of another type
+### Type as subtype
 
 We can use an indexed access type to look up a specific property on another type:
 
@@ -94,4 +98,27 @@ interface CartType {
 }
 
 type products = CartType['products'];
+```
+
+### Convert an Array of Strings into a String Literal Union Type
+
+We can achieve this using the `number` and `as const` keywords.
+
+`typeof myArray[number]` represents the union type of all the string literals contained in the myArray array.
+
+```ts
+// define the array 'as const'
+const categories = [
+  'sports',
+  "men's clothing",
+  'electronics',
+  "women's clothing",
+  'jewelry',
+] as const;
+
+// create the union type with the number keyword
+
+type Category = (typeof categories)[number];
+
+const BlaBla: Category = 'Sodas'; // type Error
 ```

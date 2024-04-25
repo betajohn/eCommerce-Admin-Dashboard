@@ -7,14 +7,9 @@ import { RocketIcon, ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import { useRef } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 import { isValidIdString } from '@/lib/utils';
+import { Card } from '@/components/ui/card';
 
-export default function IDNotFound({
-  isValid,
-  product,
-}: {
-  isValid: boolean;
-  product: null;
-}) {
+export default function IDNotFound({ isValid }: { isValid: boolean }) {
   const ref = useRef<HTMLInputElement | null>(null);
   const { toast } = useToast();
 
@@ -32,7 +27,7 @@ export default function IDNotFound({
   }
 
   return (
-    <div className=" flex flex-col gap-4 items-center">
+    <Card className=" flex flex-col gap-4 items-center px-2 py-6 sm:px-6 sm:py-10">
       <Alert variant="destructive">
         <ExclamationTriangleIcon className="h-6 w-6 mt-1" />
         <AlertTitle>Error!</AlertTitle>
@@ -61,6 +56,6 @@ export default function IDNotFound({
           Product _id must be a 24 char long hexadecimal string
         </AlertDescription>
       </Alert>
-    </div>
+    </Card>
   );
 }

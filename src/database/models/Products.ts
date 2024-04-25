@@ -1,12 +1,20 @@
 import mongoose from 'mongoose';
 
+export const categories = [
+  'sports',
+  "men's clothing",
+  'electronics',
+  "women's clothing",
+  'jewelry',
+] as const;
+
 export interface ProductType {
   _id: mongoose.Types.ObjectId;
   name: string;
   price: number;
   description: string;
-  category: string;
-  image_url: string;
+  category: (typeof categories)[number];
+  images: string[];
   rating: { rate: number; count: number };
   status: 'active | inactive';
 }
@@ -41,11 +49,13 @@ const ProductSchema = new mongoose.Schema<Product>({
     required: [true, 'Category is required'],
     maxlength: [50, 'Max length 50 char'],
   },
-  image_url: {
-    /* Pet's age, if applicable */
-    type: String,
-    required: [true, 'Image is required'],
-  },
+  images: [
+    {
+      /* Pet's age, if applicable */
+      type: String,
+      required: [false, 'Image is required'],
+    },
+  ],
   //just for data seeding
   rating: {
     rate: { type: Number },
