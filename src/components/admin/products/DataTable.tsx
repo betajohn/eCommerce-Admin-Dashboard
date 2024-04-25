@@ -12,6 +12,8 @@ import { formatCurrency } from '@/lib/utils';
 import { cn } from '@/lib/utils';
 import { FilePenLine, Pause, Trash2, SquareStackIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { MoreHorizontal } from 'lucide-react';
+
 import {
   Table,
   TableCaption,
@@ -22,6 +24,15 @@ import {
   TableRow,
   TableFooter,
 } from '@/components/ui/table';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { ProductType } from '@/database/models/Products';
 import { DataTablePagination } from '@/components/admin/products/DataTablePagination';
@@ -45,39 +56,50 @@ export default function DataTable() {
       },
       icon: SquareStackIcon,
     },
-    { name: 'Pause', onclick: (product: ProductType) => {}, icon: Pause },
-    { name: 'Delete', onclick: (product: ProductType) => {}, icon: Trash2 },
+    { name: 'Pause', onclick: (_id: string) => {}, icon: Pause },
+    { name: 'Delete', onclick: (id: string) => {}, icon: Trash2 },
   ];
 
   const defaultColumns: ColumnDef<ProductType>[] = [
     {
-      header: 'Actions',
+      header: '',
       id: 'actions',
       cell: ({ row }) => {
         return (
           <div className="flex flex-col">
-            {actionButtons.map((btn) => {
-              return (
-                <Button
-                  key={btn.name}
-                  variant="ghost"
-                  className="flex gap-2 items-center justify-center"
-                  onClick={() => {
-                    btn.onclick(row.original._id);
-                  }}
-                >
-                  <span className="hidden sm:inline-block text-xs">
-                    {btn.name}
-                  </span>
-                  <btn.icon className="h-3" />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="h-4 w-4" />
                 </Button>
-              );
-            })}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {actionButtons.map((btn) => {
+                  return (
+                    <div key={btn.name}>
+                      <DropdownMenuItem
+                        className="py-3 px-6"
+                        onClick={() => {
+                          btn.onclick(row.original._id.toString());
+                        }}
+                      >
+                        {btn.name}
+                        <btn.icon className="h-3" />
+                      </DropdownMenuItem>
+                      {btn != actionButtons[actionButtons.length - 1] && (
+                        <DropdownMenuSeparator />
+                      )}
+                    </div>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         );
       },
-      size: 150,
-      minSize: 150,
+      size: 70,
+      enableResizing: false,
     },
     {
       accessorKey: 'images',
@@ -138,9 +160,12 @@ export default function DataTable() {
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: (props: any) => (
-        <div className="w-full text-center">{props.getValue()}</div>
-      ),
+      cell: (props: any) =>
+        props.getValue() === 'active' ? (
+          <Badge>Active</Badge>
+        ) : (
+          <Badge variant="destructive">Inactive</Badge>
+        ),
       size: 100,
       minSize: 100,
     },
