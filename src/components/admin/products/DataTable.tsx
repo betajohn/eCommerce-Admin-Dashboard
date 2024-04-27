@@ -151,7 +151,7 @@ export default function DataTable() {
       header: 'Category',
       cell: (props: any) => (
         <div className="w-full whitespace-nowrap text-center">
-          {props.getValue()}
+          {props.getValue().name}
         </div>
       ),
       size: 150,

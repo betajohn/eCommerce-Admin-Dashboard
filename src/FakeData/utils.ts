@@ -1,7 +1,11 @@
 import { writeFile } from 'fs';
 
-export const siteLaunchDate = new Date(Date.UTC(2024, 0, 1)); // server time
-export const oldestBirthday = new Date(1924, 0, 1); // local time
+export const NOW = new Date();
+export const SITE_LAUNCH_DATE = new Date(Date.UTC(2024, 0, 1)); // server time
+export const OLDEST_BIRTH_DATE = new Date(1924, 0, 1); // local time
+export const YOUNGEST_BIRTH_DATE = new Date(
+  Date.UTC(NOW.getUTCFullYear() - 13, NOW.getUTCMonth(), NOW.getUTCDate())
+);
 
 export function writeToDisk(data: any, filePath = './result.json') {
   // Convert the data to JSON format
@@ -42,15 +46,15 @@ export function getRandomArbitraryDate(minDate: Date, maxDate: Date) {
 }
 
 export function getRandomMomentTodayUTC() {
-  const now = new Date();
+  const NOW = new Date();
   const minDate = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 0, 0, 0)
+    Date.UTC(NOW.getUTCFullYear(), NOW.getUTCMonth(), NOW.getUTCDate(), 0, 0, 0)
   );
   const maxDate = new Date(
     Date.UTC(
-      now.getUTCFullYear(),
-      now.getUTCMonth(),
-      now.getUTCDate(),
+      NOW.getUTCFullYear(),
+      NOW.getUTCMonth(),
+      NOW.getUTCDate(),
       23,
       59,
       59
@@ -60,7 +64,7 @@ export function getRandomMomentTodayUTC() {
 }
 
 export function getRandomMoment() {
-  return getRandomArbitraryDate(siteLaunchDate, new Date());
+  return getRandomArbitraryDate(SITE_LAUNCH_DATE, new Date());
 }
 
 export function getRandom5DigitNumber() {

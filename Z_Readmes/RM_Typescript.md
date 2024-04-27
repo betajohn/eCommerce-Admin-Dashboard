@@ -122,3 +122,13 @@ type Category = (typeof categories)[number];
 
 const BlaBla: Category = 'Sodas'; // type Error
 ```
+
+## Type Assertion of myArray.find()
+
+You can use a type assertion to assert that the result of find() will never be undefined. This is useful when you are certain that the element exists in the array:
+
+```ts
+const categoryData = categories.find((c) => {
+  return c.name === name;
+}) as (typeof categories)[number]; // Asserting that it's never undefined. Changes the inferred type which contains undefined -in case of array.find() not finding any matches-.
+```

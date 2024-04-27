@@ -4,7 +4,7 @@ import products from '../raw/products/products.json';
 import {
   getRandomArbitrary,
   getRandomElement,
-  siteLaunchDate,
+  SITE_LAUNCH_DATE,
 } from '@/FakeData/utils';
 
 const loremIpsum =
@@ -12,32 +12,33 @@ const loremIpsum =
 
 export function generateRandomLoremIpsum() {
   const lorenParts = loremIpsum.split('.');
-  console.log(lorenParts);
-  for (let i = 0; i < lorenParts.length; i++) {
-    lorenParts[i] = lorenParts[i] + '.';
-  }
+
   const lines = getRandomArbitrary(1, lorenParts.length);
 
-  const answer: string[] = [];
+  const textStrings: string[] = [];
 
   for (let i = 0; i < lines; i++) {
     let newLine = getRandomElement(lorenParts);
-    while (answer.includes(newLine)) {
+    while (textStrings.includes(newLine)) {
       newLine = getRandomElement(lorenParts);
     }
-    answer.push(newLine);
+    textStrings.push(newLine);
   }
 
   let ans = '';
 
-  answer.forEach((a) => {
-    ans = ans + a + '.';
+  textStrings.forEach((a) => {
+    if (textStrings.indexOf(a) !== textStrings.length - 1) {
+      ans = ans + a + '. ';
+    } else {
+      ans = ans + a + '.';
+    }
   });
 
   return ans;
 }
 
-function getCategFromProds() {
+export function getCategFromProds() {
   const rawCategories: string[] = [];
   products.forEach((p) => {
     if (!rawCategories.includes(p.category)) {
@@ -49,16 +50,19 @@ function getCategFromProds() {
       _id: new mongoose.Types.ObjectId(),
       name: c,
       description: generateRandomLoremIpsum(),
-      created_at: siteLaunchDate,
-      updated_at: siteLaunchDate,
+      created_at: SITE_LAUNCH_DATE,
+      updated_at: SITE_LAUNCH_DATE,
     };
   });
-
+  console.log(categories);
   return categories;
 }
 
 export function generateStoreConfig() {
   const storeConfig: StoreConfigType = {
+    _id: new mongoose.Types.ObjectId(),
     categories: getCategFromProds(),
   };
+
+  return storeConfig;
 }

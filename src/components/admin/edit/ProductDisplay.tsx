@@ -5,6 +5,7 @@ import {
   CardDescription,
   CardContent,
 } from '@/components/ui/card';
+import { StoreConfigType } from '@/database/models/StoreConfig';
 import {
   Carousel,
   CarouselContent,
@@ -25,7 +26,6 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { ProductType } from '@/database/models/Products';
 import Image from 'next/image';
-import { categories } from '@/database/models/Products';
 import { Button } from '@/components/ui/button';
 import { z } from 'zod';
 
@@ -51,9 +51,16 @@ const productForm = z.object({
     })
     .nonnegative({ message: 'Price can not be negative' })
     .lte(999999999, { message: 'Number too Big' }),
+  category: z.custom(),
 });
 
-export default function ProductDisplay({ product }: { product: ProductType }) {
+export default function ProductDisplay({
+  product,
+  categories,
+}: {
+  product: ProductType;
+  categories: StoreConfigType['categories'];
+}) {
   return (
     <Card className="w-full">
       <CardHeader>
@@ -122,13 +129,13 @@ export default function ProductDisplay({ product }: { product: ProductType }) {
                   <Label htmlFor="category">Category</Label>
                   <Select>
                     <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder={product.category} />
+                      <SelectValue placeholder={product.category.name} />
                     </SelectTrigger>
                     <SelectContent>
                       {categories.map((cat) => {
                         return (
-                          <SelectItem value={cat} key={cat}>
-                            {cat}
+                          <SelectItem value={cat.name} key={cat.name}>
+                            {cat.name}
                           </SelectItem>
                         );
                       })}

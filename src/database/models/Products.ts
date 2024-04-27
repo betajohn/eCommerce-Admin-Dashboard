@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 
 export const categories = [
-  'sports',
   "men's clothing",
   'electronics',
   "women's clothing",
@@ -19,8 +18,8 @@ export interface ProductType {
     categ_id: mongoose.Types.ObjectId;
   };
   images: string[];
-  rating: { rate: number; count: number };
-  status: 'active | inactive';
+  rating?: { rate: number; count: number };
+  status: 'active' | 'inactive';
 }
 
 type Product = ProductType & mongoose.Document;
@@ -65,15 +64,13 @@ const ProductSchema = new mongoose.Schema<Product>({
   },
   status: {
     type: String,
+    enum: ['active', 'inactive'],
     required: [true, 'Listed is required'],
+    default: 'active',
   },
 });
 
 let ProductsModel =
   mongoose.models?.Product || mongoose.model<Product>('Product', ProductSchema);
 
-let PausedProductsModel =
-  mongoose.models?.Products_paused ||
-  mongoose.model<Product>('Products_paused', ProductSchema);
-
-export { ProductsModel, PausedProductsModel };
+export { ProductsModel };

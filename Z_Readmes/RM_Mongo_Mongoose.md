@@ -1,4 +1,6 @@
-# MongoDB
+# Mongo & Mongoose Notes
+
+## MongoDB
 
 ## Poject's Naming Convention
 
@@ -159,3 +161,26 @@ ordersData = [
 #### \_id field in group
 
 - The \_id field is mandatory; however, you can specify an \_id value of null to calculate accumulated values for all the input documents as a whole.
+
+## Mongoose
+
+### Schema
+
+Use the anum propery in any string type declaration to create a string literal union.
+
+```text
+enum: Array, creates a validator that checks if the value is in the given array.
+```
+
+```ts
+type status = 'active' | 'inactive;
+
+const YourSchema = new mongoose.Schema({
+  status: {
+    type: String,
+    enum: ['active', 'inactive'],
+    required: true // Optional, depending on your requirements
+  }
+});
+
+```

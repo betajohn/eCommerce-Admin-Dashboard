@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 export interface StoreConfigType {
-  _id?: mongoose.Types.ObjectId;
+  _id: mongoose.Types.ObjectId;
   categories: {
     _id: mongoose.Types.ObjectId;
     name: string;
@@ -19,8 +19,8 @@ const StoreConfigSchema = new mongoose.Schema({
         _id: { type: mongoose.Schema.Types.ObjectId },
         name: { type: String },
         description: { type: String },
-        created_at: { Date },
-        updated_at: { Date },
+        created_at: { type: Date },
+        updated_at: { type: Date },
       },
     ],
   },

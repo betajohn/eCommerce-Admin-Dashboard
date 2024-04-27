@@ -12,8 +12,10 @@ import { getRandomArbitrary, writeToDisk } from '@/FakeData/utils';
 import { PageViewModel } from '@/database/models/PageView';
 import generateRandomSubmission from '@/FakeData/scripts/generateSubmissions';
 import SubmissionModel from '@/database/models/Submissions';
-import products from '../FakeData/raw/products/products.json';
+import { generateProducts } from '@/FakeData/scripts/generateProducts';
 import { ProductsModel } from '@/database/models/Products';
+import { generateStoreConfig } from '@/FakeData/scripts/generateStoreConfig';
+import { StoreConfigModel } from '@/database/models/StoreConfig';
 
 await dbConnect();
 
@@ -128,8 +130,20 @@ export async function seedSubmissionsToday() {
 
 export async function seedProducts() {
   try {
+    const products = generateProducts();
     await ProductsModel.create(products);
     console.log(products.length + ' products have been successfully seeded');
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function seedStoreConfig() {
+  try {
+    const data = generateStoreConfig();
+
+    await StoreConfigModel.create(data);
+    console.log('Store Configuration has been successfully seeded.');
   } catch (error) {
     console.log(error);
   }

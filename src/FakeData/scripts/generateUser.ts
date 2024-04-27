@@ -6,7 +6,12 @@ import countries from '../raw/address/countries.json';
 import USAData from '../raw/address/statesAndCities.json';
 import { generateRandomStreetAddress } from '../raw/address/street';
 import { generateEmailDomain } from '../raw/emailDomains';
-import { siteLaunchDate, oldestBirthday } from '../utils';
+import {
+  SITE_LAUNCH_DATE,
+  OLDEST_BIRTH_DATE,
+  YOUNGEST_BIRTH_DATE,
+  NOW,
+} from '../utils';
 import { payment_methods, themes, getRandomLanguage } from '../raw/preferences';
 import { OrderType } from '@/database/models/Orders';
 import { SubmissionType } from '@/database/models/Submissions';
@@ -20,17 +25,9 @@ import {
 } from '../utils';
 import { UserType } from '@/database/models/Users';
 
-//Date.now() === new Date.getTime() //ms since epoch
-
-const now = new Date();
-//user needs to be at least 13yo to have an account
-const youngestBirthday = new Date(
-  Date.UTC(now.getUTCFullYear() - 13, now.getUTCMonth(), now.getUTCDate())
-);
-
 function generateRandomDates() {
-  const regist_date = getRandomArbitraryDate(siteLaunchDate, now);
-  const last_login = getRandomArbitraryDate(regist_date, now);
+  const regist_date = getRandomArbitraryDate(SITE_LAUNCH_DATE, NOW);
+  const last_login = getRandomArbitraryDate(regist_date, NOW);
   return { regist_date, last_login };
 }
 
@@ -116,7 +113,7 @@ export function generateRandomUser(isNew = true) {
       dial_code: dial_code,
       number: getRandomArbitrary(10000000, 99999999),
     },
-    birth_date: getRandomArbitraryDate(oldestBirthday, youngestBirthday),
+    birth_date: getRandomArbitraryDate(OLDEST_BIRTH_DATE, YOUNGEST_BIRTH_DATE),
     order_history: [],
     //setter function to add orders to order_history
     set assignOrder(order: OrderType) {
