@@ -20,6 +20,8 @@ With Zod, you declare a validator once and Zod will automatically infer the stat
 
 ### Zod enums: declare a schema with a fixed set of allowable string values
 
+> To create an enum the members of the enum need to be known at compile time.
+
 ```ts
 const FishEnum = z.enum(['Salmon', 'Tuna', 'Trout']);
 type FishEnum = z.infer<typeof FishEnum>;

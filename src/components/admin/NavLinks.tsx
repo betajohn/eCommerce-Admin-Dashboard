@@ -10,6 +10,7 @@ import {
   BookCopy,
   FilePlus,
   ClipboardList,
+  Wrench,
 } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
@@ -53,6 +54,11 @@ const menuLinks: menuItem[] = [
     icon: BookCopy,
     description: 'Submissions',
     href: '/dashboard/submissions',
+  },
+  {
+    icon: Wrench,
+    description: 'Adjust', //create-delete product categories
+    href: '/dashboard/configuration',
   },
 ];
 

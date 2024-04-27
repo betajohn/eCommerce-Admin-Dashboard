@@ -1,11 +1,9 @@
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    _id?: string;
-  };
-}) {
-  const query = searchParams?._id || '';
+import ProductForm from '@/components/admin/products/productForm/ProductForm';
 
-  return <div className="w-full">{query}</div>;
+export default async function Page() {
+  return (
+    <main className="h-full rounded-lg flex flex-col items-center justify-center">
+      <ProductForm />
+    </main>
+  );
 }

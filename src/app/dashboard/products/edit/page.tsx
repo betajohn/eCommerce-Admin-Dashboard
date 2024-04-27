@@ -13,11 +13,38 @@ const z = {
   price: 15.99,
   description:
     'The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.',
-  category: "men's clothing",
+  category: { name: "men's clothing", categ_id: '662ca0ac9567b6923fa27d4f' },
   images: ['https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg'],
   status: 'active',
   __v: 0,
 };
+
+const q = [
+  {
+    _id: '662ca0ac9567b6923fa27d4f',
+    name: "men's clothing",
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  },
+  {
+    _id: '662ca0ac9567b6923fa27d50',
+    name: 'jewelry',
+    description:
+      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+  },
+  {
+    _id: '662ca0ac9567b6923fa27d51',
+    name: 'electronics',
+    description:
+      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  },
+  {
+    _id: '662ca0ac9567b6923fa27d52',
+    name: "women's clothing",
+    description:
+      'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+  },
+];
 
 export default async function Page({
   searchParams,
@@ -33,7 +60,7 @@ export default async function Page({
   if (isValid) {
     product = z; // await getProductByID(query);
   }
-  const categ = await getCategories();
+  const categories = q; //await getCategories();
 
   return (
     <main className="h-full rounded-lg flex flex-col items-center justify-center">

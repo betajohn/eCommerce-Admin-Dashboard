@@ -1,6 +1,7 @@
 import { ProductType } from '@/database/models/Products';
 import products from '../raw/products/products.json';
 import mongoose from 'mongoose';
+import { writeToDisk } from '@/FakeData/utils';
 
 const categories = [
   { name: "men's clothing", _id: '662ca0ac9567b6923fa27d4f' },
@@ -17,7 +18,7 @@ export function generateProducts() {
 
   products.map((p) => {
     const categoryData = categories.find((c) => {
-      return c.name === p.category;
+      return c.name === p.category.name;
     }) as (typeof categories)[number];
 
     const newP: ProductType = {
@@ -37,4 +38,8 @@ export function generateProducts() {
     finalProducts.push(newP);
   });
   return finalProducts;
+}
+
+export function saveProductsToDisk() {
+  writeToDisk(generateProducts(), './newProducts.json');
 }

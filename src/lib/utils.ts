@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
+import mongoose from 'mongoose';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -49,4 +50,8 @@ export function isValidIdString(s: string | undefined) {
   var pattern = /^[0-9a-fA-F]{24}$/;
 
   return pattern.test(s ?? '');
+}
+
+export function cleanMongoResponse(objArr: { _id: mongoose.Types.ObjectId }[]) {
+  return objArr.map((o) => ({ ...o, _id: o._id.toString() }));
 }
