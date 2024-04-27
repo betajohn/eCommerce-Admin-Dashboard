@@ -1,4 +1,7 @@
-import { getProductByID } from '@/database/dbQueries/productsQueries';
+import {
+  getCategories,
+  getProductByID,
+} from '@/database/dbQueries/productsQueries';
 import IDNotFound from '@/components/admin/edit/IDNotFound';
 import { isValidIdString } from '@/lib/utils';
 import ProductDisplay from '@/components/admin/edit/ProductDisplay';
@@ -30,11 +33,12 @@ export default async function Page({
   if (isValid) {
     product = z; // await getProductByID(query);
   }
+  const categ = await getCategories();
 
   return (
     <main className="h-full rounded-lg flex flex-col items-center justify-center">
       {isValid && product ? (
-        <ProductDisplay product={product} />
+        <ProductDisplay product={product} categories={categories} />
       ) : (
         <IDNotFound isValid={isValid} />
       )}

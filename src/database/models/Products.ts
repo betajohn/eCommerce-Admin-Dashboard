@@ -13,7 +13,11 @@ export interface ProductType {
   name: string;
   price: number;
   description: string;
-  category: (typeof categories)[number];
+  //category_OLD: (typeof categories)[number];
+  category: {
+    name: string;
+    categ_id: mongoose.Types.ObjectId;
+  };
   images: string[];
   rating: { rate: number; count: number };
   status: 'active | inactive';
@@ -45,9 +49,7 @@ const ProductSchema = new mongoose.Schema<Product>({
     maxlength: [1000, 'Max length 1000 char'],
   },
   category: {
-    type: String,
-    required: [true, 'Category is required'],
-    maxlength: [50, 'Max length 50 char'],
+    type: { name: { type: String }, categ_id: mongoose.Schema.Types.ObjectId },
   },
   images: [
     {

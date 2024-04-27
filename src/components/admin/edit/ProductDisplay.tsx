@@ -27,6 +27,31 @@ import { ProductType } from '@/database/models/Products';
 import Image from 'next/image';
 import { categories } from '@/database/models/Products';
 import { Button } from '@/components/ui/button';
+import { z } from 'zod';
+
+const productForm = z.object({
+  name: z
+    .string({
+      required_error: 'Name is required',
+      invalid_type_error: 'Name must be a string',
+    })
+    .trim()
+    .max(200, { message: 'Name must be max 200 characters long' }),
+  description: z
+    .string({
+      required_error: 'Description is required',
+      invalid_type_error: 'Name must be a string',
+    })
+    .trim()
+    .max(1000, { message: 'Description must be max 1000 characters long' }),
+  price: z
+    .number({
+      required_error: 'Price is required',
+      invalid_type_error: 'Price must be a number',
+    })
+    .nonnegative({ message: 'Price can not be negative' })
+    .lte(999999999, { message: 'Number too Big' }),
+});
 
 export default function ProductDisplay({ product }: { product: ProductType }) {
   return (
@@ -75,7 +100,7 @@ export default function ProductDisplay({ product }: { product: ProductType }) {
                   defaultValue={product.name}
                 />
               </div>
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col gap-1">
                 <Label htmlFor="description">Description</Label>
                 <Textarea
                   id="description"

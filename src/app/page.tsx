@@ -1,3 +1,4 @@
+import { generateRandomLoremIpsum } from '@/FakeData/scripts/generateStoreConfig';
 import generateSubmission from '@/FakeData/scripts/generateSubmissions';
 import {
   seedAllToday,
@@ -8,6 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
+console.log(generateRandomLoremIpsum());
 
 export default function Home() {
   //registerUserNow();
