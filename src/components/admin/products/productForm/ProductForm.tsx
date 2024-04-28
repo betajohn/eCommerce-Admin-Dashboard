@@ -12,7 +12,7 @@ export default function ProductForm({
   categories,
 }: {
   product?: ProductType;
-  categories?: StoreConfigType['categories'];
+  categories: StoreConfigType['categories'];
 }) {
   const form = useForm<z.infer<typeof productFormSchema>>({
     resolver: zodResolver(productFormSchema),
@@ -26,5 +26,11 @@ export default function ProductForm({
     },
   });
 
-  return <div>penisform</div>;
+  function onSubmit(values: z.infer<typeof productFormSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
+  return <div>{JSON.stringify(categories)}</div>;
 }

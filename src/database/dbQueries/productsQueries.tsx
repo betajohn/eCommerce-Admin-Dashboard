@@ -24,9 +24,19 @@ export async function getProductByID(_id: string) {
 
 export async function getCategories() {
   try {
-    const storeConfig = await StoreConfigModel.find().lean();
+    const categories = await StoreConfigModel.aggregate([
+      { $unwind: '$categories' },
+      {
+        $addFields: {
+          name: '$categories.name',
+          description: '$categories.description',
+          _id: '$categories._id',
+        },
+      },
+      { $project: { name: 1, description: 1, _id: 1 } },
+    ]);
 
-    return cleanMongoResponse(storeConfig[0].categories);
+    return cleanMongoResponse(categories);
   } catch (error) {
     console.log(error);
   }

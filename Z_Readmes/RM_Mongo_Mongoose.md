@@ -162,6 +162,40 @@ ordersData = [
 
 - The \_id field is mandatory; however, you can specify an \_id value of null to calculate accumulated values for all the input documents as a whole.
 
+#### Destructure an array of ducuments
+
+```ts
+const categories = await StoreConfigModel.aggregate([
+  //no stages .- returns {_id:ObjectId('123'), categories:[{obj1},{obj2},{obj3},{obj4}]}
+  { $unwind: '$categories' },
+  /* returns: {id:ObjectId('123'), categories:{obj1}},
+              {id:ObjectId('123'), categories:{obj2}},
+              {id:ObjectId('123'), categories:{obj3}},
+              {id:ObjectId('123'), categories:{obj4}}   
+  */
+  {
+    $addFields: {
+      name: '$categories.name',
+      description: '$categories.description',
+      _id: '$categories._id',
+    },
+  },
+  /* returns:
+      {id:categories._id, categories:{obj1},name:categories.name, description:categories.description},
+      {id:categories._id, categories:{obj2},name:categories.name, description:categories.description},
+      {id:categories._id, categories:{obj3},name:categories.name, description:categories.description},
+      {id:categories._id, categories:{obj4},name:categories.name, description:categories.description},
+  */
+  { $project: { name: 1, description: 1, _id: 1 } },
+  /*returns:
+     {id:categories._id,name:categories.name, description:categories.description},
+     {id:categories._id,name:categories.name, description:categories.description},
+     {id:categories._id,name:categories.name, description:categories.description},
+     {id:categories._id,name:categories.name, description:categories.description},
+  */
+]);
+```
+
 ## Mongoose
 
 ### Schema
