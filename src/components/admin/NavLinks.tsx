@@ -8,7 +8,6 @@ import {
   Tag,
   LayoutDashboard,
   BookCopy,
-  FilePlus,
   ClipboardList,
   Wrench,
 } from 'lucide-react';

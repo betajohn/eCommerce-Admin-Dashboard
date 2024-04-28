@@ -52,6 +52,11 @@ export function isValidIdString(s: string | undefined) {
   return pattern.test(s ?? '');
 }
 
-export function cleanMongoResponse(objArr: { _id: mongoose.Types.ObjectId }[]) {
-  return objArr.map((o) => ({ ...o, _id: o._id.toString() }));
+export function cleanMongoResponse<
+  T extends { _id: mongoose.Types.ObjectId }[]
+>(objArr: T) {
+  return objArr.map((o) => ({
+    ...o,
+    _id: o._id.toString(),
+  }));
 }

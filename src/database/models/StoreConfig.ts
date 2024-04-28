@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 export interface StoreConfigType {
   _id: mongoose.Types.ObjectId;
   categories: {
-    _id: mongoose.Types.ObjectId;
+    _id: mongoose.Types.ObjectId | string;
     name: string;
     description: string;
     created_at: Date;

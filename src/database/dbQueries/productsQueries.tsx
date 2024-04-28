@@ -38,6 +38,6 @@ export async function getCategories() {
 
     return cleanMongoResponse(categories);
   } catch (error) {
-    console.log(error);
+    throw new Error('DB ERROR');
   }
 }
