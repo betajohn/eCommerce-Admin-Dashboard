@@ -1,9 +1,13 @@
+'use server';
 import dbConnect from '@/database/dbConnect';
 import mongoose from 'mongoose';
 import { ProductsModel } from '@/database/models/Products';
 import { unstable_noStore as noStore } from 'next/cache';
 import { cleanMongoResponse, isValidIdString, timer } from '@/lib/utils';
-import { StoreConfigModel } from '@/database/models/StoreConfig';
+import {
+  ShortedCategoriesType,
+  StoreConfigModel,
+} from '@/database/models/StoreConfig';
 
 await dbConnect();
 
@@ -18,7 +22,7 @@ export async function getProductByID(_id: string) {
 
     return product;
   } catch (error) {
-    console.log(error);
+    throw new Error('DB ERROR');
   }
 }
 
@@ -36,7 +40,7 @@ export async function getCategories() {
       { $project: { name: 1, description: 1, _id: 1 } },
     ]);
 
-    return cleanMongoResponse(categories);
+    return cleanMongoResponse(categories) as unknown as ShortedCategoriesType;
   } catch (error) {
     throw new Error('DB ERROR');
   }

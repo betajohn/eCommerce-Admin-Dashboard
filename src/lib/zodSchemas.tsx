@@ -15,7 +15,7 @@ export const productFormSchema = z.object({
     })
     .trim()
     .max(1000, { message: 'Description must be max 1000 characters long' }),
-  price: z
+  price: z.coerce
     .number({
       required_error: 'Price is required',
       invalid_type_error: 'Price must be a number',
@@ -28,8 +28,6 @@ export const productFormSchema = z.object({
       invalid_type_error: 'Name must be a string',
     })
     .trim(),
-  images: z.string().array().nonempty({
-    message: 'Products must have at least ONE image!',
-  }),
-  status: z.enum(['active', 'inactive']),
+  images: z.string().array(),
+  status: z.boolean(),
 });

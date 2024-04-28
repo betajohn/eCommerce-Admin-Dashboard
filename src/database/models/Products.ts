@@ -19,7 +19,7 @@ export interface ProductType {
   };
   images: string[];
   rating?: { rate: number; count: number };
-  status: 'active' | 'inactive';
+  status: boolean;
 }
 
 type Product = ProductType & mongoose.Document;
@@ -63,10 +63,9 @@ const ProductSchema = new mongoose.Schema<Product>({
     count: { type: Number },
   },
   status: {
-    type: String,
-    enum: ['active', 'inactive'],
+    type: Boolean,
     required: [true, 'Listed is required'],
-    default: 'active',
+    default: true,
   },
 });
 

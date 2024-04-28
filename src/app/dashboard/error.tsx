@@ -23,8 +23,8 @@ export default function Error({
   }, [error]);
 
   return (
-    <main className="h-full rounded-lg flex flex-col items-center justify-center">
-      <Card className="w-full max-w-sm">
+    <main className="h-full rounded-lg flex flex-col items-center">
+      <Card>
         <CardHeader>
           <CardTitle className="text-destructive">Server Error</CardTitle>
           <CardDescription>
@@ -32,7 +32,7 @@ export default function Error({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <CloudError className="w-full bg-blue-200" />
+          <CloudError className="w-full" />
 
           <Button
             className="w-full"

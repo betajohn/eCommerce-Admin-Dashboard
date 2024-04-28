@@ -1,9 +1,16 @@
 import mongoose from 'mongoose';
 
+export interface ShortedCategoriesType {
+  _id: mongoose.Types.ObjectId | string;
+  name: string;
+  description: string;
+}
+[];
+
 export interface StoreConfigType {
   _id: mongoose.Types.ObjectId;
   categories: {
-    _id: mongoose.Types.ObjectId | string;
+    _id: mongoose.Types.ObjectId;
     name: string;
     description: string;
     created_at: Date;

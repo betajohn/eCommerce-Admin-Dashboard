@@ -1,12 +1,9 @@
-import ProductForm from '@/components/admin/products/productForm/ProductForm';
-import { getCategories } from '@/database/dbQueries/productsQueries';
+import FormWrapper from '@/components/admin/products/productForm/FormWrapper';
 
 export default async function Page() {
-  const categories = await getCategories();
-
   return (
     <main className="h-full rounded-lg flex flex-col items-center justify-center">
-      <ProductForm categories={categories} />
+      <FormWrapper />
     </main>
   );
 }
