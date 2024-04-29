@@ -18,7 +18,7 @@ export default function FormPName({ form, product }) {
           <div className="flex flex-col gap-1">
             <FormLabel>Product Name</FormLabel>
             <FormControl>
-              <Input placeholder={product?.name ?? ''} {...field} />
+              <Input {...field} />
             </FormControl>
             <FormMessage />
           </div>

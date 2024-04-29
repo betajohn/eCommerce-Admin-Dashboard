@@ -21,9 +21,10 @@ export default function FormPCarousel({ form, images }) {
   return (
     <FormField
       control={form.control}
-      name="name"
+      name="images"
       render={({ field }) => (
         <FormItem>
+          <FormMessage />
           <div className="flex flex-col gap-1">
             <FormControl>
               <Carousel className="w-full aspect-square max-w-xs mx-auto">
@@ -55,7 +56,6 @@ export default function FormPCarousel({ form, images }) {
                 <CarouselNext />
               </Carousel>
             </FormControl>
-            <FormMessage />
           </div>
         </FormItem>
       )}

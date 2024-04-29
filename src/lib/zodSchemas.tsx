@@ -2,32 +2,26 @@ import { z } from 'zod';
 
 export const productFormSchema = z.object({
   name: z
-    .string({
-      required_error: 'Name is required',
-      invalid_type_error: 'Name must be a string',
-    })
+    .string()
     .trim()
+    .min(1, { message: 'Required' })
     .max(200, { message: 'Name must be max 200 characters long' }),
   description: z
-    .string({
-      required_error: 'Description is required',
-      invalid_type_error: 'Name must be a string',
-    })
+    .string()
     .trim()
+    .min(1, { message: 'Required' })
     .max(1000, { message: 'Description must be max 1000 characters long' }),
   price: z.coerce
     .number({
-      required_error: 'Price is required',
-      invalid_type_error: 'Price must be a number',
+      invalid_type_error: 'Must be a number',
+      required_error: 'Required',
     })
-    .nonnegative({ message: 'Price can not be negative' })
+    .nonnegative({ message: "Price can't be negative" })
     .lte(999999999, { message: 'Number too Big' }),
-  category: z
-    .string({
-      required_error: 'Name is required',
-      invalid_type_error: 'Name must be a string',
-    })
-    .trim(),
-  images: z.string().array(),
+  category: z.string().min(1, { message: 'Required' }),
+  images: z
+    .string()
+    .array()
+    .min(2, { message: 'At least ONE picture is required' }),
   status: z.boolean(),
 });

@@ -38,7 +38,7 @@ export default function ProductForm({
     defaultValues: {
       name: product?.name ?? '',
       description: product?.description ?? '',
-      price: product?.price ?? 0,
+      price: product?.price ?? -1,
       status: product?.status ?? true,
       category: product?.category.name ?? '',
       images: product?.images ?? [],
@@ -73,11 +73,12 @@ export default function ProductForm({
       <CardContent className="w-full px-0">
         <Form {...form}>
           <form
+            noValidate
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col items-center w-full gap-8 px-2 "
           >
             <div className="w-full h-full flex flex-col gap-8 items-center lg:flex-row">
-              <div className="w-full max-w-[550px] px-14 bg-primary">
+              <div className="w-full max-w-[550px] px-14">
                 <FormPCarousel images={product?.images ?? []} form={form} />
               </div>
               <div className="flex flex-col w-full gap-3">
