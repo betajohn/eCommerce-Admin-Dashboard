@@ -305,3 +305,54 @@ More react-hook-form validation types.
 ```
 
 ### Doing validation with Zod
+
+1.- Add imports and define your Zod Schema
+
+```tsx
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const ZodFormSchema = z.object({
+  name: z.string().min(1, { message: 'name is required' }),
+  //z.coerce will change default string type of <input type='number'> to number  '23' -> 23
+  age: z.coerce.number().gt(12, {
+    message: 'You need to be at least 13 years old to use this website',
+  }),
+  email: z.string().email({ message: 'Invalid email' }),
+});
+```
+
+2.- You can use z.infer to define the type of your data!
+
+```ts
+type FormData = z.infer<typeof ZodFormSchema>;
+```
+
+3.- Initiate useForm with a resolver prop inside the optional configuration object
+
+```tsx
+const form = useForm<FormData>({
+  resolver: zodResolver(ZodFormSchema),
+  //you can set default values here too
+  defaultValues: {
+    name: '',
+    email: 'your@email.com',
+    age: -1,
+  },
+});
+```
+
+4.- Now you can register() the elements just the name string parameter
+
+```ts
+<form onSubmit={handleSubmit(onSubmit)} noValidate>
+  <Label htmlFor="n1">Name</Label>
+  <Input id="n1" {...register('name')} />
+  <Label htmlFor="a1">Age</Label>
+  <Input id="a1" type="number" {...register('age')} />
+  <Label htmlFor="e1">email</Label>
+  <Input id="e1" type="email" {...register('email')} />
+  <Button type="submit">Click</Button>
+  <DevTool control={control} />
+</form>
+```

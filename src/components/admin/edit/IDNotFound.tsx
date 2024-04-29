@@ -9,7 +9,13 @@ import { useToast } from '@/components/ui/use-toast';
 import { isValidIdString } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 
-export default function IDNotFound({ isValid }: { isValid: boolean }) {
+export default function IDNotFound({
+  isValid,
+  query,
+}: {
+  isValid: boolean;
+  query: string;
+}) {
   const ref = useRef<HTMLInputElement | null>(null);
   const { toast } = useToast();
 
@@ -31,7 +37,9 @@ export default function IDNotFound({ isValid }: { isValid: boolean }) {
       <Alert variant="destructive">
         <ExclamationTriangleIcon className="h-6 w-6 mt-1" />
         <AlertTitle>Error!</AlertTitle>
-        {!isValid ? (
+        {query === '' ? (
+          <AlertDescription>Missing product _id</AlertDescription>
+        ) : !isValid ? (
           <AlertDescription>Invalid product _id</AlertDescription>
         ) : (
           <AlertDescription>Product _id not found</AlertDescription>

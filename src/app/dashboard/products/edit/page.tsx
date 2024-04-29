@@ -39,7 +39,7 @@ export default async function Page({
       {isValid && product ? (
         <FormWrapper product={product} />
       ) : (
-        <IDNotFound isValid={isValid} />
+        <IDNotFound isValid={isValid} query={query} />
       )}
     </main>
   );

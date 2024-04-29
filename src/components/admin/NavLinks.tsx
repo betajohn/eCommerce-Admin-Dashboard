@@ -64,6 +64,16 @@ const menuLinks: menuItem[] = [
 export default function NavLinks({ hamburgerView = false }) {
   const pathname = usePathname();
 
+  function inThisPath(path: string) {
+    const a = path.split('/');
+    const x = pathname.split('/');
+
+    if (x[2] === a[2]) {
+      return true;
+    }
+    return false;
+  }
+
   return (
     <div className="w-auto min-h-full flex flex-col justify-between">
       <div className="flex flex-col gap-6">
@@ -79,7 +89,7 @@ export default function NavLinks({ hamburgerView = false }) {
                   'px-6 justify-normal',
                   {
                     'bg-card rounded-none sm:border sm:border-white':
-                      pathname === link.href,
+                      inThisPath(link.href),
                   }
                 )}
               >

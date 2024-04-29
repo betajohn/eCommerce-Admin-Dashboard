@@ -22,6 +22,7 @@ export const productFormSchema = z.object({
   images: z
     .string()
     .array()
-    .min(2, { message: 'At least ONE picture is required' }),
+    .min(2, { message: 'At least ONE picture is required' })
+    .max(5, { message: 'Can have up to 4 pictures' }),
   status: z.boolean(),
 });

@@ -7,20 +7,15 @@ import { DevTool } from '@hookform/devtools';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-interface FormData {
-  name: string;
-  age: string;
-  email: string;
-}
-
 const ZodFormSchema = z.object({
   name: z.string().min(1, { message: 'name is required' }),
-  age: z.coerce.number({
-    required_error: 'Age is required',
-    invalid_type_error: 'Age must be a number',
+  age: z.coerce.number().gt(12, {
+    message: 'You need to be at least 13 years old to use this website',
   }),
   email: z.string().email({ message: 'Invalid email' }),
 });
+
+type FormData = z.infer<typeof ZodFormSchema>;
 
 export default function Page() {
   const { register, control, getValues, handleSubmit } = useForm<FormData>({
@@ -33,6 +28,8 @@ export default function Page() {
 
   function justSee() {
     console.log(control.getFieldState('name'));
+    console.log(control.getFieldState('age'));
+    console.log(control.getFieldState('email'));
   }
 
   return (
@@ -40,10 +37,7 @@ export default function Page() {
       <div>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Label htmlFor="n1">Name</Label>
-          <Input
-            id="n1"
-            {...register('name', { required: 'Name is required' })}
-          />
+          <Input id="n1" {...register('name')} />
           <Label htmlFor="a1">Age</Label>
           <Input id="a1" type="number" {...register('age')} />
           <Label htmlFor="e1">email</Label>
