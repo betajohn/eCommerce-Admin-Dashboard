@@ -27,7 +27,6 @@ export default function FormPStatus({ form, product }) {
             </FormControl>
             <Label htmlFor="s1">Active</Label>
           </div>
-          <FormMessage />
         </FormItem>
       )}
     />

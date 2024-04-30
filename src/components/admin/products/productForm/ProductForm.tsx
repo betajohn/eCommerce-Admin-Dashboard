@@ -35,6 +35,7 @@ export default function ProductForm({
 }) {
   const form = useForm<z.infer<typeof productFormSchema>>({
     resolver: zodResolver(productFormSchema),
+    mode: 'onTouched',
     defaultValues: {
       name: product?.name ?? '',
       description: product?.description ?? '',
@@ -70,7 +71,7 @@ export default function ProductForm({
           </>
         )}
       </CardHeader>
-      <CardContent className="w-full px-0">
+      <CardContent className="w-full px-0 py-2">
         <Form {...form}>
           <form
             noValidate
@@ -99,7 +100,11 @@ export default function ProductForm({
             <Button
               className="w-full"
               type="submit"
-              disabled={!form.formState.isDirty}
+              disabled={
+                !form.formState.isDirty ||
+                !form.formState.isValid ||
+                form.formState.isSubmitting
+              }
             >
               {product ? 'Submit Changes' : 'Create Product'}
             </Button>

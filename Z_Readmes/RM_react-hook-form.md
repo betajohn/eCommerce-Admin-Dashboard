@@ -638,3 +638,184 @@ console.log(isDirty); // true | false
  false is no field is dirty
  */
 ```
+
+## 11. Disabling fields using react-hook-form
+
+The common way is using html element's disabled attribute. It's better to use the react-hook-form way!!
+
+Why? Because if a html-disabled element doesn't pass zod validation we won't be able to submit the form!!
+
+Smply pass a second argument with a 'disabled:true' property to the register function.
+
+```tsx
+const { register } = useForm();
+
+<input {...register('name')}>Name</input>
+
+<input {...register('description',{
+  disabled:true
+})}>Description</input>
+
+```
+
+In react-hook-form, when a field is disabled, its **value becomes undefined** and the **validation for that field is also disabled!**
+
+- example: enable description only if name is dirty
+
+```tsx
+const { register, watch } = useForm();
+
+<input {...register('name')}>Name</input>
+
+<input {...register('description',{
+  disabled:watch('name')==='',
+})}>Description</input>
+```
+
+## 12. handling submit errors with form.handleSubmit()
+
+> Provides separation of logic for a sucessful submission and a failed one.
+
+form.handleSubmit() takes 2 callback parameters:
+
+```ts
+handleSubmit(onsubmit, onError);
+```
+
+```tsx
+import { useForm, FieldErrors } from 'react-hook-form';
+
+const { handleSubmit } = useform();
+
+function onSubmit(data: YourFormType) {
+  //send data to db
+}
+
+function onError(errors: FieldErrors) {
+  //console.log(errors)
+  {
+    name:{
+           message: 'name is required',
+           type: 'too_small',
+           ref:ref
+         },
+    description:{
+                  message: 'name is required',
+                  type: 'too_small',
+                  ref:ref
+          }
+  }
+  //send records to the server. why people fail this form so much?
+  //personaized error messages
+}
+<form noValidate onSubmit={handleSubmit(onSubmit, onError)}></form>;
+```
+
+## 13. Read submission state with form.formState
+
+```tsx
+const { formState } = useform();
+const { isSubmitting, isSubmitted, isSubmitSuccessful, submitCount } =
+  formState;
+```
+
+- isSubmitting
+
+Use it for disabling submit button after the first click. Prevents multy submitting.
+
+```tsx
+type isSubmitting = boolean;
+//default value false
+```
+
+- isSubmitted
+
+```tsx
+type isSubmitted = boolean;
+//default value false
+// changes permanently to true after form is submitted or form is reset
+```
+
+- isSubmitSuccessful
+
+```tsx
+type isSubmitSuccessful = boolean;
+//default value false
+// true if form is successfully submitted without any validation errors
+```
+
+- submitCount
+
+```tsx
+type submitCount = number;
+//default value 0
+// keeps count of the number of times the form has been submitted
+```
+
+## 14. Resetting form values with form.reset()
+
+> resets form values to the default values
+
+Useful after a successful submission
+
+```tsx
+const { reset } = useForm();
+```
+
+**_Don' call form.reset() inside onSubmit()_**
+
+because docs
+
+```text
+Avoid calling reset before useForm's useEffect is invoked, this is because useForm's subscription needs to be ready before reset can send a signal to flush form state update.
+```
+
+use the useEffect() hook instead!
+
+```tsx
+import {useEffect} from React;
+const { reset, formState } = useForm();
+const {isSubmitSuccessful} = formState;
+
+useEffect(()=>(
+  if(isSubmitSuccessful){
+    reset();
+  }
+),[isSubmitSuccessful, reset])
+```
+
+## 15. Setting the form's validation mode
+
+Include a 'mode' property in the optional useForm configuration object
+
+By **default** the validation mode is **onSubmit**
+
+```tsx
+const form = useForm({
+  mode: 'onBlur' | 'onSubmit' | 'onTouched' | 'onChange' | 'all',
+});
+```
+
+- onBlur
+
+Validates each field individually when the onBlur event is triggered. (touch = gain and lose focus)
+
+- onTouched
+
+Validates each field individually on the first onBlur event **AND** on every onChange after that.
+
+- onChange
+
+Validates on onChange event.
+
+## 16. Manually triggering validation with form.trigger()
+
+```tsx
+const { trigger } = useform();
+
+trigger();
+// validates whole form
+
+trigger('images');
+//validates the images field only
+```

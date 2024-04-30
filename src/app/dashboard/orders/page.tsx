@@ -2,7 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
+import { useForm, FieldErrors } from 'react-hook-form';
 import { DevTool } from '@hookform/devtools';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,6 +42,10 @@ export default function Page() {
     console.log(control.getFieldState('name'));
   }
 
+  function onSubmitError(error: FieldErrors) {
+    console.log(errors);
+  }
+
   function justSee() {
     console.log(dirtyFields);
     console.log(touchedFields);
@@ -50,7 +54,7 @@ export default function Page() {
   return (
     <main>
       <div>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form onSubmit={handleSubmit(onSubmit, onSubmitError)} noValidate>
           <Label htmlFor="n1">Name</Label>
           <Input id="n1" {...register('name')} />
           <p>{errors?.name?.message}</p>
