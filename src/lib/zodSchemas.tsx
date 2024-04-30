@@ -21,6 +21,7 @@ export const productFormSchema = z.object({
   category: z.string().min(1, { message: 'Required' }),
   images: z
     .string()
+    .url({ message: 'Not a valid url' })
     .array()
     .min(2, { message: 'At least ONE picture is required' })
     .max(5, { message: 'Can have up to 4 pictures' }),

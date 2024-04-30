@@ -6,7 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Label } from '@radix-ui/react-dropdown-menu';
+import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 
 export default function FormPStatus({ form, product }) {
@@ -17,11 +17,15 @@ export default function FormPStatus({ form, product }) {
       render={({ field }) => (
         <FormItem>
           <div className="flex gap-2 items-center mb-2 pr-4 text-xs sm:text-sm font-semibold">
-            <Label>Inactive</Label>
+            <Label htmlFor="s1">Inactive</Label>
             <FormControl>
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                id="s1"
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
             </FormControl>
-            <Label>Active</Label>
+            <Label htmlFor="s1">Active</Label>
           </div>
           <FormMessage />
         </FormItem>

@@ -356,3 +356,285 @@ const form = useForm<FormData>({
   <DevTool control={control} />
 </form>
 ```
+
+## 6. displaying error messages with form.formState
+
+```tsx
+const { register, control, getValues, handleSubmit, formState } = useForm();
+
+//console.log(formSate)
+
+{
+ defaultValues:{},
+ dirtyField:{},
+ disable:{},
+ error:{},
+ isDirt:{},
+ isLoadin:{},
+ isSubmitSuccessfu:{},
+ isSubmitte:{},
+ isSubmittin:{},
+ isVali:{},
+ isValidatin:{},
+ submitCoun:{},
+ touchedField:{},
+ validatingField:{},
+}
+```
+
+formState.errors
+
+```ts
+//console.log(formState.errors)
+{}
+
+[after submitting an empty form]
+
+//console.log(formState.errors)
+{
+  age: {message: 'You need to be at least 13 years old to use this website', type: 'too_small', ref: ref}.
+  email:{message: 'Invalid email', type: 'invalid_string', ref: ref},
+  name: {message: 'name is required', type: 'too_small', ref: ref}
+}
+```
+
+Create a p html element that will only appear if there is an error
+
+```ts
+const { formState } = useForm(); const { errors } = formState;
+//...
+<label htmlFor="n1">Name</label>
+<Input id="n1" {...register('name')} />
+<p>{errors.name?.message}</p>
+
+<label htmlFor="a1">Age</label>
+<Input id="a1" type="number" {...register('age')} />
+<p>{errors.age?.message}</p>
+
+<label htmlFor="e1">email</label>
+<Input id="e1" type="email" {...register('email')} />
+<p>{errors.email?.message}</p>
+```
+
+## 7. Registering elements in nested objects
+
+Don't forget to define your zodSchema and default values
+
+- Nested object
+
+```tsx
+<Label htmlFor="a1">Address1</Label>
+<Input id="a1" {...register('address.address1')} />
+
+<Label htmlFor="a2">Address1</Label>
+<Input id="a2" {...register('address.address2')} />
+
+// console.log(form.getValues())
+{
+  address:{
+    address1:'',
+    address2:'',
+  },
+  name:'',
+  //...
+}
+```
+
+- Nested array object
+
+```tsx
+const FormType = {
+  images : string[],
+  name:string,
+}
+
+form = useform<FormType>({
+  defaultValues:{
+    name:'',
+    images:[]
+  }
+})
+
+<Label htmlFor="i1">Main Image</Label>
+<Input id="i1" {...register('images.0')} /> // images[0] won't work!!
+
+<Label htmlFor="i2">Secondary Image</Label>
+<Input id="i2" {...register('images.1')} />
+
+// console.log(form.getValues())
+{
+  images:['imageURL1','imageURL2'],
+  name:'',
+  //...
+}
+```
+
+## 8. number and Date types
+
+By default html inputs save values as string.
+
+react-hook-form provides way to change the values
+
+```js
+<input type="number" {...register('age', { valueAsNumber: true })}>
+  age
+</input>
+
+
+<input type="date" {...register('birth_date', { valueAsDate: true })}>
+  age
+</input>
+```
+
+Or use zod's z.coerce method
+
+```ts
+const ZodFormSchema = z.object({
+  age:z.coerce.number();
+  birth_date:z.coerce.date();
+})
+```
+
+in both cases conversion happens before validation.
+
+## 9. form.getValues() and form.setValue()
+
+- form.getValues()
+
+```tsx
+const { getValues } = useForm();
+
+console.log(getValues());
+
+//returns whole values object
+{
+  name:'john',
+  age:20,
+  email:'john@me.com'
+ }
+
+console.log(getValues('name'));
+
+// returns the value of the values.name field
+'john'
+
+console.log(getValues(['name', 'age']));
+
+// returns values of values.name and values.age
+['john','20']
+```
+
+- form.setValues()
+
+form is rerendered so changes can be seen
+
+```tsx
+const { setValue } = useform();
+
+<input {...register('email')} />;
+
+//case 1: only changes the value. states remain the same
+//valid, touched, dirty remain the same
+setValue('email', 'pepe@fot.com');
+
+console.log(getValues('email'));
+// logs 'pepe@fot.com'
+
+// case 2: changes value and states
+
+setValue('email', 'pepe@fot.com', {
+  shouldValidate: true,
+  shouldDirty: true,
+  shouldTouch: true,
+});
+```
+
+## 10. State object
+
+Access the state object with form.getfieldState()
+
+```tsx
+const { getFieldState } = useform();
+
+console.log(getFieldState('name'))
+
+//returns the whole state object
+//default values are the following
+{
+ invalid: false,
+ isDirty: false,
+ isTouched: false,
+ isValidating: false,
+ error: undefined
+}
+
+```
+
+- isTouched
+
+**true** if the user has interacted with the field (clicked or touched)
+
+### Access all the touched fields with formState.touchedFields
+
+```jsx
+const { formState } = useForm();
+const { touchedFields } = formState;
+
+console.log(touchedFields)
+// logs empty object if no interaction
+{}
+// logs the names of the touched fields if any interaction has happened
+{
+  name:true,
+  email:true,
+}
+```
+
+- isDirty
+
+**true** if the user has modified the input's value. Compares current value to default value.
+
+```text
+default value = ''
+'' -> 'a' = dirty
+'a' -> '' = not dirty
+```
+
+if not default value is given, it will always be dirty after the first change
+
+```text
+default value = ''
+'' -> 'a' = dirty
+'a' -> '' = STILL dirty
+```
+
+### Access all the dirty fields with formState.dirtyFields
+
+```jsx
+const { formState } = useForm();
+const { dirtyFields } = formState;
+
+console.log(dirtyFields)
+// logs empty object if no changes
+{}
+// logs the names of the changed fields if any interaction has happened
+{
+  name:true,
+  email:true,
+}
+```
+
+### Get the general dirty status of the form with formState.isDirty
+
+Useful for submission validation(e.g. enable submit button only if form is dirty)
+
+```jsx
+const { formState } = useForm();
+const isDirty = formState;
+
+console.log(isDirty); // true | false
+/*
+ true if ANY field is dirty
+ false is no field is dirty
+ */
+```

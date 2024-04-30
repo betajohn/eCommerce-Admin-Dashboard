@@ -96,7 +96,11 @@ export default function ProductForm({
               </div>
             </div>
 
-            <Button className="w-full" type="submit">
+            <Button
+              className="w-full"
+              type="submit"
+              disabled={!form.formState.isDirty}
+            >
               {product ? 'Submit Changes' : 'Create Product'}
             </Button>
           </form>

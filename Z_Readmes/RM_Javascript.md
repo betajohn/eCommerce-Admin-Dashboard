@@ -58,3 +58,28 @@ x === y; // true
   </Button>
 </form>
 ```
+
+## Arrays
+
+### Array.prototype.map()
+
+The callback function passed as argument has 2 parameters:
+
+- current element
+- current index
+
+```ts
+const a = ['hola', 'hello', 'ciao', 'bonjour','ni hao'];
+
+a.map((e, i) => {
+  if (i % 2 === 0) {
+    console.log(e);
+  }
+});
+
+/*prints.
+* 'hola'
+* 'ciao'
+* 'no hao'
+* /
+```
