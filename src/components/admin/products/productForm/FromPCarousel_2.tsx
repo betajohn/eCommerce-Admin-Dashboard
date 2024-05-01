@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/form';
 import AddImage from '@/../public/images/addImage.svg';
 
-export default function FormPCarousel({ form, images }) {
+export default function FormPCarousel({ form, images }: { images: string[] }) {
   return (
     <FormField
       control={form.control}

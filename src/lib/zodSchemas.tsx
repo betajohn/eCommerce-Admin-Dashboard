@@ -23,7 +23,9 @@ export const productFormSchema = z.object({
     .string()
     .url({ message: 'Not a valid url' })
     .array()
-    .min(2, { message: 'At least ONE picture is required' })
+    .min(1, { message: 'At least ONE picture is required' })
     .max(5, { message: 'Can have up to 4 pictures' }),
   status: z.boolean(),
 });
+
+export type ProductFormSchemaType = z.infer<typeof productFormSchema>;

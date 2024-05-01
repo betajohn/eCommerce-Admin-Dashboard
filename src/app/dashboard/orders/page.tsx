@@ -27,6 +27,7 @@ export default function Page() {
     formState,
     setValue,
     getFieldState,
+    watch,
   } = useForm<FormData>({
     resolver: zodResolver(ZodFormSchema),
     defaultValues: {
@@ -51,10 +52,14 @@ export default function Page() {
     console.log(touchedFields);
   }
 
+  const watchedNameAndAge = watch(['name', 'age']);
+
   return (
     <main>
       <div>
         <form onSubmit={handleSubmit(onSubmit, onSubmitError)} noValidate>
+          <h2 className="font-bold">{`Watching: ${watchedNameAndAge[1]}
+      `}</h2>
           <Label htmlFor="n1">Name</Label>
           <Input id="n1" {...register('name')} />
           <p>{errors?.name?.message}</p>

@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
-import { productFormSchema } from '@/lib/zodSchemas';
+import { productFormSchema, ProductFormSchemaType } from '@/lib/zodSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ProductType } from '@/database/models/Products';
 import {
@@ -24,7 +24,7 @@ import FormPDescription from '@/components/admin/products/productForm/FormPDescr
 import FormPPrice from '@/components/admin/products/productForm/FormPPrice';
 import FormPPCategories from '@/components/admin/products/productForm/FormPCategories';
 import FormPStatus from '@/components/admin/products/productForm/FormPStatus';
-import FormPCarousel from '@/components/admin/products/productForm/FromPCarousel';
+import FormPCarousel from '@/components/admin/products/productForm/FormPCarousel';
 
 export default function ProductForm({
   product,
@@ -33,7 +33,7 @@ export default function ProductForm({
   product?: ProductType;
   categories: ShortedCategoriesType;
 }) {
-  const form = useForm<z.infer<typeof productFormSchema>>({
+  const form = useForm<ProductFormSchemaType>({
     resolver: zodResolver(productFormSchema),
     mode: 'onTouched',
     defaultValues: {
@@ -46,7 +46,9 @@ export default function ProductForm({
     },
   });
 
-  function onSubmit(values: z.infer<typeof productFormSchema>) {
+  const { isDirty, isValid, isSubmitting } = form.formState;
+
+  function onSubmit(values: ProductFormSchemaType) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -79,8 +81,8 @@ export default function ProductForm({
             className="flex flex-col items-center w-full gap-8 px-2 "
           >
             <div className="w-full h-full flex flex-col gap-8 items-center lg:flex-row">
-              <div className="w-full max-w-[550px] px-14">
-                <FormPCarousel images={product?.images ?? []} form={form} />
+              <div className="w-full max-w-[550px]">
+                <FormPCarousel form={form} />
               </div>
               <div className="flex flex-col w-full gap-3">
                 <FormPName product={product} form={form} />
@@ -100,11 +102,7 @@ export default function ProductForm({
             <Button
               className="w-full"
               type="submit"
-              disabled={
-                !form.formState.isDirty ||
-                !form.formState.isValid ||
-                form.formState.isSubmitting
-              }
+              disabled={!isDirty || !isValid || isSubmitting}
             >
               {product ? 'Submit Changes' : 'Create Product'}
             </Button>

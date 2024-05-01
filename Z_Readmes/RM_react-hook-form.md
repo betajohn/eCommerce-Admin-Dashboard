@@ -784,7 +784,27 @@ useEffect(()=>(
 ),[isSubmitSuccessful, reset])
 ```
 
-## 15. Setting the form's validation mode
+## 15. Watching for changes with form.watch()
+
+```tsx
+const { watch } = useForm();
+
+const watchedName = watch('name');
+
+<div>{watchedName}</div>; // displays name's value in real time. Rerendering.
+
+const watchValues = watch()
+
+ <div>{JSON.stringify(watchedName)}</div> // watches the whole values object
+
+ // watch() updates on every change of any field.
+
+ const watchAgeAndName = watch(['age', 'name'])
+<div>{watchAgeAndName[0]}</div>
+<div>{watchAgeAndName[1]}</div>
+```
+
+## 16. Setting the form's validation mode
 
 Include a 'mode' property in the optional useForm configuration object
 
@@ -808,7 +828,7 @@ Validates each field individually on the first onBlur event **AND** on every onC
 
 Validates on onChange event.
 
-## 16. Manually triggering validation with form.trigger()
+## 17. Manually triggering validation with form.trigger()
 
 ```tsx
 const { trigger } = useform();
