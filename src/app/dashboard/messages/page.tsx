@@ -18,10 +18,7 @@ export default function Page() {
         <div className="embla__container flex">
           {images.map((x) => {
             return (
-              <div
-                key={x}
-                className="embla__slide flex-[0_0_100%] min-w-0 bg-gray-700 h-10"
-              >
+              <div key={x} className="embla__slide flex-[0_0_100%] min-w-0">
                 {x}
               </div>
             );
