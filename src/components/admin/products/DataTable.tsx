@@ -50,9 +50,9 @@ export default function DataTable() {
       icon: FilePenLine,
     },
     {
-      name: 'Clone',
+      name: 'Copy',
       onclick: (_id: string) => {
-        router.push(`/dashboard/products/new?_id=${_id}`);
+        router.push(`/dashboard/products/copy?_id=${_id}`);
       },
       icon: SquareStackIcon,
     },

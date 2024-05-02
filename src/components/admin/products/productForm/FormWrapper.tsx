@@ -30,11 +30,25 @@ const categories = [
 ];
 
 export default async function FormWrapper({
+  isNew,
   product,
+  isCopy,
+  isEdit,
 }: {
   product?: ProductFormSchemaType;
+  isCopy?: boolean;
+  isNew?: boolean;
+  isEdit?: boolean;
 }) {
   //const categories = await getCategories();
 
-  return <ProductForm categories={categories} product={product} />;
+  return (
+    <ProductForm
+      categories={categories}
+      product={product}
+      isCopy={isCopy}
+      isNew={isNew}
+      isEdit={isEdit}
+    />
+  );
 }

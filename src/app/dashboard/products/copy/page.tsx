@@ -1,7 +1,3 @@
-import {
-  getCategories,
-  getProductByID,
-} from '@/database/dbQueries/productsQueries';
 import IDNotFound from '@/components/admin/edit/IDNotFound';
 import { isValidIdString } from '@/lib/utils';
 import FormWrapper from '@/components/admin/products/productForm/FormWrapper';
@@ -37,7 +33,7 @@ export default async function Page({
   return (
     <main className="h-full rounded-lg flex flex-col items-center justify-center">
       {isValid && product ? (
-        <FormWrapper product={product} isEdit={true} />
+        <FormWrapper product={product} isCopy={true} />
       ) : (
         <IDNotFound isValid={isValid} query={query} />
       )}

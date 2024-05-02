@@ -30,9 +30,15 @@ import Carousel2 from '@/components/admin/products/productForm/FormPCarousel2';
 export default function ProductForm({
   product,
   categories,
+  isCopy,
+  isEdit,
+  isNew,
 }: {
   product?: ProductFormSchemaType;
   categories: ShortedCategoriesType;
+  isCopy?: boolean;
+  isEdit?: boolean;
+  isNew?: boolean;
 }) {
   const form = useForm<ProductFormSchemaType>({
     resolver: zodResolver(productFormSchema),
@@ -61,19 +67,28 @@ export default function ProductForm({
   return (
     <Card className="w-full">
       <CardHeader>
-        {product ? (
+        {isCopy && product && (
+          <>
+            <CardTitle className="text-xl sm:text-2xl">
+              Create a New Product
+            </CardTitle>
+            <CardDescription>Based on {product.name}</CardDescription>
+          </>
+        )}
+        {isNew && !product && (
+          <>
+            <CardTitle className="text-xl sm:text-2xl">
+              Create a new Product
+            </CardTitle>
+            <CardDescription>All fields required</CardDescription>
+          </>
+        )}
+        {isEdit && product && (
           <>
             <CardTitle className="text-xl sm:text-2xl">
               Editing Product _id: {JSON.stringify(product._id)}
             </CardTitle>
             <CardDescription>{product.name}</CardDescription>
-          </>
-        ) : (
-          <>
-            <CardTitle className="text-xl sm:text-2xl">
-              Creating a new Product
-            </CardTitle>
-            <CardDescription>All fields must be completed</CardDescription>
           </>
         )}
       </CardHeader>
