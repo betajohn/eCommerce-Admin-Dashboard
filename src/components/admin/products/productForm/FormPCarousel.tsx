@@ -1,3 +1,4 @@
+'use client';
 import { UseFormReturn } from 'react-hook-form';
 import { ProductFormSchemaType } from '@/lib/zodSchemas';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -13,16 +14,17 @@ import {
   CornerUpLeft,
   CornerUpRight,
   ImageUp,
+  X,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
-export default function FormPCarousel({
+export default function CarouselOld({
   form,
 }: {
   form: UseFormReturn<ProductFormSchemaType>;
 }) {
   //const { ref, onBlur, onChange } = form.register('images');
-  const slides = form.watch('images');
+  const [slides, setSlides] = useState(form.getValues('images'));
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel();
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -54,22 +56,42 @@ export default function FormPCarousel({
   function addImage() {
     const newImages = [
       ...slides,
-      'https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg',
+      'https://fakestoreapi.com/img/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.jpg',
     ];
 
     form.setValue('images', newImages, {
       shouldDirty: true,
       shouldTouch: true,
     });
+    setSlides(newImages);
   }
 
-  function moveLeft(able: boolean) {
+  function moveLeft(able: boolean, i: number) {
     if (!able) return;
-    console.log('moving');
+    const newImages = [...slides];
+    newImages[i - 1] = slides[i];
+    newImages[i] = slides[i - 1];
+    form.setValue('images', newImages, {
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+    setSlides(newImages);
   }
-  function moveRight(able: boolean) {
+  function moveRight(able: boolean, i: number) {
+    console.log('event activated');
     if (!able) return;
-    console.log('moving');
+    const newImages = [...slides];
+    newImages[i + 1] = slides[i];
+    newImages[i] = slides[i + 1];
+    form.setValue('images', newImages, {
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+    emblaMainApi?.reInit();
+    setSlides(newImages);
+  }
+  function X() {
+    console.log(form.getValues('images'));
   }
   function trash() {
     console.log('trash');
@@ -80,6 +102,18 @@ export default function FormPCarousel({
     <div className="flex flex-col gap-3">
       <div>
         <Label>Product Images</Label>
+        <Button
+          type="button"
+          onClick={() => {
+            console.log('..............slides,.,,,,..');
+            console.log(slides);
+
+            console.log('..............from.getValues,.,,,,..');
+            console.log(form.getValues('images'));
+          }}
+        >
+          Print
+        </Button>
         <div
           className="embla overflow-hidden w-full rounded-lg aspect-video border-foreground border bg-white"
           ref={emblaMainRef}
@@ -101,11 +135,11 @@ export default function FormPCarousel({
                     </div>
                   </div>
                   {x !== 'add' && (
-                    <div className="flex flex-col items-center m-auto text-gray-900 border border-border p-1 rounded-lg gap-1 h-fit">
+                    <div className="flex flex-col items-center m-auto text-gray-900 border border-border p-1 rounded-lg gap-1 h-fit absolute">
                       <CornerUpLeft
                         className={cn('w-7 h-7', i === 0 && 'text-gray-300')}
                         onClick={() => {
-                          moveLeft(i !== 0);
+                          moveLeft(i !== 0, i);
                         }}
                       />
                       <Separator orientation="horizontal" />
@@ -115,7 +149,7 @@ export default function FormPCarousel({
                           i === slides.length - 1 && 'text-gray-300'
                         )}
                         onClick={() => {
-                          moveRight(i !== slides.length - 1);
+                          moveRight(i !== slides.length - 1, i);
                         }}
                       />
                       <Separator orientation="horizontal" className="" />

@@ -15,7 +15,7 @@ const z = {
     'The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.',
   category: { name: "men's clothing", categ_id: '662ca0ac9567b6923fa27d4f' },
   images: ['https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg'],
-  status: true,
+  active: true,
   __v: 0,
 };
 

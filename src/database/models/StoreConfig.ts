@@ -1,11 +1,10 @@
 import mongoose from 'mongoose';
 
-export interface ShortedCategoriesType {
+export type ShortedCategoriesType = {
   _id: mongoose.Types.ObjectId | string;
   name: string;
   description: string;
-}
-[];
+}[];
 
 export interface StoreConfigType {
   _id: mongoose.Types.ObjectId;

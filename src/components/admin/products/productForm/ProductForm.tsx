@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { productFormSchema, ProductFormSchemaType } from '@/lib/zodSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ProductType } from '@/database/models/Products';
+
 import {
   ShortedCategoriesType,
   StoreConfigType,
@@ -24,13 +24,14 @@ import FormPDescription from '@/components/admin/products/productForm/FormPDescr
 import FormPPrice from '@/components/admin/products/productForm/FormPPrice';
 import FormPPCategories from '@/components/admin/products/productForm/FormPCategories';
 import FormPStatus from '@/components/admin/products/productForm/FormPStatus';
-import FormPCarousel from '@/components/admin/products/productForm/FormPCarousel';
+
+import Carousel2 from '@/components/admin/products/productForm/FormPCarousel2';
 
 export default function ProductForm({
   product,
   categories,
 }: {
-  product?: ProductType;
+  product?: ProductFormSchemaType;
   categories: ShortedCategoriesType;
 }) {
   const form = useForm<ProductFormSchemaType>({
@@ -40,8 +41,11 @@ export default function ProductForm({
       name: product?.name ?? '',
       description: product?.description ?? '',
       price: product?.price ?? -1,
-      status: product?.status ?? true,
-      category: product?.category.name ?? '',
+      active: product?.active ?? true,
+      category: {
+        name: product?.category.name ?? '',
+        categ_id: product?.category.categ_id ?? '',
+      },
       images: product?.images ?? [],
     },
   });
@@ -82,19 +86,15 @@ export default function ProductForm({
           >
             <div className="w-full h-full flex flex-col gap-8 items-center lg:flex-row">
               <div className="w-full max-w-[550px]">
-                <FormPCarousel form={form} />
+                <Carousel2 form={form} />
               </div>
               <div className="flex flex-col w-full gap-3">
-                <FormPName product={product} form={form} />
-                <FormPDescription product={product} form={form} />
-                <FormPPrice product={product} form={form} />
+                <FormPName form={form} />
+                <FormPDescription form={form} />
+                <FormPPrice form={form} />
                 <div className="flex items-end justify-between gap-4">
-                  <FormPPCategories
-                    product={product}
-                    form={form}
-                    categories={categories}
-                  />
-                  <FormPStatus product={product} form={form} />
+                  <FormPPCategories form={form} categories={categories} />
+                  <FormPStatus form={form} />
                 </div>
               </div>
             </div>

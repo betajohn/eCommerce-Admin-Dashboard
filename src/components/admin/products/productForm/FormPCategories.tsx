@@ -1,3 +1,5 @@
+import { ProductFormType } from '@/lib/typescriptUtils';
+import { ShortedCategoriesType } from '@/database/models/StoreConfig';
 import {
   FormField,
   FormItem,
@@ -14,7 +16,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export default function FormPPCategories({ form, categories, product }) {
+export default function FormPPCategories({
+  form,
+  categories,
+}: {
+  form: ProductFormType;
+  categories: ShortedCategoriesType;
+}) {
   return (
     <FormField
       control={form.control}
@@ -24,12 +32,13 @@ export default function FormPPCategories({ form, categories, product }) {
           <div className="flex flex-col gap-1">
             <FormLabel>Category</FormLabel>
             <FormControl>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select
+                onValueChange={field.onChange}
+                defaultValue={field.value.name}
+              >
                 <FormControl>
                   <SelectTrigger className="w-[160px] sm:w-[180px]">
-                    <SelectValue
-                      placeholder={product?.category?.name ?? 'Select'}
-                    />
+                    <SelectValue />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>

@@ -1,5 +1,6 @@
 import { getCategories } from '@/database/dbQueries/productsQueries';
 import ProductForm from '@/components/admin/products/productForm/ProductForm';
+import { ProductFormSchemaType } from '@/lib/zodSchemas';
 
 const categories = [
   {
@@ -28,7 +29,11 @@ const categories = [
   },
 ];
 
-export default async function FormWrapper({ product }) {
+export default async function FormWrapper({
+  product,
+}: {
+  product?: ProductFormSchemaType;
+}) {
   //const categories = await getCategories();
 
   return <ProductForm categories={categories} product={product} />;

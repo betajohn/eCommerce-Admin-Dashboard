@@ -7,8 +7,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { ProductFormType } from '@/lib/typescriptUtils';
 
-export default function FormPPrice({ form, product }) {
+export default function FormPPrice({ form }: { form: ProductFormType }) {
   return (
     <FormField
       control={form.control}
@@ -18,11 +19,7 @@ export default function FormPPrice({ form, product }) {
           <div className="flex flex-col gap-1">
             <FormLabel>Price USD</FormLabel>
             <FormControl>
-              <Input
-                type="number"
-                placeholder={product?.price ?? 0.01}
-                {...field}
-              />
+              <Input type="number" {...field} />
             </FormControl>
             <FormMessage />
           </div>

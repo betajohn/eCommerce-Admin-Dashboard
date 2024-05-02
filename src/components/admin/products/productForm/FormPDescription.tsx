@@ -7,8 +7,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+import { ProductFormType } from '@/lib/typescriptUtils';
 
-export default function FormPDescription({ form, product }) {
+export default function FormPDescription({ form }: { form: ProductFormType }) {
   return (
     <FormField
       control={form.control}
@@ -18,7 +19,7 @@ export default function FormPDescription({ form, product }) {
           <div className="flex flex-col gap-1">
             <FormLabel>Description</FormLabel>
             <FormControl>
-              <Textarea placeholder={product?.description ?? ''} {...field} />
+              <Textarea {...field} />
             </FormControl>
             <FormMessage />
           </div>

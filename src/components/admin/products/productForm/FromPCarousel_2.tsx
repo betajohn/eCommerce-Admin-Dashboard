@@ -16,8 +16,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import AddImage from '@/../public/images/addImage.svg';
+import { ProductFormType } from '@/lib/typescriptUtils';
 
-export default function FormPCarousel({ form, images }: { images: string[] }) {
+export default function FormPCarousel({
+  form,
+  images,
+}: {
+  images: string[];
+  form: ProductFormType;
+}) {
   return (
     <FormField
       control={form.control}
