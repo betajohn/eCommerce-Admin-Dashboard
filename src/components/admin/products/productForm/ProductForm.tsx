@@ -97,10 +97,10 @@ export default function ProductForm({
           <form
             noValidate
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-col items-center w-full gap-8 px-2 "
+            className="flex flex-col items-center w-full gap-8 px-2"
           >
-            <div className="w-full h-full flex flex-col gap-8 items-center lg:flex-row">
-              <div className="w-full max-w-[550px]">
+            <div className="w-full h-full flex flex-col gap-8 lg:flex-row justify-start">
+              <div className="w-full ">
                 <Carousel2 form={form} />
               </div>
               <div className="flex flex-col w-full gap-3">

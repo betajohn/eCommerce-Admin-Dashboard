@@ -110,7 +110,9 @@ export default function NavLinks({ hamburgerView = false }) {
         className="px-6 justify-normal"
       >
         <LogOut className="w-6" />
-        Logout
+        <p className={cn({ 'hidden md:block': hamburgerView === false })}>
+          Logout
+        </p>
       </Button>
     </div>
   );

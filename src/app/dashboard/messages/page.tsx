@@ -24,7 +24,6 @@ export default function Page() {
     watchSlides: true,
   });
   const [slides, setSlides] = useState(['q']);
-  const [selected, setSelected] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const onThumbClick = useCallback(
@@ -89,7 +88,7 @@ export default function Page() {
           setSlides(newImages);
           emblaMainApi?.scrollTo(i - 1);
           onThumbClick(i - 1);
-          setSelected(i - 1);
+          setSelectedIndex(i - 1);
           console.log('moved left');
         }}
       >
@@ -110,7 +109,7 @@ export default function Page() {
           setSlides(newImages);
           emblaMainApi?.scrollTo(i + 1);
           onThumbClick(i + 1);
-          setSelected(i + 1);
+          setSelectedIndex(i + 1);
           console.log('moved right');
         }}
       >
