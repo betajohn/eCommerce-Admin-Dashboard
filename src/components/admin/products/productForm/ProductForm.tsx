@@ -73,10 +73,10 @@ export default function ProductForm({
             className="flex flex-col items-center w-full gap-8 px-2"
           >
             <div className="w-full h-full flex flex-col gap-8 lg:flex-row justify-start">
-              <div className="w-full ">
+              <div className="w-full lg:w-[50%]">
                 <Carousel2 form={form} />
               </div>
-              <div className="flex flex-col w-full gap-3">
+              <div className="flex flex-col w-full lg:w-[50%] gap-3">
                 <FormPName form={form} />
                 <FormPDescription form={form} />
                 <FormPPrice form={form} />

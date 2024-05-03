@@ -1,9 +1,24 @@
 # Git notes and tricks
 
-## reset to last commit (head)
+## Reset to previous commit
+
+### 1. Reset file edits
+
+Change Head for <commit_id> if you want to go back to a preceding commit.
 
 ```git
 git reset --hard HEAD
+```
+
+### 2. Remove new files
+
+> [!IMPORTANT] First check what will be deleted with
+> `git clean -nd`
+
+Delete any new files
+
+```git
+git clean -fd
 ```
 
 ## The Anatomy of a Commit Message
