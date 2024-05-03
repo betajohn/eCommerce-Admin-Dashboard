@@ -1,25 +1,9 @@
-import { writeFile } from 'fs';
-
 export const NOW = new Date();
 export const SITE_LAUNCH_DATE = new Date(Date.UTC(2024, 0, 1)); // server time
 export const OLDEST_BIRTH_DATE = new Date(1924, 0, 1); // local time
 export const YOUNGEST_BIRTH_DATE = new Date(
   Date.UTC(NOW.getUTCFullYear() - 13, NOW.getUTCMonth(), NOW.getUTCDate())
 );
-
-export function writeToDisk(data: any, filePath = './result.json') {
-  // Convert the data to JSON format
-  const jsonData = JSON.stringify(data); // null and 2 for pretty formatting
-
-  // Write the JSON data to the file
-  writeFile(filePath, jsonData, 'utf8', (err) => {
-    if (err) {
-      console.error('Error writing to file:', err);
-      return;
-    }
-    console.log('Data has been written to', filePath);
-  });
-}
 
 export function getRandomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];

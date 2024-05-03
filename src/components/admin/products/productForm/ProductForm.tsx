@@ -14,8 +14,8 @@ import FormPPrice from '@/components/admin/products/productForm/FormPPrice';
 import FormPPCategories from '@/components/admin/products/productForm/FormPCategories';
 import FormPStatus from '@/components/admin/products/productForm/FormPStatus';
 
-import Carousel2 from '@/components/admin/products/productForm/FormPCarousel2';
 import FormPTitle from '@/components/admin/products/productForm/FormPTitle';
+import FromPSwiper from '@/components/admin/products/productForm/FormPSwiper';
 
 export default function ProductForm({
   product,
@@ -74,7 +74,7 @@ export default function ProductForm({
           >
             <div className="w-full h-full flex flex-col gap-8 lg:flex-row justify-start">
               <div className="w-full lg:w-[50%]">
-                <Carousel2 form={form} />
+                <FromPSwiper form={form} />
               </div>
               <div className="flex flex-col w-full lg:w-[50%] gap-3">
                 <FormPName form={form} />
