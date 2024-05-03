@@ -8,6 +8,7 @@ import Image from 'next/image';
 import FormPImgControl from '@/components/admin/products/productForm/FormPImgControl';
 import { useState } from 'react';
 import { Thumbs } from 'swiper/modules';
+import { Badge } from '@/components/ui/badge';
 
 const slidesz: string[] = [
   'https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg',
@@ -50,8 +51,16 @@ export default function FormSwiper({
             {slides.map((img, i) => {
               return (
                 <SwiperSlide key={i}>
-                  <div className=" h-full w-full flex items-center justify-center">
-                    <div className="relative w-[70%] h-[80%]">
+                  <div className=" h-full w-full flex items-center justify-center relative">
+                    {i === 0 && (
+                      <Badge
+                        className="absolute bottom-2 right-2 text-base z-10"
+                        variant={'destructive'}
+                      >
+                        Front Image
+                      </Badge>
+                    )}
+                    <div className="relative w-[70%] h-[80%] ">
                       <Image src={img} alt="prod img" fill />
                     </div>
                   </div>
@@ -74,7 +83,13 @@ export default function FormSwiper({
         >
           {slides.map((img, i) => {
             return (
-              <SwiperSlide key={i} className="bg-white rounded-lg">
+              <SwiperSlide key={i} className="bg-white rounded-lg relative">
+                {i === 0 && (
+                  <Badge
+                    className="absolute  right-1 bottom-1 text-base z-10"
+                    variant={'destructive'}
+                  ></Badge>
+                )}
                 <div className="relative aspect-video h-full mx-auto">
                   <Image src={img} alt="prod img" fill className="p-1" />
                 </div>
