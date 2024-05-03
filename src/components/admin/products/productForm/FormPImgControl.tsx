@@ -1,8 +1,8 @@
 import { Trash2Icon, CornerUpLeft, CornerUpRight, ImageUp } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { getRandomElement } from '@/FakeData/utils';
-import { MutableRefObject } from 'react';
 import { Button } from '@/components/ui/button';
+import { ProductFormType } from '@/lib/typescriptUtils';
 
 const slideR: string[] = [
   'https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg',
@@ -10,15 +10,16 @@ const slideR: string[] = [
   'https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg',
   'https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg',
 ];
+//TODO: Delete array when ready to upload images
 
 export default function FormPImgControl({
   currentIndex,
+  form,
   slides,
-  setSlides,
 }: {
-  slides: string[];
-  setSlides: React.Dispatch<React.SetStateAction<string[]>>;
   currentIndex: number;
+  slides: string[];
+  form: ProductFormType;
 }) {
   function moveLeft() {
     if (slides.length === 0 || currentIndex === 0) {
@@ -28,7 +29,11 @@ export default function FormPImgControl({
     const newImages = [...slides];
     newImages[currentIndex - 1] = slides[currentIndex];
     newImages[currentIndex] = slides[currentIndex - 1];
-    setSlides(newImages);
+    form.setValue('images', newImages, {
+      shouldTouch: true,
+      shouldDirty: true,
+      shouldValidate: true,
+    });
     console.log('moved left');
   }
   function moveRight() {
@@ -39,11 +44,19 @@ export default function FormPImgControl({
     const newImages = [...slides];
     newImages[currentIndex + 1] = slides[currentIndex];
     newImages[currentIndex] = slides[currentIndex + 1];
-    setSlides(newImages);
+    form.setValue('images', newImages, {
+      shouldTouch: true,
+      shouldDirty: true,
+      shouldValidate: true,
+    });
     console.log('moved right');
   }
   function uploadPicture() {
-    setSlides([...slides, '' + getRandomElement(slideR)]);
+    form.setValue('images', [...slides, '' + getRandomElement(slideR)], {
+      shouldTouch: true,
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   }
   function deleteCurrentPic() {
     if (slides.length === 0) return;
@@ -53,7 +66,11 @@ export default function FormPImgControl({
         newImages.push(slides[x]);
       }
     }
-    setSlides(newImages);
+    form.setValue('images', newImages, {
+      shouldTouch: true,
+      shouldDirty: true,
+      shouldValidate: true,
+    });
     console.log('deleted ' + currentIndex);
   }
 

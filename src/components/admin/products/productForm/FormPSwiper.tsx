@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Thumbs } from 'swiper/modules';
 import { Badge } from '@/components/ui/badge';
 
+//TODO: Delete when ready to upload images
 const slidesz: string[] = [
   'https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg',
   'https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg',
@@ -22,13 +23,9 @@ export default function FormSwiper({
 }: {
   form: UseFormReturn<ProductFormSchemaType>;
 }) {
-  const [slides, setSlides] = useState(slidesz);
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass>();
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  function print() {
-    console.log(currentIndex);
-  }
+  const slides = form.watch('images');
 
   return (
     <div className="flex flex-col gap-3">
@@ -36,9 +33,9 @@ export default function FormSwiper({
         <Label>Product Images</Label>
         <div className="flex justify-center border-foreground border rounded-lg bg-white gap-2">
           <FormPImgControl
+            form={form}
             slides={slides}
             currentIndex={currentIndex}
-            setSlides={setSlides}
           />
           <Swiper
             spaceBetween={10}
@@ -57,7 +54,7 @@ export default function FormSwiper({
                         className="absolute bottom-2 right-2 text-base z-10"
                         variant={'destructive'}
                       >
-                        Front Image
+                        Main Image
                       </Badge>
                     )}
                     <div className="relative w-[70%] h-[80%] ">
