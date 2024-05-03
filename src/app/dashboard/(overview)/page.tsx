@@ -5,6 +5,7 @@ import ROOverviewSkeleton from '@/components/admin/dashboard/skeletons/ROOvervie
 import RVOverviewSkeleton from '@/components/admin/dashboard/skeletons/RVOverviewSkeleton';
 import RecentVisitorsOverview from '@/components/admin/dashboard/RecentVisitorsOverview';
 import ROSkeleton from '@/components/admin/dashboard/skeletons/ROSkeleton';
+import DBShortcuts from '@/components/admin/dashboard/DBShortcuts';
 
 export default function Dashboard() {
   return (
@@ -13,6 +14,7 @@ export default function Dashboard() {
       <div className="w-full h-full flex flex-col gap-2">
         {/*Top 3 cards */}
         <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-2">
+          <DBShortcuts />
           <Suspense fallback={<ROOverviewSkeleton />}>
             <RecentOrdersOVerview />
           </Suspense>

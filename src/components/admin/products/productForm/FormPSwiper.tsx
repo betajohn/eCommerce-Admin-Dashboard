@@ -9,6 +9,7 @@ import FormPImgControl from '@/components/admin/products/productForm/FormPImgCon
 import { useState } from 'react';
 import { Thumbs } from 'swiper/modules';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 //TODO: Delete when ready to upload images
 const slidesz: string[] = [
@@ -80,7 +81,13 @@ export default function FormSwiper({
         >
           {slides.map((img, i) => {
             return (
-              <SwiperSlide key={i} className="bg-white rounded-lg relative">
+              <SwiperSlide
+                key={i}
+                className={cn(
+                  'bg-white rounded-lg relative',
+                  currentIndex !== i && 'opacity-40'
+                )}
+              >
                 {i === 0 && (
                   <Badge
                     className="absolute  right-1 bottom-1 text-base z-10"

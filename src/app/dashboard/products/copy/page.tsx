@@ -1,4 +1,4 @@
-import IDNotFound from '@/components/admin/edit/IDNotFound';
+import IDNotFound from '@/components/admin/products/edit/IDNotFound';
 import { isValidIdString } from '@/lib/utils';
 import FormWrapper from '@/components/admin/products/productForm/FormWrapper';
 
