@@ -1,4 +1,10 @@
-# Commits tops and tricks
+# Git notes and tricks
+
+## reset to last commit (head)
+
+```git
+git reset --hard HEAD
+```
 
 ## The Anatomy of a Commit Message
 

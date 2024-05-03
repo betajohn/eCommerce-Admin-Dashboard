@@ -19,7 +19,7 @@ export interface ProductType {
   };
   images: string[];
   rating?: { rate: number; count: number };
-  status: boolean;
+  active: boolean;
 }
 
 type Product = ProductType & mongoose.Document;

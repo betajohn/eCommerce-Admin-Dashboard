@@ -1,24 +1,13 @@
 'use client';
 
-import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { productFormSchema, ProductFormSchemaType } from '@/lib/zodSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import {
-  ShortedCategoriesType,
-  StoreConfigType,
-} from '@/database/models/StoreConfig';
-//
+import { ShortedCategoriesType } from '@/database/models/StoreConfig';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import FormPName from '@/components/admin/products/productForm/FormPName';
 import FormPDescription from '@/components/admin/products/productForm/FormPDescription';
 import FormPPrice from '@/components/admin/products/productForm/FormPPrice';
@@ -26,6 +15,7 @@ import FormPPCategories from '@/components/admin/products/productForm/FormPCateg
 import FormPStatus from '@/components/admin/products/productForm/FormPStatus';
 
 import Carousel2 from '@/components/admin/products/productForm/FormPCarousel2';
+import FormPTitle from '@/components/admin/products/productForm/FormPTitle';
 
 export default function ProductForm({
   product,
@@ -66,32 +56,12 @@ export default function ProductForm({
 
   return (
     <Card className="w-full">
-      <CardHeader>
-        {isCopy && product && (
-          <>
-            <CardTitle className="text-xl sm:text-2xl">
-              Create a New Product
-            </CardTitle>
-            <CardDescription>Based on {product.name}</CardDescription>
-          </>
-        )}
-        {isNew && !product && (
-          <>
-            <CardTitle className="text-xl sm:text-2xl">
-              Create a new Product
-            </CardTitle>
-            <CardDescription>All fields required</CardDescription>
-          </>
-        )}
-        {isEdit && product && (
-          <>
-            <CardTitle className="text-xl sm:text-2xl">
-              Editing Product _id: {JSON.stringify(product._id)}
-            </CardTitle>
-            <CardDescription>{product.name}</CardDescription>
-          </>
-        )}
-      </CardHeader>
+      <FormPTitle
+        product={product}
+        isNew={isNew}
+        isCopy={isCopy}
+        isEdit={isEdit}
+      />
       <CardContent className="w-full px-0 py-2">
         <Form {...form}>
           <form
