@@ -26,16 +26,13 @@ export default function FormPPCategories({
   return (
     <FormField
       control={form.control}
-      name="category"
+      name="category.name"
       render={({ field }) => (
         <FormItem>
           <div className="flex flex-col gap-1">
             <FormLabel>Category</FormLabel>
             <FormControl>
-              <Select
-                onValueChange={field.onChange}
-                defaultValue={field.value.name}
-              >
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger className="w-[160px] sm:w-[180px]">
                     <SelectValue />

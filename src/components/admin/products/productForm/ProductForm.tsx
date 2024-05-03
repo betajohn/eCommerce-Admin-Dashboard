@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import { productFormSchema, ProductFormSchemaType } from '@/lib/zodSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -40,7 +40,6 @@ export default function ProductForm({
       active: product?.active ?? true,
       category: {
         name: product?.category.name ?? '',
-        categ_id: product?.category.categ_id ?? '',
       },
       images: product?.images ?? [],
     },
@@ -52,6 +51,10 @@ export default function ProductForm({
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+  }
+
+  function onError(errors: FieldErrors) {
+    console.log(errors);
   }
 
   return (
@@ -66,7 +69,7 @@ export default function ProductForm({
         <Form {...form}>
           <form
             noValidate
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={form.handleSubmit(onSubmit, onError)}
             className="flex flex-col items-center w-full gap-8 px-2"
           >
             <div className="w-full h-full flex flex-col gap-8 lg:flex-row justify-start">

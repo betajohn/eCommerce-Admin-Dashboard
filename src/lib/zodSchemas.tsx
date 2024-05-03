@@ -22,14 +22,6 @@ export const productFormSchema = z.object({
 
   category: z.object({
     name: z.string().min(1, { message: 'Required' }),
-    categ_id: z.string().refine(
-      (x) => {
-        isValidIdString(x);
-      },
-      {
-        message: 'Not a valid 24 characters long hex string',
-      }
-    ),
   }),
   images: z
     .string()
@@ -38,14 +30,17 @@ export const productFormSchema = z.object({
     .min(1, { message: 'At least ONE picture is required' })
     .max(5, { message: 'Can have up to 4 pictures' }),
   active: z.boolean(),
-  _id: z.string().refine(
+});
+
+export type ProductFormSchemaType = z.infer<typeof productFormSchema>;
+
+/*
+ _id: z.string().refine(
     (x) => {
-      isValidIdString(x);
+     return isValidIdString(x);
     },
     {
       message: 'Not a valid 24 characters long hex string',
     }
   ),
-});
-
-export type ProductFormSchemaType = z.infer<typeof productFormSchema>;
+*/
