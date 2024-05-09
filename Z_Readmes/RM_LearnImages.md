@@ -98,3 +98,43 @@ Defers loading the image until it reaches a calculated distance from the viewpor
 **There's a catch**: deferring those requests means not taking advantage of browsers' hyper-optimized processes for requesting images as early as possible. If loading="lazy" is used on img elements toward the top of the layout—and thus more likely to be in the user's viewport when the page is first loaded—these images can feel significantly slower to the end user.
 
 ### 2b. Fetch priority
+
+The loading attribute is an example of a larger web standards effort to give developers more power over how web browsers prioritize requests.
+
+If the value of a loading attribute on an `<img>` is 'lazy', the associated image request will be deferred until the browser determines that it will be shown to a user. Otherwise, that image will have the same priority as any other image on the page.
+
+Each resource has a default priority: **Browsers assign resources (css, scripts, images) a fetch priority so they can be downloaded in optimal order**.
+
+```text
+A resource's priority usually depends on what is it and where is it located in the document (priority goes from top to bottom).
+
+Automatic priority assignment usually works well but there are use cases where the assigned order is not optimal.
+```
+
+#### The HTMLImageElement fetchPriority attribute
+
+> Represents a hint given to the browser on how it should prioritize the fetch of the image relative to other images.
+
+```html
+<img src='' alt='' loading ='' fetchPriority = {'high'| 'low' | 'auto'} />`
+```
+
+- high: Fetch the image at a high priority relative to other images.
+- low: Fetch the image at a low priority relative to other images.
+- auto: Default mode, which indicates no preference for the fetch priority. The browser decides what is best for the user.
+
+```text
+USE: ADJUST A PAGE'S DOWNLOAD ORDER TO OPTIMIZE PERFORMANCE AND CORE WEB VITALS.
+```
+
+Optimization example:
+
+- fetchPriority='low' -> Set it for images only revealed following user interaction such as secondary carousel images.
+- fetchPriority='high' -> Set it for images you know will be inmediately visible in the viewport such as carousel's main image.
+
+> [!NOTE] Difference between property and attribute in html
+> Html attributes are declared when writing html.
+>
+> Properties belong to objects, not to html.
+>
+> When the browser creates the DOM out of html code, each html element becomes an object with properties. Most of the properties correspond to a html attribute. Properties can be accessed via javascript.
