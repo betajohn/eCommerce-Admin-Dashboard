@@ -230,3 +230,145 @@ Examples of raster images are GIF, PNG, JPEG, WebP.
 The way each format compresses and encodes these instructions differs, resulting in a huge variance between file sizes.
 
 > unlike vector images, a raster image source scaled beyond its inherent dimensions appears distorted, blocky or blurred.
+
+What do they mean by encoding differences?
+
+- Methods used to describe its contents.
+- Compression methods (or lack thereof).
+
+```text
+Choosing the correct format and settings for image compression is an exercise of finding balance between the level of visual detail we're able to perceive and the amount of data sent to the browser.
+```
+
+> [!NOTE] DEFINITION: Lossy compression
+> Any compression method that reduces the size of a file by permanently discarding some of its data, resulting in a loss of image quality.
+>
+> Information that is considered not essential to human perception such as high-frequency details or subtle color variations is selectively removed.
+
+---
+
+> [!NOTE] DEFINITION: Run-Length encoding
+> A simple form of data compression where consecutive identical data values are replaced with a count and single values.
+>
+> example: 'AAAABBBCCAA' -compression--> '4A3B2C2A'
+
+---
+
+> [!NOTE] DEFINITION: LossLess compression
+> Any compression method that reduces file size without sacrificing image quality.
+>
+> Example: PNG
+
+## 5. GIF Image Format (Graphical Interchange Format)
+
+Has a viewport called **logical screen** to which individual frames of image data are drawn.
+
+Offers a flipbook-like animation: A single frame is drawn in the logicl screen then replaced by another and so on.
+
+Uses a LossLess data compression method `Lempel-Ziv-Welch Algorithm`.
+
+```text
+Repeated strings of characters are saved to an internal dictionary, then another dictionary is created on top of it.
+
+-First dictionary-
+A: #0000FF
+B: #FF0000
+C: #00FF00
+
+A C A A
+A C B B
+A A A B
+A C C B
+
+-Second dictionary-
+Z: AA
+Y: BB
+X: CC
+W: AC
+
+W Z
+W Y
+Z A B
+W C B
+```
+
+> GIF has a mayor limitation that severely impacts the quality of images; each frame drawn to the logical screen can only have a max of 256 colors.
+
+- GIF format loses fidelity compared to the original image unless the original image already uses 256 colors.
+- GIF supports indexed transparency.
+
+> [!NOTE] DEFINITION: Indexed Transparency
+> Technique used in computer graphics to render transparent objects.
+>
+> Unlike other forms of transparency where each pixel's transparency is calculated individually, indexed transparency works by assigning a specific index to certain areas of an image or object.
+>
+> In this technique, each pixel of an image is assigned an index value from a predefined palette of colors, with one of the indices reserved to represent transparency. This means that rather than storing alpha values (opacity) for each pixel individually, the transparency information is stored in a separate channel or map, often called an alpha channel or mask.
+
+---
+
+> [!NOTE] DEFINITION: Palette Quantization
+> Process during compression where the color palette is reduced.
+>
+> The original continuous values (of colors) are are divided into intervals and each interval is represented by a single value.
+>
+> Note: Quantize (español: quantizacion) is the conversion of values from continuous to discrete.
+>
+> ```text
+>  Simplified Example: Transforming a range of colors to a unique color.
+>  #00DD00 <- [##00DD00, #00CC00]
+>  Every color close to #00DD00 will be mapped to #00DD00
+>  row 1 before ->  #00FF00 #00EE00 #00DD00 #00CC00 (a descending gradient)
+>  row 1 after ->   #00DD00 #00DD00 #00DD00 #00DD00 (not  a gradient anymore)
+>  which can be written as 4#00DD00 using Run-length enconding
+> ```
+>
+> Results in a loss of detail and accuracy compared to the original (but reduces file size substantively)
+
+---
+
+> [!NOTE] DEFINITION: Fidelity
+> Degree to which an image accurately reproduces the original source.
+>
+> Considers color accuracy, detail preservation and image quality.
+>
+> ```text
+> high-fidelity: closely resembles the original source.
+> low-fidelity: may exhibit noticeable artifacts, loss of detail or inaccuracies compared to the original source.
+> ```
+
+---
+
+> [!NOTE] DEFINITION: Artifacts (in the context of image fidelity)
+> Unwanted visual anomalies or distortions present in an image that degrade its quality or accuracy.
+>
+> These anomalies can be introduced during image capture, processing, compression, or transmission, and they often manifest as irregularities, noise, or distortions that are not part of the original scene.
+>
+> Common types of artifacts include Compression artifacts, Aliasing artifacts, Noise artifacts, Color artifacts and Motion artifacts.
+
+## 6. PNG IMage format (Portable Network Graphics)
+
+Intended to be a replacement for GIF (due to problems with patents)
+
+Similar to GIF in:
+
+- Uses LossLess compression.
+- Color palette may be quantized.
+
+Types of PNGs:
+
+- Truecolor PNG: Can display up to 16millions of colors which results in high-fidelity high-size files.
+- Indexed-color PNG: Uses a palete of up to 256 colors just like GIF which results in low-fidelity low-size files.
+
+- Grayscale PNG: Only contains shades of gray.
+- Alpha PNG: Includes an alpha channel which allows transparency. The values of the alpha channel ranges from 0 (fully transparent) to 255 (fully opaque).
+
+All the types of PNGs share the `.png` extension. The difference lies in encoding and compression.
+
+```text
+PNGs have excessively large sizes compared to modern web-friendly encodings.
+Their transfer sizes mean they are almost never the right choice for photographic content.
+
+In the modern web there is only one use case for PNGs: simple artwork that requires semi-transparency such as a company's logo.
+
+SVG is superior in both scalability and file size.
+```
