@@ -86,7 +86,7 @@ It's no exaggeration to say that **optimizing image requests may be the single b
 
 ### 2a. Deferring image requests
 
-The loading='lazy' attribute
+#### The loading='lazy' attribute
 
 Defers loading the image until it reaches a calculated distance from the viewport, as defined by the browser.
 **Deferring images from the initial page load**.
@@ -138,3 +138,95 @@ Optimization example:
 > Properties belong to objects, not to html.
 >
 > When the browser creates the DOM out of html code, each html element becomes an object with properties. Most of the properties correspond to a html attribute. Properties can be accessed via javascript.
+
+### 2c. Web Vitals - Largest Contentful Paint (LCP)
+
+LCP is a core web vital metric for **measuring perceived load speed**.
+
+```text
+There are plenty of older indicators but a more accurate way to measure when the main content of a page is loaded is to look at when the largest element is rendered.
+```
+
+Definition:
+
+> LCP reports the render time of the largest image or text block visible in the viewport, relative to when the user first navigated to the page.
+
+**Ideal Score:** Aim to a LCP time of 2.5 seconds or less.
+
+> [!NOTE] Real Life Data: Bodafone's experience on reducing LCP
+> A 31% improvement in LCP time led to:
+>
+> - 8% more sales
+>
+> - 15% improvement in number of visitors who became prospective customers (visitor-to-lead rate improvement)
+>
+> - 11% improvement in the number of users who visited their cart (cart-to-visit rate)
+
+In over 70% of webpages **the largest element in the initial viewport involves a image**.
+
+### 2d. Measuring the impact of images in a webpage with Core Web Vitals
+
+- Core Web Vitals are focused on user's direct experience of a webpage.
+
+- Core Web Vitals determine how fast an experience feels to the user.
+
+**Perceived performance** is more important and more difficult to measure than total transfer size alone.
+
+> [!NOTE] DEFINITION: Splash Screen
+> The very first screen the user sees when opening up an app on a mobille device (or webpage). Appears while the app is loading, just after the user opened the app.
+>
+> It's also called Launch Screen.
+>
+> Consists of a logo, name or slogan related to the poroduct.
+
+### 2e. Web Vitals - Cumulative Layout Shift (CLP)
+
+> A measurement of visual stability
+
+```text
+A metric for capturing how much the layout of the content of a page shifts (moves) as assets are loaded and the page is rendered.
+```
+
+> [!IMPORTANT] HTMLImageElement's width and heigh attributes
+> `<img src='...' alt='...' width='400' height='200'>`
+>
+> In the past, they used to indicate the dimensions of an image.
+>
+> Since 2019 `width` and `height` work differently. Now the browser uses them to get the aspect ratio of the images.
+>
+> Browsers determine the aspect ratio of images prior to the rendering of the page. The browser uses the `width` and `height` attributes to reserve the space the image will occupy as layout is rendered.
+>
+> Always use `width` and `height` attributes on your `<img>` elements!
+>
+> CSS styles will override these values.
+
+This approach -always setting the `width` and `heigh` attributes will contribute to reducing cumulative layout shift scores!
+
+## 3. Vector Images
+
+Vector graphics are a method of communicating a series of shapes, coordinates, and paths to their rendering context. They are a set of instructions for how an image should be drawn.
+
+> When a vector image is scaled up or down, it is redrawn to scale. It doesn't lose fidelity!
+
+### 3a. SVG (Scalable Vector Graphic)
+
+SVG is a XML-based markup language developed by the W3C.
+
+SVG is a vector image format designed for the modern web.
+
+- A SVG can be styled with CSS or contain javascript.
+- The descriptive information contained within an SVG source is often highly compact compared to raster image formats (GIF, PNG, JPEG).
+- The descriptive nature of SVG requires more interpretation -more thinking- from the browser. Complex SVGs can be more taxing to render.
+
+> [!NOTE] DEFINITION: Raster (español: raster)
+> Scan pattern in which an area is scanned from side to side in lines from top to bottom.
+
+## 4. Raster Images
+
+A set of pixel-by-pixel instructions for rendering a two-dimensional grid.
+
+Examples of raster images are GIF, PNG, JPEG, WebP.
+
+The way each format compresses and encodes these instructions differs, resulting in a huge variance between file sizes.
+
+> unlike vector images, a raster image source scaled beyond its inherent dimensions appears distorted, blocky or blurred.
