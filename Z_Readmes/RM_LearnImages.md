@@ -345,7 +345,7 @@ W C B
 >
 > Common types of artifacts include Compression artifacts, Aliasing artifacts, Noise artifacts, Color artifacts and Motion artifacts.
 
-## 6. PNG IMage format (Portable Network Graphics)
+## 6. PNG Image format (Portable Network Graphics)
 
 Intended to be a replacement for GIF (due to problems with patents)
 
@@ -372,3 +372,73 @@ In the modern web there is only one use case for PNGs: simple artwork that requi
 
 SVG is superior in both scalability and file size.
 ```
+
+## 7. JPEG Image format (Joint Photographic Experts Group)
+
+> The most common type of image in the web
+
+- Either `.jpg` or `.jpeg` are the same format.
+- Uses lossy compression.
+- Has been the right choice for image encodings for over 30 years since its creation in 1993.
+- JPEG is well suited for layered gradients that make up real world photography.
+
+JPEG's lossy compression is different
+
+- More efficient with tiny, often imperceptible alterations to the image data.
+- JPEG encodes image data a eight-by-eight blocks of pixels and **describes the blocks**, not the individual pixels inside them like legacy formats do.
+
+```text
+Describing a gradient pixel by pixel like PNG does is verbose thus file size increments.
+Describing a gradient using JPEG's style encoding is MUCH more efficient thus lighter file sizes can be achieved.
+```
+
+- JPEG shines in quantizing the level of high-frequency detail of an image, often imperceptibly.
+
+```text
+Saving an image as JPEG reduces its quality in ways not perceptible for the human eye, unlike GIF where the reduction of colors is clearly visible.
+```
+
+- JPEG attempts to quantize an image source in a way that loosely matches the way our own psycho-visual systems do it.
+
+> [!NOTE] DEFINITION: Layered Gradient
+> Technique where multiple gradients are applied to an image, each affecting different areas or layers of the photography.
+> Typically they are adjustments in brightness, contrast, color, etc.
+
+---
+
+> [!NOTE] DEFINITION: Layers (in the context of images & photography)
+> Separate component or element within an image that can be individually edited or adjusted. Commonly used in post-processing software such as Photoshop or Gimp to organize and manipulate aspects of an image without affecting the original photograph.
+
+---
+
+> [!NOTE] DEFINITION: Frequency (in the context of images & photography)
+> Frequency means the rate of change of intensity per pixel.
+>
+> Let’s say you have some region in your image that changes from white to black
+>
+> - If it takes many pixels to undergo that change, it’s low frequency.
+>
+> - The fewer the pixels it takes to represent that intensity variation, the higher the frequency.
+>
+> This is a VERY glib definition. Term is complex and comes from maths (Fourier analysis).
+
+JPEG uses Discrete Cosine Transform which splits the image in two layers
+
+- Luminance (brightness) -> Luma
+- Chrominance (color) -> Chroma
+
+Compression can become obvious if taken too far. Levels of detail can be reduced further than our psycho-visual systems would naturally ignore.
+
+### 7a. Progressive JPEG (PJPEG)
+
+PJPEG Reorders the process of rendering
+
+- 'Baseline' JPEGs are rendered from top to bottom as the transfer progresses.
+- Progressive JPEG breaks rendering into a set of full-sized 'scans'. With each scan increasing the quality of the image.
+
+PJPEG Images load way faster but are blurry at the beginning and become clearer as transfer continues.
+
+> For this reason, PJPEG feel faster to the end user
+
+- PJPEG files are also smaller by a little.
+- The price is that PJPEG are more taxing than regular JPEG for the browser during rendering (it's really minor and difficult to notice)

@@ -1,13 +1,11 @@
 export default function Page() {
   return (
-    <div>
-      orders
-      <img
-        alt="Image of a cat"
-        className="w-[1000px] h-[200px] bg-red-500 rounded-lg text-transparent"
-        width={400}
-        height={200}
-      />
+    <div className="bg-black h-full">
+      <div className="w-60 h-20 bg-[hsl(0_100%_50%)]"></div>
+      <div className="w-60 h-20 bg-[hsl(0_100%_75%)]"></div>
+      <div className="w-60 h-20 bg-[hsl(0_100%_25%)]"></div>
+      <div className="w-60 h-20 bg-[hsl(60_100%_50%)]"></div>
+      <div className="w-60 h-20 bg-[hsl(120_100%_50%)]"></div>
     </div>
   );
 }
