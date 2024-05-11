@@ -442,3 +442,201 @@ PJPEG Images load way faster but are blurry at the beginning and become clearer 
 
 - PJPEG files are also smaller by a little.
 - The price is that PJPEG are more taxing than regular JPEG for the browser during rendering (it's really minor and difficult to notice)
+
+## 8. squoosh App
+
+> An open-source image compression app created by GoogleChromeLabs designed specifically for compressing images.
+
+squoosh's URl: [squoosh.app](https://squoosh.app/)
+
+compression level range: [0,100]
+
+```text
+0:   Low Quality & High Compression.
+100: High Quality & Low Compression.
+```
+
+## 9. WebP Image Format (Web Picture)
+
+Excellent choice for both images and animated images. WebP offers much better compression than PNG or JPEG with support for higher color depths, animated frames, transparency etc.
+
+- Developed by google to supersede JPEG
+- Originally use Lossy compression, later updates introduced LossLess.
+- Has PNG-like Alpha channel transparency.
+- Has Gif-like animation.
+
+Its compression algorithm is based on a method that VPB video codec uses to compress keyframes in videos.
+
+- Similarly to JPEG, its compression algorithm operates in terms of 'blocks' rather than individual pixels. Its algorithm creates a division between `luma` and `chroma`.
+- Unlike JPEG, WebP uses block prediction and adaptive block quantization.
+
+As JPEG, you need to select a quality value when encoding. Ranges from [0,100]
+
+### 9a. Google's cwebp
+
+> Compress an image file to a WebP file
+
+Input format can be either PNG, JPEG, TIFF, WebP or raw Y'CbCr samples. Note: Animated PNG and WebP files are not supported.
+
+cwebp's URl: [libwebp](https://chromium.googlesource.com/webm/libwebp/)
+
+## 10. AVIF Image format (AV1 Image File)
+
+- Encoding based on the Open Source AV1 Video Codec.
+- Newest format, supported browser wide just from 2022.
+- A bit better than WebP in compression.
+- Offers transparency and animation.
+
+Good choice for both images and animated images due to high performance and royalty free image format.
+
+It offers much better compression than PNG or JPEG with support for higher color depths, animated frames, transparency, etc.
+
+Note that when using AVIF, you should include fallbacks to formats with better browser support (i.e. using the <picture> element).
+Support: Chrome, Edge, Firefox (still images only: animated images not implemented), Opera, Safari.
+
+> It's too new, prefer WebP.
+
+## 11. Responsive Images
+
+Responsive image markup can be divided into two scenarios:
+
+- Descriptive Syntax: Situations where the goal is the most efficient possible image.
+- Prescriptive Syntax: Situations where you need explicit control over what image source the browser selects.
+
+## 12 Descriptive Syntaxes
+
+Their purpose is to give the browser a choice of images so that it can make the best decisions about what to display.
+
+These syntaxes allow the browser to solve a very difficult problem autonomously; seamlessly requesting and rendering an **image source tailored to a user's browsing context**, including viewport size, display density, user preferences, bandwidth, and countless other factors.
+
+> [!NOTE] DEFINITION: Browsing Context
+> A browsing context is an environment in which a browser displays a `Document`. In modern browsers it usually is a tab, but can be a window or even only parts of a page, like a frame or an iframe.
+>
+> Each browsing context has an origin (that of the active document) and an ordered history of previously displayed documents.
+>
+> Communication between browsing contexts is severely constrained. Between browsing contexts of the same origin, a `BroadcastChannel` can be opened and used.
+
+---
+
+> [!NOTE] DEFINITION: Screen Size vs Screen Resolution
+> Screen Size:
+>
+> - Refers to the physical dimensions of the display, typically measured diagonally from one corner to the opposite corner.
+> - It is usually expressed in inches (or occasionally in centimeters).
+> - Screen size directly influences the physical size of the device, such as a smartphone, tablet, laptop, or monitor.
+>
+> Screen Resolution:
+>
+> - Refers to the number of pixels that the display can accommodate horizontally and vertically.
+> - It is usually expressed as the total number of pixels in width by height, such as 1920x1080 or 2560x1440.
+> - Screen resolution determines the level of detail and clarity of the displayed content. Higher resolutions typically result in sharper images and text.
+> - A display with a higher resolution can accommodate more content on the screen without sacrificing clarity, compared to a display with a lower resolution of the same size.
+>
+> ```text
+> Example: This monitor
+> Screen size: 32 inches
+> Screen resolution: 1600x900
+> ```
+
+---
+
+> [!NOTE] DEFINITION: Pixel Density | Display Density | Screen Density
+>
+> - Measures the density of device pixels in a given physical area.
+> - Commonly measured using pixels per inch (ppi).
+>
+> For many years, 96 ppi was a very common display density (hence CSS defining a pixel as 1/96th of an inch).
+>
+> Starting in the 1980s it was the default resolution of Windows. In addition, it was the resolution of CRT monitors.
+>
+> This began to change as LED monitors became common in the 2000s. In particular, Apple made a big splash in 2010 when it introduced Retina displays. These displays had a minimum resolution of 192 ppi.
+>
+> ```text
+> Example
+> iphone 4: 326 ppi (pixels per inch)
+> Pixel 8a: 430 PPI
+> High Definition Desktop Monitors: Monitors with resolutions of 1920x1080 pixels, also known as Full HD or 1080p, usually have pixel densities ranging from 90 to 110 PPI.
+>
+> -- Calculating this monitor's current ppi --
+> This monitor's current resolution 1600x900
+> This monitor's screen size 32''
+> Calculating the pixel length of the hypotenuse
+>  x^2 = 1600^2 + 900^2 => x = 1936 (aprox)
+> calculating ppi
+> x = (1936 pixels)/(32 inches) = 60.50 ppi
+>
+> -- Calculating this monitor's maximum ppi supported--
+> This monitor's max resolution supported 1920x1080
+> hypotenuse = (1920^2+1080^2)^0.5 = 2203 pixels
+> ppi = 2203/32 = 68.8ppi
+> ```
+
+### 12a. The HTMLImageElement's `sizes` attribute
+
+```tsx
+<img sizes={value} />
+```
+
+Its value is one or more strings separated by commas, indicating a set of source sizes. Each source size consists of:
+
+- A media condition. This must be omitted for the last item in the list.
+- A source size value.
+
+> [!NOTE] NOTE: Media Conditions
+> Media Conditions describe properties of the viewport, not of the image.
+>
+> For example, `(max-height: 500px) 1000px` proposes to use a source of 1000px width, if the viewport is not higher than 500px.
+
+### 12b. The HTMLImageElement's `srcSet` attribute
+
+> `srcSet` isn't a method for swapping image sources at specific breakpoints, and it isn't meant to swap one image for another.
+
+```tsx
+<img arcSet={value} />
+```
+
+Its value is one or more strings separated by commas, indicating possible image sources for the user agent to use. Each string is composed of:
+
+- A URL to an image.
+- Optionally, whitespace followed by one of:
+  - **A width descriptor** (a positive integer directly followed by w). The width descriptor is divided by the source size given in the sizes attribute to calculate the effective pixel density.
+  - **A pixel density descriptor** (a positive floating point number directly followed by x).
+
+> [!NOTE] DEFINITION: User Agent
+> A user agent is a computer program representing a person, for example, a browser in a Web context.
+>
+> Besides a browser, a user agent could be a bot scraping webpages, a download manager, or another app accessing the Web.
+>
+> Along with each request they make to the server, browsers include a self-identifying `User-Agent` HTTP header called a user agent (UA) string. This string often identifies the browser, its version number, and its host operating system.
+>
+> Spam bots, download managers, and some browsers often send a fake UA string to announce themselves as a different client. This is known as user agent spoofing.
+>
+> The user agent string can be accessed with JavaScript on the client side using the `Navigator.userAgent` property.
+>
+> ```text
+> //userAgent property returns the user-agent header sent by the browser to the server on every request.
+> //The userAgent property is read-only.
+> // The specification asks browsers to provide as little information via this field as possible.
+>
+> let x =  navigator.userAgent
+> console.log(x) //prints
+>  'Mozilla/5.0 (Linux; Android) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.109 Safari/537.36 CrKey/1.54.248666'
+> ```
+
+### 13c. Describing density with `x`
+
+An `<img>` with a fixed width will occupy the same amount of the viewport in any browsing context, regardless of the density of a user's display.
+
+For example, an image with an inherent width of 400px will occupy almost the entire browser viewport on both the original Google Pixel and much newer Pixel 6 Pro—both devices have a normalized 412px logical pixel wide viewport.
+
+> [!NOTE] DEFINITION: Logical Pixel
+> Also known as Device-Independent Pixels(DIP), Virtual pixels or CSS pixels.
+>
+> A logical pixel is the unit front-end developers work with in their CSS stylesheets and is also the unit designers work with in tools such as Figma or Photoshop.
+>
+> They’re referred as “logical”, as they simply just store information of a color represented in a given location, irrespective of the physical properties of the display.
+
+---
+
+> [!NOTE] DEFINITION: CSS Pixel
+> The term `CSS pixel` is synonymous with the CSS unit of absolute length px — which is normatively defined as being exactly 1/96th of 1 CSS inch (in).
