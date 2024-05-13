@@ -629,14 +629,173 @@ An `<img>` with a fixed width will occupy the same amount of the viewport in any
 
 For example, an image with an inherent width of 400px will occupy almost the entire browser viewport on both the original Google Pixel and much newer Pixel 6 Pro—both devices have a normalized 412px logical pixel wide viewport.
 
-> [!NOTE] DEFINITION: Logical Pixel
-> Also known as Device-Independent Pixels(DIP), Virtual pixels or CSS pixels.
+> [!NOTE] DEFINITION: Physical Pixel (Device Pixel)
 >
-> A logical pixel is the unit front-end developers work with in their CSS stylesheets and is also the unit designers work with in tools such as Figma or Photoshop.
+> The actual hardware pixel, its total number is determined by hardware specifications.
 >
-> They’re referred as “logical”, as they simply just store information of a color represented in a given location, irrespective of the physical properties of the display.
+> - It's literally what comes printed in the box.
+>   - Example: A FULL HD screen with a printed `1920 x 1080` resolution has a total of 1920x1080 physical pixels.
+>
+> **Getting the physical resolution in JS**
+>
+> We **CAN'T** know the actual physical resolution that comes printed on the box where our screen came from.
+>
+> What we can know is the resolution used by the Operative System via the `window.screen` property.
+>
+> ```tsx
+> // getting physical resolution out of the box
+> let physicalScreenWidth = window.screen.width; // prints 1920
+> let physicalScreenHeight = window.screen.Height; // prints 1080
+> // getting physical resolution after changing screen resolution at operative system level
+> // -> changed Microsoft Window's screen settings to 'screen resolution: 1600x900'
+> let physicalScreenWidth = window.screen.width; // prints 1600
+> let physicalScreenHeight = window.screen.Height; // prints 900
+> ```
 
 ---
 
-> [!NOTE] DEFINITION: CSS Pixel
-> The term `CSS pixel` is synonymous with the CSS unit of absolute length px — which is normatively defined as being exactly 1/96th of 1 CSS inch (in).
+> [!NOTE] DEFINITION: Logical Pixel (CSS Pixel)
+>
+> Also known as CSS Pixel, Virtual Pixel or Density Independent Pixel.
+>
+> CSS pixel Is just a standardization for the web. Intended to have a **common pixel length among different screen resolutions**.
+>
+> CSS pixels are device independent and let us not have to worry about physical sizes of the screens and the display densities etc.
+>
+> Unlike physical pixels, **logical pixels are not directly tied to the hardware of the display**. Logical pixels are roughly the same visual size across devices.
+>
+> - In high-density displays, multiple physical pixels may correspond to a single logical pixel.
+> - In low-density displays, multiple logical pixels may be represented by a single physical pixel.
+>
+> ```tsx
+> //getting the 'physical resolution (width)'
+> let physicalScreenWidth = window.screen.width; // prints 1600
+> // Getting the CSS Pixel resolution (width) of the viewport at full screen
+> let physicalScreenWidth = window.screen.width; // prints 1600
+> const CSSScreenWidth = window.innerWidth; //  prints 1600 -> viewportWidth
+> //  // Getting the CSS Pixel resolution (width) of the viewport at full screen
+> // after zooming in to 110% at browser level
+> let physicalScreenWidth = window.screen.width; // prints 1600
+> const CSSScreenWidth = window.innerWidth; // 1455
+> //  // Getting the CSS Pixel resolution (width) of the viewport at full screen
+> // after zooming in to 150% at browser level
+> let physicalScreenWidth = window.screen.width; // prints 1600
+> const CSSScreenWidth = window.innerWidth; // 1067
+> ```
+
+---
+
+> [!NOTE] DEFINITION: Device Pixel Ratio (dpr)
+>
+> ```text
+> devicePixelRatio is a property that can be used to know how many of a device screen’s physical pixels are used to draw a single CSS pixel.
+> ```
+>
+> DPR is the ratio of the resolution in physical pixels to the resolution in CSS pixels.
+>
+> `dpr = physical pixel /CSS pixel =  screen.width / window.innerWidth`
+>
+> Can be accessed via javascript with the `window.devicePixelRatio` property.
+>
+> - `window.devicePixelRatio` changes when zooming-in or Zooming-out.
+>
+> ```tsx
+> //on this desktop monitor
+> console.log(window.devicePixelRatio); // prints 1
+>
+> //zooming-in at browser level (chrome) to 110%
+> console.log(window.devicePixelRatio); // prints 1.1
+> // why?? Because DPR is calculated  this way
+> const dpr = screen.width / window.innerWidth;
+> ```
+>
+> `window.innerWidth` is the viewport's width in CSS Pixels.
+>
+> `screen.width` is the device's width in Physical Pixels.
+>
+> Zooming-in 10% reduces `window.innerWidth` from `1600 CSS Pixels` to `1455 CSS Pixels` while physical width remains constant.
+>
+> ```text
+> How zooming in 10% affects DPR
+> DPR = screen.width / window.innerWidth
+> 1600/1600 => DPR = 1 --10% zoom-in--> 1455/1600 => DPR = 1.10
+> ```
+
+Both devices have the same screen width in terms of css Pixels but their physical resolutions are different.
+
+| Model       | Physical Resolution | Logical Resolution (width) | DPR            |
+| ----------- | ------------------- | -------------------------- | -------------- |
+| Pixel 6 Pro | 1440 × 3120 pixels  | 412 CSS Pixels             | 3.5 (1440/412) |
+| Pixel       | 1080 × 1920 pixels  | 412 CSS Pixels             | 2.6 (1080/412) |
+
+DPRs >= 2 are a HUGE improvement on resolution compared to desktop's DPR of 1.
+
+### What happens when the same image is displayed in 2 devices with different DPR?
+
+For example, a `100px x 50px` image
+
+- Will be draw by 5000 physical pixels (100x50) on a 1 DPR device (this monitor)
+- Will be drawn by 20000 physical pixels (200x100) on a 2 DPR device (my phone)
+- Both images will still be 100x50 `CSS pixels`
+
+That's 4 times more pixels!!
+
+```text
+So, what happens to the image?
+
+- Will look OK on a 1 DPR device.
+
+- A 100 x 50 raster image will need to be upscaled when displayed on a 2 DPR Device in order to fill the 100 CSS pixel width, and this upscaling will make it look bad.
+```
+
+In order to prevent this upscaling, the image being rendered has to have an intrinsic width of at least `200 pixels` to:
+
+- Fill 100 CSS Pixels on a 2DPR screen just with its intrinsic width
+- Be downscaled to fit into a 100CSS Pixels on 1 DPR screens.
+
+The problems with always serving the highest resolution image:
+
+1. High resolution image source rendered on a small, low density display will look like any other small, low density image, but **feel far slower**.
+
+2. They'll come at a much higher bandwidth and processing cost.
+
+> [!IMPORTANT] mobile devices with a DPR of 1 are vanishingly rare
+> According to data shared by Matt Hobbs, approximately 18% of GOV.UK browsing sessions from November 2022 report a DPR of 1.
+
+### Using `srcSet` attribute to optimize the serving of images
+
+Using `srcset` ensures that only devices with high-resolution displays receive image sources large enough to look sharp, without passing that same bandwidth cost along to users with lower-resolution displays.
+
+The `srcset` attribute identifies one or more comma-separated **_candidates_** for rendering an image.
+
+Each **_candidate_** is made up of two things:
+
+- A URL (just like you would use in `src`).
+- A syntax that describes that image source.
+
+Each candidate in `srcset` is described by its inherent width ("w syntax") or intended density ("x syntax").
+
+```text
+The x syntax is a shorthand for "this source is appropriate for a display with this density".
+
+A candidate followed by 2x is appropriate for a display with a DPR of 2.
+```
+
+#### The `srcset` attribute
+
+```tsx
+<img src="low-density.jpg" srcset="double-density.jpg 2x" alt="...">
+```
+
+Browsers that support `srcset` will be presented with two candidates:
+
+1. `double-density.jpg`, which 2x describes as appropriate for displays with a DPR of 2
+2. `low-density.jpg` in the src attribute. (Selected if nothing more appropriate is found on `srcset`)
+
+For browsers without support for srcset, the attribute and its contents will be ignored—the contents of src will be requested, as usual.
+
+- `srcset` doesn't tell the browser how to use that source, just informs the browser how the source could be used.
+
+  - "This is a double density image, not an image for use on a double density display"
+
+- Display density is only one of a huge number of interlinked factors that the browser uses to decide on the candidate to render

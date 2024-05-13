@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="min-h-screen">
-      <body className="h-full min-w-80 max-w-7xl m-auto bg-gray-100 dark:bg-gray-800">
+      <body className="h-full min-w-80  m-auto bg-gray-100 dark:bg-gray-800">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
