@@ -18,7 +18,6 @@ export default function DashboardLayout({
         <TimeDisplay />
         {children}
       </div>
-      <ViewLogger />
     </div>
   );
 }

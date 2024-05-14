@@ -78,13 +78,20 @@ export default function Home() {
         className="bg-gray-900 text-gray-100 absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2 border border-black text-xl px-8 py-2 text-center rounded-lg flex flex-col"
       >
         <div> Click to Go to /dashboard </div>
-        <div>{`window.devicePixelRatio: ${window.devicePixelRatio}`}</div>
-        <div>{`window.innerWidth: ${window.innerWidth}`}</div>
-        <div>{`physical resolution (screen.width): ${screen.width}`}</div>
+        <div>{`window.devicePixelRatio: ${window?.devicePixelRatio}`}</div>
+        <div>{`window.innerWidth: ${window?.innerWidth}`}</div>
+        <div>{`physical resolution (screen.width): ${screen?.width}`}</div>
         <div>{`myDpr: ${roundToTwoDecimals(
-          screen.width / window.innerWidth
+          screen?.width / window?.innerWidth
         )}`}</div>
-        <img src="/fish_400w.webp" />
+        <img
+          src="/fish_400w.webp"
+          srcSet="https://i.imgur.com/9hWKw3K.jpeg 800w,
+          https://i.imgur.com/P4CIRfE.jpeg 1200w,
+          https://i.imgur.com/fGKWCJR.jpeg 400w
+        "
+          sizes="400px"
+        />
       </Link>
 
       <div className="h-[100px] w-full bg-red-300 flex">

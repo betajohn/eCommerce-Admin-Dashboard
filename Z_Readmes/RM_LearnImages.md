@@ -503,7 +503,7 @@ Responsive image markup can be divided into two scenarios:
 - Descriptive Syntax: Situations where the goal is the most efficient possible image.
 - Prescriptive Syntax: Situations where you need explicit control over what image source the browser selects.
 
-## 12 Descriptive Syntaxes
+## 12. Descriptive Syntaxes
 
 Their purpose is to give the browser a choice of images so that it can make the best decisions about what to display.
 
@@ -623,7 +623,7 @@ Its value is one or more strings separated by commas, indicating possible image 
 >  'Mozilla/5.0 (Linux; Android) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.109 Safari/537.36 CrKey/1.54.248666'
 > ```
 
-### 13c. Describing density with `x`
+### 12c. Describing density with `x`
 
 An `<img>` with a fixed width will occupy the same amount of the viewport in any browsing context, regardless of the density of a user's display.
 
@@ -781,7 +781,7 @@ The x syntax is a shorthand for "this source is appropriate for a display with t
 A candidate followed by 2x is appropriate for a display with a DPR of 2.
 ```
 
-#### The `srcset` attribute
+#### So, what do we mean by describing the density with `x`?
 
 ```tsx
 <img src="low-density.jpg" srcset="double-density.jpg 2x" alt="...">
@@ -799,3 +799,237 @@ For browsers without support for srcset, the attribute and its contents will be 
   - "This is a double density image, not an image for use on a double density display"
 
 - Display density is only one of a huge number of interlinked factors that the browser uses to decide on the candidate to render
+
+### 12d. Describing widths with w
+
+`srcset` accepts a second type of descriptor for image source candidates. the `w` syntax describes the inherent width of each candidate source.
+
+Let's say you want the user's browser to choose between two candidates:
+
+- small.jpg, a source with an inherent width of 600px.
+- large.jpg, a source with an inherent width of 1200px.
+
+```tsx
+<img src="..." srcset="small.jpg 600w, large.jpg 1200w" />
+```
+
+```text
+Remember
+
+This doesn't tell the browser what to do with this information, just supplies it with a list of candidates for displaying the image.
+
+Before the browser can make a decision about which source to render, you need to provide it with a little more information: a description of how the image will be rendered on the page. To do that, use the **sizes** attribute.
+```
+
+### 12e. Describing usage with HTMLImageElement's `sizes` attribute
+
+Values that the `sizes` attribute admits:
+
+```text
+The source size value is a CSS <length>. It may be specified using font-relative units (such as em or ex), absolute units (such as px or cm), or the vw unit.
+```
+
+Browsers are incredibly performant when it comes to transferring images. Requests for image assets will be initiated long before requests for stylesheets or JavaScript (oftentimes even before the markup has been fully parsed).
+
+When the browser makes these requests, it has no information about the page itself, apart from the markup—it may not have even initiated requests for external stylesheets yet.
+
+It only has browser-level information: the size of the user's viewport, the pixel density of the user's display, user preferences, and so on.
+
+All this doesn't tell us anything about how an image is intended to be rendered in the page layout. So we need to provide the browser with this information and do it using markup.
+
+**Like `srcset`, `sizes` is intended to make information about an image available as soon as the markup is parsed.**
+
+the `sizes` attribute is shorthand for "here is the size of the rendered image in the layout".
+
+```text
+The way you describe the image is relative to the viewport —> viewport size is the only layout information the browser has when the image request is made.
+```
+
+```tsx
+<img
+ sizes="80vw"
+ srcset="small.jpg 600w, medium.jpg 1200w, large.jpg 2000w"
+ src="fallback.jpg"
+ alt="...">
+```
+
+Here, this sizes value informs the browser that the space in our layout that the img occupies has a width of 80vw. Remember, this isn't an instruction, but a **description** of the image's size in the page layout. The rest is up to the browser.
+
+### 12d. How the browser uses `sizes` & `srcset` to determine what image to request
+
+Let's say this image will be rendered on a `1000px width Desktop viewport with a DPR of 1`:
+
+1. Browser Calculates width of the image.
+
+   `sizes="80vw"` informed the browser that this image will take 80% of the available viewport.
+
+   ```text
+    1000px* 80% = 800px
+    // A 800 CSS pixels width image is be required
+   ```
+
+2. Browser uses the required width and divides it against the widths of each **candidate** in `srcset` to obtain each candidates's `'calculated image DPR'`.
+
+   `srcset="small.jpg 600w, medium.jpg 1200w, large.jpg 2000w"`
+
+   ```text
+   -source 1: "small.jpg 600w"
+    600/800= 0.75
+
+   -source 2: "medium.jpg 1200w"
+    1200/800= 1.5
+
+   -source 3: "large.jpg 2000w"
+   2000/800= 2.5
+   ```
+
+   The results of those calculations (.75, 1.5, and 2.5) are, effectively, DPR options specifically tailored to the user's viewport size. Since the browser also has information on the user's display density at hand, it makes a series of decisions:
+
+3. Browser compares viewport's DPR to the results of the previous calculation.
+   | `srcset` option | image DPR | viewport DPR | needs upscaling ?|
+   | ---------------- | ----------| ------------ |----|
+   | "small.jpg 600w" | 0.75 | 1 | yes|
+   |"medium.jpg 1200w"| 1.5 | 1 | no |
+   | "large.jpg 2000w"| 2.5 |1 | no|
+
+Upscaling an image is not an option (because it loses quality) so those that would need upscaling are discarded. Then the browsers chooses the `image DPR` closest to `browser DPR`.
+
+`"medium.jpg 1200w"` is the best option.
+
+#### 12d1. How the chosen image changes when rendered on another client with a `600px width 1DPR viewport`
+
+1. Browser Calculates required width of the image.
+
+   ```text
+   80% * 600px = 480px
+   ```
+
+2. Calculating each candidates's `calculated image DPR`
+
+   `srcset="small.jpg 600w, medium.jpg 1200w, large.jpg 2000w"`
+
+   ```text
+   -source 1: "small.jpg 600w"
+    600/480= 1.25
+
+   -source 2: "medium.jpg 1200w"
+   1200/480= 2.5
+
+   -source 3: "large.jpg 2000w"
+   2000/480= 4.17
+   ```
+
+3. Browser compares viewport's DPR to the results of the previous calculation.
+   | `srcset` option | image DPR | viewport DPR | needs upscaling ?|
+   | ---------------- | ----------| ------------ |----|
+   | "small.jpg 600w" | 1.25 | 1 | no|
+   |"medium.jpg 1200w"| 2.5 | 1 | no |
+   | "large.jpg 2000w"| 4.17 |1 | no|
+
+`"small.jpg 600w"` is the best option.
+
+#### 12d2. How the chosen image changes when rendered on another client with a `600px width 2.3 DPR viewport`
+
+Steps 1 & 2 are the same.
+
+step 3:
+
+Browser compares viewport's DPR to `Calculated image DPR`
+| `srcset` option | image DPR | viewport DPR | needs upscaling ?|
+| ---------------- | ----------| ------------ |----|
+| "small.jpg 600w" | 1.25 | 2.3 | yes|
+|"medium.jpg 1200w"| 2.5 | 2.3 | no |
+| "large.jpg 2000w"| 4.17 |2.3 | no|
+
+`"medium.jpg 1200w"` is the best option.
+
+> [!IMPORTANT] Image size has been optimized
+> The chosen image will look **identical** in all of these browsing contexts: all our source files are exactly the same apart from their dimensions, and each one is being rendered as sharply as the user's display density will allow. However, instead of serving `large.jpg` to every user in order to accommodate the largest viewports and the highest density displays, **_users will always be served the smallest suitable candidate_**.
+
+#### 12d3. Express `sizes` of your `srcset` images using a combination of units
+
+We can use `calc()` inside `sizes` value.
+
+Any browser with native support for responsive images will support calc() as well, allowing us to mix-and-match CSS units—for example, an image that occupies the full width of the user's viewport, minus a 1em margin on either side:
+
+```html
+<img
+  sizes="calc(100vw-2em)"
+  srcset="small.jpg 400w, medium.jpg 800w, large.jpg 1600w, x-large.jpg 2400w"
+  src="fallback.jpg"
+  alt="..."
+/>
+```
+
+### 12e. Describing breakpoints
+
+`sizes` attribute accepts a comma-separated set of candidates for the rendered size of the image. Those conditions use the familiar media query syntax.
+
+This syntax is first-match: as soon as a media condition matches, the browser stops parsing the sizes attribute, and the value specified is applied.
+
+Say you have an image
+
+- occupy 80% of the viewport minus one em of padding on either side
+- on viewports above 1200px occupies the full width of the viewport.
+
+```html
+<img
+  sizes="(min-width: 1200px) calc(80vw - 2em), 100vw"
+  srcset="small.jpg 600w, medium.jpg 1200w, large.jpg 2000w"
+  src="fallback.jpg"
+  alt="..."
+/>
+```
+
+```text
+The source-selection algorithm encoded in the HTML specification is explicitly vague on how a source should be chosen.
+
+Once the sources, their descriptors, and how the image will be rendered has all been parsed, the browser is free to do whatever it wants—you can't know for certain which source the browser will choose.
+```
+
+### 12f. Why let the browser decide?
+
+Device Pixel Ratio is **never** the most important variable. For example:
+
+- You might be browsing internet from the newest phone while connected to an airplane's shaky wifi.
+- Having data-saving mode activated.
+- etc.
+
+Would you still want to get the image with the highest possible definition?
+
+Leaving the final say to the browser allows for far more performance improvements than we could manage with a strictly prescriptive syntax.
+
+```text
+For example: in most browsers, an img using the srcset or sizes syntax will never bother requesting a source with smaller dimensions than one that the user already has in their browser's cache.
+
+What would be the point in making a new request for a source that would look identical, when the browser can seamlessly downscale the image source it already has?
+
+But if the user scales their viewport up to the point where a new image is needed in order to avoid upscaling, that request will still get made.
+```
+
+## 13. Prescriptive Syntaxes (HTMLPictureElement)
+
+The `<picture>` element doesn't render anything on its own, but instead acts as a decision engine for an inner `<img>` element, telling it what to render.
+
+`<picture>` follows a precedent already set by the `<audio>` and `<video>` elements: a wrapper element that contains individual `<source>` elements.
+
+```tsx
+<picture>
+   <source>
+   <source>
+    <img>
+</picture>
+```
+
+What happens in old browsers?
+
+- if the `<picture>` element isn't recognized by the user's browser, it's ignored (the `<source>` elements are then discarded as well).
+- The inner `<img>` element will be recognized by any browser and its src will be rendered as expected.
+
+### 13a. "Art directed" images with `<picture>`
+
+What is 'art directed'?
+
+```text
+Making changes to the content or aspect ratio of an image based on the size of the image in the page is typically referred to as "art directed" responsive images
+```
