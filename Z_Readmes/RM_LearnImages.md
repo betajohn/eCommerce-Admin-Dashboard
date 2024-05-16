@@ -1030,6 +1030,148 @@ What happens in old browsers?
 
 What is 'art directed'?
 
-```text
-Making changes to the content or aspect ratio of an image based on the size of the image in the page is typically referred to as "art directed" responsive images
+> [!NOTE] DEFINITION: Art Directed Responsive Images
+> Making changes to the content or aspect ratio of an image based on the size of the image in the page.
+
+There are times, however, where you want to alter sources across breakpoints to better highlight the content.
+
+You'll want the proportions of the image source to change. For example, a tighter zoom on the center of the image, and some of the detail at the edges cropped out.
+
+Each `<source>` element has attributes defining the conditions for the selection of that `<source>`
+
+- The HTMLSourceElement's `media` attribute accepts a media query.
+- The HTMLSourceElement's `type` attribute accepts a media type (previously known as "MIME type").
+
+The first `<source>` in the source order to match the user's current browsing context is selected, and the contents of the `srcset` attribute on that source will be used to determine the right candidates for that context.
+
+Example: 2 different images
+
+```tsx
+<picture>
+  <source media="(min-width: 1200px)" srcset="wide-crop.jpg">
+  <img src="close-crop.jpg" alt="…">
+</picture>
 ```
+
+`<source>` will be selected only when viewport is at least 1200px wide and then `wide-crop.jpg` will be rendered.
+
+`<img>` will be selected For viewports smaller than 1200 CSS pixels wide.
+
+```text
+You should always specify the inner img last in the order —if none of the source elements match their media or type criteria, the image will act as a "default" source
+```
+
+> [!IMPORTANT] HTMLPictureElement > conditional rendering
+> `<picture>` Will only download the selected `source`.
+>
+> Conditional rendering will download **All** the options and only render one.
+>
+> - Remember that `<img>` requests occur before the download and parsing of css/JS.
+
+---
+
+> [!NOTE] NOTE: See what images are being downloaded using devTools
+> devTools > network > `img` filter
+>
+> You can see:
+>
+> - type: PNEG, JPEG, etc.
+> - Size
+> - Request Status: 200 for ok
+> - Time
+> - Much More
+
+Example 2: 3 different images
+
+```ts
+<picture>
+   <source media="(max-width: 400px)" srcset="mid-bp.jpg">
+   <source media="(max-width: 800px)" srcset="high-bp.jpg">
+   <img src="highest-bp.jpg" alt="…">
+</picture>
+```
+
+When a `<source>` is chosen based on the criteria you've specified, the `srcset` attribute on `<source>` is passed along to the `<img>` as though it were defined on `<img>` itself —meaning you're free to use `sizes` to optimize art directed image sources as well.
+
+Example 3: Using `<img>`'s `sizes` to specify passed `srcset`'s width
+
+```ts
+<picture>
+   <source media="(min-width: 800px)" srcset="high-bp-1600.jpg 1600w, high-bp-1000.jpg 1000w">
+   <source srcset="lower-bp-1200.jpg 1200w, lower-bp-800.jpg 800w">
+   <img src="fallback.jpg" alt="…" sizes="calc(100vw - 2em)">
+</picture>
+```
+
+An image with proportions that can vary depending on the selected `<source>` element raises a performance issue: `<img>` only supports a single `width` and `height` attribute.
+
+In order to account for this you can use `height` and `width` attributes on `<source>` elements.
+
+Example 4: Using `<source>`'s `height` and `width` attributes to prevent Layout Shift
+
+```ts
+<picture>
+   <source
+      media="(min-width: 800px)"
+      srcset="high-bp-1600.jpg 1600w, high-bp-1000.jpg 1000w"
+      width="1600"
+      height="800">
+   <img src="fallback.jpg"
+      srcset="lower-bp-1200.jpg 1200w, lower-bp-800.jpg 800w"
+      sizes="calc(100vw - 2em)"
+      width="1200"
+      height="750"
+      alt="…">
+</picture>
+```
+
+Example 5: Using `<picture>` to decide what image to fetch based on user's theme preference.
+
+```ts
+<picture>
+   <source media="(prefers-color-scheme: dark)" srcset="hero-dark.jpg">
+   <img srcset="hero-light.jpg">
+</picture>
+```
+
+### 13b. The HTMLSourceElement's `type` attribute
+
+The type attribute allows you to use the `<picture>` element's single-request decision engine to only serve image formats to browsers that support them.
+
+In the type attribute, you provide the `Media Type (formerly MIME type)` of the image source specified in the `srcset` attribute of each `<source>`.
+
+> [!NOTE] MIME Image Types
+> Files whose MIME type is image contain image data. The subtype specifies which specific image file format the data represents.
+>
+> - `image/apng`: Animated Portable Network Graphics (APNG)
+> - `image/avif` : AV1 Image File Format (AVIF)
+> - `image/gif`: Graphics Interchange Format (GIF)
+> - `image/jpeg`: Joint Photographic Expert Group image (JPEG)
+> - `image/png`: Portable Network Graphics (PNG)
+> - `image/svg+xml`: Scalable Vector Graphics (SVG)
+> - `image/webp`: Web Picture format (WEBP)
+
+This provides the browser with all the information it needs to immediately determine whether the image candidate provided by that `<source>` can be decoded. If the media type isn't recognized, the `<source>` and all its candidates are disregarded, and the browser moves on.
+
+Example: Using `<picture>` to provide two image types for cases where old browsers don't support the newest `WebP` image format.
+
+```ts
+<picture>
+ <source type="image/webp" srcset="pic.webp">
+ <img src="pic.jpg" alt="...">
+</picture>
+```
+
+Here, any browser that supports `WebP` encoding will recognize the `image/webp` Media Type specified in the type attribute of the `<source>` element, select that `<source>`, and transfer and render `pic.webp`.
+
+Any browser without support for `WebP` will disregard the source. The `<img>` will render the contents of src as it has done since 1992. You don't need to specify a second `<source>` element with `type="image/jpeg"` here, of course—you can assume universal support for `JPEG`.
+
+All of this is achieved with a single file transfer and **no bandwidth wasted on image sources that can't be rendered**. No JavaScript, no server-side dependencies, and all the speed of `<img>`.
+
+```text
+<img> elements with the loading="lazy" attribute aren't requested until the layout of the page is known.
+
+A sizes="auto" attribute has been proposed as an addition to the HTML specification to avoid the chore of manually-written sizes attributes in these cases.
+```
+
+## 14. Automatic Compression and Encoding
